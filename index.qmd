@@ -1,5 +1,13 @@
-# Preface {.unnumbered}
+# Prefacio {.unnumbered}
 
-This is a Quarto book.
+Para nosotros en CentroGeo, la computación no es sólo una herramienta para ayudarnos a resolver diferentes problemas geoespaciales; la computación es una parte integral del proceso de análisis y una forma de _pensar_ en geografía. Ser capaz de programar nos permite liberarnos de los algoritmos, técnicas y configuraciones que se incluyen en el software (comercial o abierto) para el análisis de datos geográficos y pensar los problemas de forma diferente. Abrir la posibilidad de automatizar los procesos de análisis no sólo hace más eficiente nuestro trabajo, sino que también nos permite pensar en los problemas de forma diferente, de forma _computacional_. Con el fin de ayudar a nuestros estudiantes (y a estudiantes o profesionales de otras instituciones) a adquirir las herramientas técnicas básicas para poder llevar a cabo tareras de análisis de datos geoespaciales en Python o en R hemos creado este libro.
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+Este libro es (por lo pronto, pretende ser) una compilación de materiales educativos sobre Geoinformática. Busca funcionar como un apoyo para profesores interesados en impartir cursos relacionados con el uso de herramientas de programación para el análisis de datos geográficos o bien, para estudiantes independientes que busquen complementar su formación de manera autodidacta.
+
+El libro y el material incluido se distribuye bajo una licencia Creative Commons, de forma que todo mundo es libre de utilizarlo y modificarlo de acuerdo a sus propiuas necesidades, siempre citando la fuente original.
+
+
+
+Este libro fue creado con Quarto.
+
+Para aprender más sobre quarto, visita: <https://quarto.org/docs/books>.

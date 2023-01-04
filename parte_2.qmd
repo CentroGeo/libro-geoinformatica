@@ -1,0 +1,8 @@
+---
+title: "Geoinformática en R"
+format: html
+---
+
+Esta parte del libro cubre el manejo de datos espaciales utilizando R
+
+**EN CONSTRUCCIÓN**

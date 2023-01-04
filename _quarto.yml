@@ -2,12 +2,18 @@ project:
   type: book
 
 book:
-  title: "libro-geoinformatica"
-  author: "Jane Doe"
+  title: "Geoinformática"
+  author: "Pablo López-Ramírez"
   date: "2023-1-4"
   chapters:
     - index.qmd
     - intro.qmd
+    - part: parte_1.qmd
+      chapters:
+        - parte_1/prueba.ipynb
+    - part: parte_2.qmd
+      chapters:
+        - parte_2/intro_R.qmd
     - summary.qmd
     - references.qmd
 
@@ -19,5 +25,5 @@ format:
   pdf:
     documentclass: scrreprt
 
-
-
+execute:
+  freeze: auto

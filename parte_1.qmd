@@ -1,0 +1,6 @@
+---
+title: "Geoinformática en Python"
+format: html
+---
+
+Esta parte del libro cubre el manejo de datos espaciales utilizando Python.
