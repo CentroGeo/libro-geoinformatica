@@ -10,7 +10,9 @@ book:
     - intro.qmd
     - part: parte_1.qmd
       chapters:
-        - parte_1/prueba.ipynb
+        - parte_1/01_transformacion.ipynb
+        - parte_1/02_ejemplo_transformacion.ipynb
+        - parte_1/03_automatizacion_transformacion.ipynb
     - part: parte_2.qmd
       chapters:
         - parte_2/intro_R.qmd

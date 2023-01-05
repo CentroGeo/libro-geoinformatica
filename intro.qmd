@@ -1,4 +1,4 @@
-# Introducción
+# Introducción {.unnumbered}
 
 Este libro es una introducción a las principales herramientas de Python y R para el Análisis Espacial, está pensado como una primera aproximación y se centra en el uso de las herramientas más que en los conceptos de análisis.
 
