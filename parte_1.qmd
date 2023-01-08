@@ -4,3 +4,5 @@ format: html
 ---
 
 Esta parte del libro cubre el manejo de datos espaciales utilizando Python.
+
+Para los ejercicios de esta parte del libro vas a necesitar varios conjuntos de datos que puedes descargar de [aqui](https://www.dropbox.com/sh/ikl1f698rjx9uag/AAD_7bcvipFk6pWQ2IvP1gsZa?dl=1).
