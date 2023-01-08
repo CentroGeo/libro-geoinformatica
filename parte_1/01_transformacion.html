@@ -1,0 +1,3110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Geoinformática - 1&nbsp; Transformación de datos</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../parte_1/02_ejemplo_transformacion.html" rel="next">
+<link href="../parte_1.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Transformación de datos</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Geoinformática</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">Prefacio</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">Introducción</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parte_1.html" class="sidebar-item-text sidebar-link">Geoinformática en Python</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/01_transformacion.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Transformación de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/02_ejemplo_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ejemplo: datos COVID-19</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/03_automatizacion_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Automatización</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parte_2.html" class="sidebar-item-text sidebar-link">Geoinformática en R</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_2/intro_R.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introducción a R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../summary.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#taller-1-transformación-de-datos" id="toc-taller-1-transformación-de-datos" class="nav-link active" data-scroll-target="#taller-1-transformación-de-datos"><span class="toc-section-number">2</span>  Taller 1: Transformación de Datos</a>
+  <ul class="collapse">
+  <li><a href="#conjunto-de-datos" id="toc-conjunto-de-datos" class="nav-link" data-scroll-target="#conjunto-de-datos"><span class="toc-section-number">2.1</span>  Conjunto de Datos</a></li>
+  <li><a href="#limpieza-de-los-datos" id="toc-limpieza-de-los-datos" class="nav-link" data-scroll-target="#limpieza-de-los-datos"><span class="toc-section-number">2.2</span>  Limpieza de los datos</a></li>
+  <li><a href="#descripciones-de-los-datos" id="toc-descripciones-de-los-datos" class="nav-link" data-scroll-target="#descripciones-de-los-datos"><span class="toc-section-number">2.3</span>  Descripciones de los datos</a></li>
+  <li><a href="#creación-de-variables" id="toc-creación-de-variables" class="nav-link" data-scroll-target="#creación-de-variables"><span class="toc-section-number">2.4</span>  Creación de variables</a>
+  <ul class="collapse">
+  <li><a href="#modificar-valores" id="toc-modificar-valores" class="nav-link" data-scroll-target="#modificar-valores"><span class="toc-section-number">2.4.1</span>  Modificar valores</a></li>
+  <li><a href="#eliminar-columnas" id="toc-eliminar-columnas" class="nav-link" data-scroll-target="#eliminar-columnas"><span class="toc-section-number">2.4.2</span>  Eliminar columnas</a></li>
+  <li><a href="#buscando-datos" id="toc-buscando-datos" class="nav-link" data-scroll-target="#buscando-datos"><span class="toc-section-number">2.4.3</span>  Buscando datos</a></li>
+  </ul></li>
+  <li><a href="#ordenar-valores" id="toc-ordenar-valores" class="nav-link" data-scroll-target="#ordenar-valores"><span class="toc-section-number">2.5</span>  Ordenar valores</a></li>
+  <li><a href="#exploración-visual" id="toc-exploración-visual" class="nav-link" data-scroll-target="#exploración-visual"><span class="toc-section-number">2.6</span>  Exploración Visual</a></li>
+  <li><a href="#organizando-los-datos" id="toc-organizando-los-datos" class="nav-link" data-scroll-target="#organizando-los-datos"><span class="toc-section-number">2.7</span>  Organizando los datos</a></li>
+  <li><a href="#agrupamiento-transformación-y-agregación" id="toc-agrupamiento-transformación-y-agregación" class="nav-link" data-scroll-target="#agrupamiento-transformación-y-agregación"><span class="toc-section-number">2.8</span>  Agrupamiento, Transformación y Agregación</a>
+  <ul class="collapse">
+  <li><a href="#para-practicar" id="toc-para-practicar" class="nav-link" data-scroll-target="#para-practicar"><span class="toc-section-number">2.8.1</span>  Para Practicar…</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Transformación de datos</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="taller-1-transformación-de-datos" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Taller 1: Transformación de Datos</h1>
+<p>Las bases de datos provenientes de situaciones reales son problemáticas; contienen datos faltantes, diferentes estructuras, etcétera. En general, para analizar un conjunto de datos primero es necesario transformarlos, ya sea para corregir errores o para ajustarlos a un formato que se adapte mejor a los métodos de análisis que queremos utilizar.</p>
+<p>Dentro del análisis de datos en general y especialmente en el análisis de datos geoespaciales, una buena parte del tiempo y esfuerzo se consume en tareras relacionadas con la limpieza y transformación de datos. Dado lo extenuantes y relevantes que son estas tareas, es sorprendente encontrar que existen muy pocas publicaciones referentes a los patrones, técnicas y buenas prácticas existentes para una eficiente limpieza, manipulación y transformación de los datos.</p>
+<p>En este taller nos vamos a enfocar en utilizar bases de datos provenientes del mundo real para aprender cómo leerlas usando bibliotecas de Python, de modo que puedan ser transformadas y manipuladas con el fin de ser eventualmente analizadas.</p>
+<p>El primer paso es importar todas las librerías que vamos a utilizar:</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os              </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd    </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><a href="https://docs.python.org/3/library/os.html">os</a> Provee de múltiples utilidades del sistema</li>
+<li><a href="https://pandas.pydata.org/">pandas</a> La librería fundamental para la transformación de datos en Python</li>
+<li><a href="https://seaborn.pydata.org/">seaborn</a> Herramientas para generar gráficas estadísticas</li>
+<li><a href="https://numpy.org/">numpy</a> la librería básica de análisis numérico y vectorial</li>
+</ul>
+<hr>
+<section id="conjunto-de-datos" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="conjunto-de-datos"><span class="header-section-number">2.1</span> Conjunto de Datos</h2>
+<p>Vamos a utlizar los datos del <em>Censo de Poblacioń y Vivienda 2020</em> de INEGI. Trabajaremos con los datos a nivel AGEB para la Ciudad de México. Una AGEB se define como un <em>Área Geográfica ocupada por un conjunto de manzanas perfectamente delimitadas por calles, avenidas, andadores o cualquier otro rasgo de fácil identificación en el terreno y cuyo uso de suelo es principamete habitacional, industrial, de servicios, etc.</em>. Las AGEB’s son la unidad básica de representatividad del Marco Geoestadístico Nacional, son lo suficientemente pequeñas para representar la variabilidad espacial, pero lo suficientemente grandes para mantener la privacidad de la población y disminuir efectos de ruido estadístico.</p>
+<p>Los datos son <a href="https://www.inegi.org.mx/programas/ccpv/2020/">publicados por INEGI</a> en un archivo en formato csv que contiene diferentes agregaciones geográficas en el mismo archivo. Para entenderlo bien, vamos a abrirlo:</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El archivo con los datos lo encuentras en la caropeta de datos del libro con el nombre <code>conjunto_de_datos_ageb_urbana_09_cpv2020.zip</code></p>
+</div>
+</div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Dentro de este libro, la convención es que los datos están guardados en la carpeta <code>datos/</code> relativa al notebook que se esté ejecutando.</p>
+</div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> pd.read_csv(<span class="st">'datos/conjunto_de_datos_ageb_urbana_09_cpv2020.zip'</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                 dtype<span class="op">=</span>{<span class="st">'ENTIDAD'</span>: <span class="bu">object</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'MUN'</span>:<span class="bu">object</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'LOC'</span>:<span class="bu">object</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'AGEB'</span>:<span class="bu">object</span>})</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>db.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ENTIDAD</th>
+      <th>NOM_ENT</th>
+      <th>MUN</th>
+      <th>NOM_MUN</th>
+      <th>LOC</th>
+      <th>NOM_LOC</th>
+      <th>AGEB</th>
+      <th>MZA</th>
+      <th>POBTOT</th>
+      <th>POBFEM</th>
+      <th>...</th>
+      <th>VPH_TELEF</th>
+      <th>VPH_CEL</th>
+      <th>VPH_INTER</th>
+      <th>VPH_STVP</th>
+      <th>VPH_SPMVPI</th>
+      <th>VPH_CVJ</th>
+      <th>VPH_SINRTV</th>
+      <th>VPH_SINLTC</th>
+      <th>VPH_SINCINT</th>
+      <th>VPH_SINTIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>000</td>
+      <td>Total de la entidad Ciudad de México</td>
+      <td>0000</td>
+      <td>Total de la entidad</td>
+      <td>0000</td>
+      <td>0</td>
+      <td>9209944</td>
+      <td>4805017</td>
+      <td>...</td>
+      <td>1898265</td>
+      <td>2536523</td>
+      <td>2084156</td>
+      <td>1290811</td>
+      <td>957162</td>
+      <td>568827</td>
+      <td>46172</td>
+      <td>77272</td>
+      <td>561128</td>
+      <td>10528</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0000</td>
+      <td>Total del municipio</td>
+      <td>0000</td>
+      <td>0</td>
+      <td>432205</td>
+      <td>227255</td>
+      <td>...</td>
+      <td>96128</td>
+      <td>123961</td>
+      <td>105899</td>
+      <td>66399</td>
+      <td>50965</td>
+      <td>31801</td>
+      <td>1661</td>
+      <td>2869</td>
+      <td>22687</td>
+      <td>322</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total de la localidad urbana</td>
+      <td>0000</td>
+      <td>0</td>
+      <td>432205</td>
+      <td>227255</td>
+      <td>...</td>
+      <td>96128</td>
+      <td>123961</td>
+      <td>105899</td>
+      <td>66399</td>
+      <td>50965</td>
+      <td>31801</td>
+      <td>1661</td>
+      <td>2869</td>
+      <td>22687</td>
+      <td>322</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0010</td>
+      <td>0</td>
+      <td>3183</td>
+      <td>1695</td>
+      <td>...</td>
+      <td>741</td>
+      <td>772</td>
+      <td>692</td>
+      <td>313</td>
+      <td>221</td>
+      <td>145</td>
+      <td>8</td>
+      <td>14</td>
+      <td>148</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Azcapotzalco</td>
+      <td>0010</td>
+      <td>1</td>
+      <td>159</td>
+      <td>86</td>
+      <td>...</td>
+      <td>45</td>
+      <td>42</td>
+      <td>39</td>
+      <td>18</td>
+      <td>13</td>
+      <td>6</td>
+      <td>*</td>
+      <td>0</td>
+      <td>9</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 230 columns</p>
+</div>
+</div>
+</div>
+<p>La librería <a href="https://pandas.pydata.org/">Pandas</a> es la que provee la funcionalidad para trabajar con datos <em>tabulares</em> en Python. La estructura fundamental de Pandas es el <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">DataFrame</a>, podemos pensar en los DataFrames como hojas de Excel, con columnas <em>nombradas</em> que funcionan como indices para las variables y filas para las observaciones.</p>
+<p>Para leer el archivo utilizamos el método <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"><code>read_csv()</code></a> de los DataFrames de Pandas. El parámetro <code>dtype</code> que le pasamos a la función nos asegura que ciertas columnas se lean con un tipo de datos especial, en este caso como <code>object</code>, para asegurarnos que no se lean como números y perdamos identificadores, vamos a regresar a esto más adelante.</p>
+<p>La columna que nos interesa ahorita es <code>NOM_LOC</code>, esta nos ayuda a distinguiir los datos que vienen en cada fila: las filas etiquetadas con <code>Total AGEB urbana</code> contienen los conteos para cada AGEB de todas las variables, entonces, nuestra primera tarea es filtrar la base y quedarnos sólo con las columnas que en la columna <code>NOM_LOC</code> dice <code>Total AGEB urbana</code>.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> db.loc[db[<span class="st">'NOM_LOC'</span>] <span class="op">==</span> <span class="st">'Total AGEB urbana'</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>db.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ENTIDAD</th>
+      <th>NOM_ENT</th>
+      <th>MUN</th>
+      <th>NOM_MUN</th>
+      <th>LOC</th>
+      <th>NOM_LOC</th>
+      <th>AGEB</th>
+      <th>MZA</th>
+      <th>POBTOT</th>
+      <th>POBFEM</th>
+      <th>...</th>
+      <th>VPH_TELEF</th>
+      <th>VPH_CEL</th>
+      <th>VPH_INTER</th>
+      <th>VPH_STVP</th>
+      <th>VPH_SPMVPI</th>
+      <th>VPH_CVJ</th>
+      <th>VPH_SINRTV</th>
+      <th>VPH_SINLTC</th>
+      <th>VPH_SINCINT</th>
+      <th>VPH_SINTIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0010</td>
+      <td>0</td>
+      <td>3183</td>
+      <td>1695</td>
+      <td>...</td>
+      <td>741</td>
+      <td>772</td>
+      <td>692</td>
+      <td>313</td>
+      <td>221</td>
+      <td>145</td>
+      <td>8</td>
+      <td>14</td>
+      <td>148</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0025</td>
+      <td>0</td>
+      <td>5593</td>
+      <td>2915</td>
+      <td>...</td>
+      <td>1373</td>
+      <td>1510</td>
+      <td>1203</td>
+      <td>478</td>
+      <td>349</td>
+      <td>238</td>
+      <td>28</td>
+      <td>68</td>
+      <td>393</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>003A</td>
+      <td>0</td>
+      <td>4235</td>
+      <td>2232</td>
+      <td>...</td>
+      <td>965</td>
+      <td>1049</td>
+      <td>878</td>
+      <td>361</td>
+      <td>339</td>
+      <td>247</td>
+      <td>5</td>
+      <td>12</td>
+      <td>250</td>
+      <td>*</td>
+    </tr>
+    <tr>
+      <th>116</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0044</td>
+      <td>0</td>
+      <td>4768</td>
+      <td>2551</td>
+      <td>...</td>
+      <td>1124</td>
+      <td>1237</td>
+      <td>1076</td>
+      <td>481</td>
+      <td>452</td>
+      <td>294</td>
+      <td>10</td>
+      <td>17</td>
+      <td>254</td>
+      <td>*</td>
+    </tr>
+    <tr>
+      <th>163</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0097</td>
+      <td>0</td>
+      <td>2176</td>
+      <td>1115</td>
+      <td>...</td>
+      <td>517</td>
+      <td>562</td>
+      <td>507</td>
+      <td>276</td>
+      <td>260</td>
+      <td>153</td>
+      <td>4</td>
+      <td>3</td>
+      <td>70</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 230 columns</p>
+</div>
+</div>
+</div>
+<p>Lo que hicimos aquí fue utlizar el selector <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html"><code>loc</code></a> de pandas para seleccionar las filas que queremos, pasándole el filtro que nos interesa, en este caso <code>db['NOM_LOC'] == 'Total AGEB urbana'</code></p>
+</section>
+<section id="limpieza-de-los-datos" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="limpieza-de-los-datos"><span class="header-section-number">2.2</span> Limpieza de los datos</h2>
+<p>Hasta aquí lo que tenemos es un DataFrame con todas las variables del censo agregadas por AGEB. Ahora, para poder realizar análisis a partir de esta base de datos, necesitamos asegurarnos de que los datos son del tipo correcto, es decir, si vamos a hacer cuentas, los datos deben ser de tipo <code>float</code> o <code>int</code>. Utlicemos entonces la <em>propiedad</em> <code>db.dtypes</code> para <em>preguntar</em> los tipos de datos.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>db.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>ENTIDAD        object
+NOM_ENT        object
+MUN            object
+NOM_MUN        object
+LOC            object
+                ...  
+VPH_CVJ        object
+VPH_SINRTV     object
+VPH_SINLTC     object
+VPH_SINCINT    object
+VPH_SINTIC     object
+Length: 230, dtype: object</code></pre>
+</div>
+</div>
+<p>Como podemos ver, no sólo las columnas que pedimos que leyera como <code>object</code> las leyó así, también las demás columnas. Esto se puede deber a que tienen codificados valores faltantes con caracteres especiales, por lo que pandas no pudo convertirlos automáticamente en números.</p>
+<p>Para entender esto un poco mejor, vamos a leer el diccionario de datos del censo.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>También pueden explorar el archivo en excel, para verlo con más calma</p>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>diccionario <span class="op">=</span> pd.read_csv(<span class="st">'datos/diccionario_datos_ageb_urbana_09_cpv2020.csv'</span>, skiprows<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>diccionario</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Núm.</th>
+      <th>Indicador</th>
+      <th>Descripción</th>
+      <th>Mnemónico</th>
+      <th>Rangos</th>
+      <th>Longitud</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Clave de entidad federativa</td>
+      <td>Código que identifica a la entidad federativa....</td>
+      <td>ENTIDAD</td>
+      <td>00…32</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Entidad federativa</td>
+      <td>Nombre oficial de la entidad federativa.</td>
+      <td>NOM_ENT</td>
+      <td>Alfanumérico</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Clave de municipio o demarcación territorial</td>
+      <td>Código que identifica al municipio o demarcaci...</td>
+      <td>MUN</td>
+      <td>000…570</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Municipio o demarcación territorial</td>
+      <td>Nombre oficial del municipio o demarcación ter...</td>
+      <td>NOM_MUN</td>
+      <td>Alfanumérico</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Clave de localidad</td>
+      <td>Código que identifica a la localidad al interi...</td>
+      <td>LOC</td>
+      <td>0000…9999</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>225</th>
+      <td>218</td>
+      <td>Viviendas particulares habitadas que disponen ...</td>
+      <td>Viviendas particulares habitadas que tienen co...</td>
+      <td>VPH_CVJ</td>
+      <td>0…999999999</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>226</th>
+      <td>219</td>
+      <td>Viviendas particulares habitadas sin radio ni ...</td>
+      <td>Viviendas particulares habitadas que no cuenta...</td>
+      <td>VPH_SINRTV</td>
+      <td>0…999999999</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>227</th>
+      <td>220</td>
+      <td>Viviendas particulares habitadas sin línea tel...</td>
+      <td>Viviendas particulares habitadas que no cuenta...</td>
+      <td>VPH_SINLTC</td>
+      <td>0…999999999</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>228</th>
+      <td>221</td>
+      <td>Viviendas particulares habitadas sin computado...</td>
+      <td>Viviendas particulares habitadas que no cuenta...</td>
+      <td>VPH_SINCINT</td>
+      <td>0…999999999</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>229</th>
+      <td>222</td>
+      <td>Viviendas particulares habitadas sin tecnologí...</td>
+      <td>Viviendas particulares habitadas que no cuenta...</td>
+      <td>VPH_SINTIC</td>
+      <td>0…999999999</td>
+      <td>9</td>
+    </tr>
+  </tbody>
+</table>
+<p>230 rows × 6 columns</p>
+</div>
+</div>
+</div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Fíjense como pasamos <code>skiprows=3</code> para leer el diccionario del censo. Esto le dice a pandas que el header (los nombres de las columnas), vienen en el cuarto renglón.</p>
+</div>
+</div>
+<p>A partir de este diccionario podemos ver que hay varias formas de codificar valores faltantes: ‘999999999’, ‘99999999’, ’*’ y ‘N/D’.</p>
+<p>Para poder convertir todas estas columnas en numéricas tenemos que reemplazar todos esos valores por la forma en la que se expresan los datos faltantes en Pandas, utilizando el valor <em>Not a Number</em> de numpy. Para hacer este reemplazo vamos a usar la función <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.replace.html"><code>replace</code></a> de Pandas, que toma como argumento el valor que queremos reemplazar y el valor por el cual lo queremos reemplazar:</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> (db  </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>      .replace(<span class="st">'999999999'</span>, np.nan)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>      .replace(<span class="st">'99999999'</span>, np.nan)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      .replace(<span class="st">'*'</span>, np.nan)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      .replace(<span class="st">'N/D'</span>, np.nan))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>¡Esta fue una instrucción complicada!</p>
+<p>Pero no es realmente difícil. Como hemos visto hasta aquí, los métodos de los DataFrames en general regresan otros DataFrames con el resultado de la operación, esto nos permite <em>encadenar</em> métodos, de forma que cuando hacemos <code>db..replace('999999999', np.nan)..replace('99999999', np.nan)</code>, el segundo <code>replace</code> opera sobre el resultado del primero y así sucesivamente. Este encadenamiento de métodos nos ayuda a escribir código más fácil de leer.</p>
+<p>Ahora ya tenemos todos los valores faltantes codificados adecuadamente, sin embargo aún nos falta convertirlos a números ¿verdad?</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>db.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>ENTIDAD        object
+NOM_ENT        object
+MUN            object
+NOM_MUN        object
+LOC            object
+                ...  
+VPH_CVJ        object
+VPH_SINRTV     object
+VPH_SINLTC     object
+VPH_SINCINT    object
+VPH_SINTIC     object
+Length: 230, dtype: object</code></pre>
+</div>
+</div>
+<p>La forma normal de cambiar el tipo de datos de una columna es utilizar el método <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.astype.html"><code>astype</code></a></p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'VPH_CVJ'</span>].astype(<span class="st">'float'</span>).dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>dtype('float64')</code></pre>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Aquí no estamos asignando el resultado de la operación a ninguna variable, el resultado de esta operación no modifica el valor de los datos.</p>
+</div>
+</div>
+<p>Así podríamos ir cambiando columna por columna, pero como estamos programando ¡nos gusta hacer las cosas en bruto!</p>
+<p>En el diccionario de datos tenemos los nombres de todas las variables, entonces podemos utilizar estos nombres para seleccionar todas las columnas que contienen datos numéricos y cambiar su tipo en el DataFrame. Fíjense que las primeras 8 filas del diccionario contienen los identificadores geográficos:</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>diccionario.head(<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Núm.</th>
+      <th>Indicador</th>
+      <th>Descripción</th>
+      <th>Mnemónico</th>
+      <th>Rangos</th>
+      <th>Longitud</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Clave de entidad federativa</td>
+      <td>Código que identifica a la entidad federativa....</td>
+      <td>ENTIDAD</td>
+      <td>00…32</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Entidad federativa</td>
+      <td>Nombre oficial de la entidad federativa.</td>
+      <td>NOM_ENT</td>
+      <td>Alfanumérico</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Clave de municipio o demarcación territorial</td>
+      <td>Código que identifica al municipio o demarcaci...</td>
+      <td>MUN</td>
+      <td>000…570</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Municipio o demarcación territorial</td>
+      <td>Nombre oficial del municipio o demarcación ter...</td>
+      <td>NOM_MUN</td>
+      <td>Alfanumérico</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Clave de localidad</td>
+      <td>Código que identifica a la localidad al interi...</td>
+      <td>LOC</td>
+      <td>0000…9999</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>Localidad</td>
+      <td>Nombre con el que se reconoce a la localidad d...</td>
+      <td>NOM_LOC</td>
+      <td>Alfanumérico</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>Clave del AGEB</td>
+      <td>Clave que identifica al AGEB urbana, al interi...</td>
+      <td>AGEB</td>
+      <td>001...999; 0...9 o A-P</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>Clave de manzana</td>
+      <td>Clave que identifica a la manzana, al interior...</td>
+      <td>MZA</td>
+      <td>001...999</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Las demás filas contienen los nombres (y descripciones) de las variables del Censo.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>campos_datos <span class="op">=</span> diccionario.loc[<span class="dv">8</span>:,][<span class="st">'Mnemónico'</span>]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>campos_datos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>8           POBTOT
+9           POBFEM
+10          POBMAS
+11           P_0A2
+12         P_0A2_F
+          ...     
+225        VPH_CVJ
+226     VPH_SINRTV
+227     VPH_SINLTC
+228    VPH_SINCINT
+229     VPH_SINTIC
+Name: Mnemónico, Length: 222, dtype: object</code></pre>
+</div>
+</div>
+<p>Aquí utilizamos una vez más el método <code>loc</code> para seleccionar filas en nuestros datos. En esta ocasión seleccionamos las filas por <em>índice</em> (en este momento nuestro índice es simplemente el número de fila, más adelante usaremos índices diferentes), la selección <code>loc[8:,]</code> simplemente quiere decir <em>todas las columnas para las filas de la 9 en adelante</em>.</p>
+<p>También estamos seleccionando una única columna al hacer <code>['Mnemónico']</code>, el resultado de esta selección ya no es un DataFrame, es una <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html">Serie</a>. Las series son las estructuras que usa Pandas para guardar una sóla columna (o fila).</p>
+<p>Las Series se pueden utilizar (igual que las listas) para seleccionar columnas de un DataFrame, entoinces, ahora sí podemos cambiar todos los tipos de datos de una sola vez.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>db[campos_datos] <span class="op">=</span> db[campos_datos].astype(<span class="st">'float'</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>db.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>ENTIDAD         object
+NOM_ENT         object
+MUN             object
+NOM_MUN         object
+LOC             object
+                ...   
+VPH_CVJ        float64
+VPH_SINRTV     float64
+VPH_SINLTC     float64
+VPH_SINCINT    float64
+VPH_SINTIC     float64
+Length: 230, dtype: object</code></pre>
+</div>
+</div>
+</section>
+<section id="descripciones-de-los-datos" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="descripciones-de-los-datos"><span class="header-section-number">2.3</span> Descripciones de los datos</h2>
+<p>Pandas nos provee una serie de métodos para obtener descripciones generales de la tabla. Podemos usar el método <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.info.html"><code>info</code></a> para obtener una descripción general de la estructura de la tabla y el espacio que ocupa en la memoria:</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>db.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Int64Index: 2433 entries, 3 to 68915
+Columns: 230 entries, ENTIDAD to VPH_SINTIC
+dtypes: float64(222), int64(1), object(7)
+memory usage: 4.3+ MB</code></pre>
+</div>
+</div>
+<p>Para obtener las estadísticas descriptivas podemos usar el método <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html"><code>describe</code></a>:</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>db.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>MZA</th>
+      <th>POBTOT</th>
+      <th>POBFEM</th>
+      <th>POBMAS</th>
+      <th>P_0A2</th>
+      <th>P_0A2_F</th>
+      <th>P_0A2_M</th>
+      <th>P_3YMAS</th>
+      <th>P_3YMAS_F</th>
+      <th>P_3YMAS_M</th>
+      <th>...</th>
+      <th>VPH_TELEF</th>
+      <th>VPH_CEL</th>
+      <th>VPH_INTER</th>
+      <th>VPH_STVP</th>
+      <th>VPH_SPMVPI</th>
+      <th>VPH_CVJ</th>
+      <th>VPH_SINRTV</th>
+      <th>VPH_SINLTC</th>
+      <th>VPH_SINCINT</th>
+      <th>VPH_SINTIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>2433.0</td>
+      <td>2433.000000</td>
+      <td>2422.000000</td>
+      <td>2423.00000</td>
+      <td>2406.000000</td>
+      <td>2392.000000</td>
+      <td>2390.000000</td>
+      <td>2423.000000</td>
+      <td>2422.000000</td>
+      <td>2423.000000</td>
+      <td>...</td>
+      <td>2416.000000</td>
+      <td>2420.000000</td>
+      <td>2418.000000</td>
+      <td>2415.000000</td>
+      <td>2415.000000</td>
+      <td>2410.000000</td>
+      <td>2251.000000</td>
+      <td>2235.000000</td>
+      <td>2405.000000</td>
+      <td>1801.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.0</td>
+      <td>3758.993835</td>
+      <td>1970.647812</td>
+      <td>1804.64837</td>
+      <td>109.901912</td>
+      <td>54.471990</td>
+      <td>56.089121</td>
+      <td>3661.372678</td>
+      <td>1914.832370</td>
+      <td>1747.329757</td>
+      <td>...</td>
+      <td>783.982616</td>
+      <td>1041.995455</td>
+      <td>859.506617</td>
+      <td>533.200000</td>
+      <td>395.840580</td>
+      <td>235.558506</td>
+      <td>20.068858</td>
+      <td>33.803579</td>
+      <td>229.281081</td>
+      <td>5.181011</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.0</td>
+      <td>2433.068753</td>
+      <td>1254.533102</td>
+      <td>1186.95856</td>
+      <td>85.636899</td>
+      <td>42.286817</td>
+      <td>43.908616</td>
+      <td>2347.050678</td>
+      <td>1215.700184</td>
+      <td>1147.281855</td>
+      <td>...</td>
+      <td>525.413812</td>
+      <td>690.331581</td>
+      <td>601.110222</td>
+      <td>426.577764</td>
+      <td>390.905691</td>
+      <td>204.624708</td>
+      <td>16.611861</td>
+      <td>30.598161</td>
+      <td>191.422212</td>
+      <td>6.154989</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.0</td>
+      <td>2045.000000</td>
+      <td>1083.500000</td>
+      <td>974.00000</td>
+      <td>46.250000</td>
+      <td>23.000000</td>
+      <td>24.000000</td>
+      <td>2018.000000</td>
+      <td>1053.000000</td>
+      <td>942.500000</td>
+      <td>...</td>
+      <td>456.750000</td>
+      <td>590.000000</td>
+      <td>488.000000</td>
+      <td>271.000000</td>
+      <td>173.000000</td>
+      <td>118.250000</td>
+      <td>8.000000</td>
+      <td>10.000000</td>
+      <td>79.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.0</td>
+      <td>3396.000000</td>
+      <td>1783.500000</td>
+      <td>1616.00000</td>
+      <td>91.000000</td>
+      <td>45.000000</td>
+      <td>46.000000</td>
+      <td>3304.000000</td>
+      <td>1730.500000</td>
+      <td>1566.000000</td>
+      <td>...</td>
+      <td>698.500000</td>
+      <td>921.500000</td>
+      <td>749.000000</td>
+      <td>442.000000</td>
+      <td>300.000000</td>
+      <td>189.000000</td>
+      <td>16.000000</td>
+      <td>25.000000</td>
+      <td>185.000000</td>
+      <td>4.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.0</td>
+      <td>4992.000000</td>
+      <td>2617.500000</td>
+      <td>2391.00000</td>
+      <td>152.000000</td>
+      <td>75.000000</td>
+      <td>77.000000</td>
+      <td>4852.000000</td>
+      <td>2539.000000</td>
+      <td>2315.000000</td>
+      <td>...</td>
+      <td>992.500000</td>
+      <td>1348.250000</td>
+      <td>1083.000000</td>
+      <td>671.000000</td>
+      <td>476.000000</td>
+      <td>288.750000</td>
+      <td>27.000000</td>
+      <td>50.000000</td>
+      <td>336.000000</td>
+      <td>7.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.0</td>
+      <td>21198.000000</td>
+      <td>11128.000000</td>
+      <td>10616.00000</td>
+      <td>709.000000</td>
+      <td>350.000000</td>
+      <td>393.000000</td>
+      <td>20530.000000</td>
+      <td>10774.000000</td>
+      <td>10551.000000</td>
+      <td>...</td>
+      <td>6196.000000</td>
+      <td>7867.000000</td>
+      <td>7512.000000</td>
+      <td>5717.000000</td>
+      <td>5903.000000</td>
+      <td>3056.000000</td>
+      <td>149.000000</td>
+      <td>290.000000</td>
+      <td>1488.000000</td>
+      <td>66.000000</td>
+    </tr>
+  </tbody>
+</table>
+<p>8 rows × 223 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="creación-de-variables" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="creación-de-variables"><span class="header-section-number">2.4</span> Creación de variables</h2>
+<p>Muchas veces vamos a querer crear nuevas columnas a partir de las ya existentes. Por ejemplo, podemos estar interesados en el porcentaje de población femenina en cada AGEB.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>pct_fem <span class="op">=</span> db[<span class="st">'POBFEM'</span>] <span class="op">/</span> db[<span class="st">'POBTOT'</span>]</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>pct_fem.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>3      0.532516
+30     0.521187
+82     0.527037
+116    0.535025
+163    0.512408
+dtype: float64</code></pre>
+</div>
+</div>
+<p>Fíjense cómo usamos <code>/</code> para dividir dos columnas. El resultado de la operación lo guardamos en la variable <code>pct_fem</code> ¿De qué tipo será esta variable?</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pct_fem.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.series.Series'&gt;
+Int64Index: 2433 entries, 3 to 68915
+Series name: None
+Non-Null Count  Dtype  
+--------------  -----  
+2405 non-null   float64
+dtypes: float64(1)
+memory usage: 38.0 KB</code></pre>
+</div>
+</div>
+<p>Es una serie, es decir una columna en nuestro caso. Como esta columna comparte el mismo <em>índice</em> que los datos originales (es resultado de una operación renglón por renglón), entonces la podemos agregar al DataFrame original facilmente:</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'pct_fem'</span>] <span class="op">=</span> pct_fem</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'pct_fem'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_1585956/2610780181.py:1: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  db['pct_fem'] = pct_fem</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>3      0.532516
+30     0.521187
+82     0.527037
+116    0.535025
+163    0.512408
+Name: pct_fem, dtype: float64</code></pre>
+</div>
+</div>
+<section id="modificar-valores" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="modificar-valores"><span class="header-section-number">2.4.1</span> Modificar valores</h3>
+<p>De la misma forma que podemos agregar columnas (o filas) a nuestro DataFrame, podemos también modificar los valores existentes. Para explorar esto, vamos a crear una nueva columna y llenarla con valores <em>nulos</em>:</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Nueva columna llena de sólamente el número 1</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'Nueva'</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'Nueva'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_1585956/463547730.py:2: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  db['Nueva'] = None</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>3      None
+30     None
+82     None
+116    None
+163    None
+Name: Nueva, dtype: object</code></pre>
+</div>
+</div>
+<p>Podemos fácilmente cambiar los valores de todas las filas:</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'Nueva'</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'Nueva'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>3      1
+30     1
+82     1
+116    1
+163    1
+Name: Nueva, dtype: int64</code></pre>
+</div>
+</div>
+<p>O también cambiar el valor sólo para una fila específica:</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>db.loc[<span class="dv">3</span>, <span class="st">'Nueva'</span>] <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'Nueva'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>3      10
+30      1
+82      1
+116     1
+163     1
+Name: Nueva, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="eliminar-columnas" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="eliminar-columnas"><span class="header-section-number">2.4.2</span> Eliminar columnas</h3>
+<p>Eliminar columnas es igualmente fácil usando el método <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html"><code>drop</code></a>:</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> db.drop(columns<span class="op">=</span>[<span class="st">'Nueva'</span>])</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co">'Nueva'</span> <span class="kw">in</span> db.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>False</code></pre>
+</div>
+</div>
+<p>¡Fíjense como <em>preguntamos</em> al final si ya habíamos eliminado la columna!</p>
+</section>
+<section id="buscando-datos" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="buscando-datos"><span class="header-section-number">2.4.3</span> Buscando datos</h3>
+<p>Muchas veces queremos encontrar <em>observaciones</em> que cumplan con uno o más criterios. Una vez más, el método <code>loc</code> es nuestro amigop para seleccionar datos. Supongamos que queremos encontrar aquelas AGEBs que tengan una población de ‘65 años o más’ mayor a 1,000 personas.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>db_seleccion <span class="op">=</span> db.loc[db[<span class="st">'POB65_MAS'</span>] <span class="op">&gt;</span> <span class="dv">1000</span>, :]</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>db_seleccion.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ENTIDAD</th>
+      <th>NOM_ENT</th>
+      <th>MUN</th>
+      <th>NOM_MUN</th>
+      <th>LOC</th>
+      <th>NOM_LOC</th>
+      <th>AGEB</th>
+      <th>MZA</th>
+      <th>POBTOT</th>
+      <th>POBFEM</th>
+      <th>...</th>
+      <th>VPH_CEL</th>
+      <th>VPH_INTER</th>
+      <th>VPH_STVP</th>
+      <th>VPH_SPMVPI</th>
+      <th>VPH_CVJ</th>
+      <th>VPH_SINRTV</th>
+      <th>VPH_SINLTC</th>
+      <th>VPH_SINCINT</th>
+      <th>VPH_SINTIC</th>
+      <th>pct_fem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>30</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0025</td>
+      <td>0</td>
+      <td>5593.0</td>
+      <td>2915.0</td>
+      <td>...</td>
+      <td>1510.0</td>
+      <td>1203.0</td>
+      <td>478.0</td>
+      <td>349.0</td>
+      <td>238.0</td>
+      <td>28.0</td>
+      <td>68.0</td>
+      <td>393.0</td>
+      <td>14.0</td>
+      <td>0.521187</td>
+    </tr>
+    <tr>
+      <th>444</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0186</td>
+      <td>0</td>
+      <td>11139.0</td>
+      <td>5776.0</td>
+      <td>...</td>
+      <td>3299.0</td>
+      <td>2878.0</td>
+      <td>1731.0</td>
+      <td>1407.0</td>
+      <td>994.0</td>
+      <td>54.0</td>
+      <td>47.0</td>
+      <td>470.0</td>
+      <td>4.0</td>
+      <td>0.518538</td>
+    </tr>
+    <tr>
+      <th>3617</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>003</td>
+      <td>Coyoacán</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0107</td>
+      <td>0</td>
+      <td>6992.0</td>
+      <td>3673.0</td>
+      <td>...</td>
+      <td>2205.0</td>
+      <td>2022.0</td>
+      <td>1478.0</td>
+      <td>1117.0</td>
+      <td>650.0</td>
+      <td>21.0</td>
+      <td>26.0</td>
+      <td>256.0</td>
+      <td>4.0</td>
+      <td>0.525315</td>
+    </tr>
+    <tr>
+      <th>4075</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>003</td>
+      <td>Coyoacán</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0287</td>
+      <td>0</td>
+      <td>8213.0</td>
+      <td>4526.0</td>
+      <td>...</td>
+      <td>2373.0</td>
+      <td>2226.0</td>
+      <td>1503.0</td>
+      <td>1309.0</td>
+      <td>616.0</td>
+      <td>43.0</td>
+      <td>40.0</td>
+      <td>241.0</td>
+      <td>6.0</td>
+      <td>0.551078</td>
+    </tr>
+    <tr>
+      <th>4886</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>003</td>
+      <td>Coyoacán</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0573</td>
+      <td>0</td>
+      <td>12827.0</td>
+      <td>6653.0</td>
+      <td>...</td>
+      <td>3437.0</td>
+      <td>2878.0</td>
+      <td>1727.0</td>
+      <td>1409.0</td>
+      <td>863.0</td>
+      <td>59.0</td>
+      <td>82.0</td>
+      <td>669.0</td>
+      <td>6.0</td>
+      <td>0.518672</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 231 columns</p>
+</div>
+</div>
+</div>
+<p>Simplemente pasamos la <em>condición</em> que nos interesa al selector y listo.</p>
+<p>Los criterios de búsquera pueden ser tan sofisticados como se requiera, por ejemplo, podemos seleccionar los AGEBs en los cuales la población de 0 a 14 años sea menor a un cuarto de la población total:</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>db_seleccion <span class="op">=</span> db.loc[(db[<span class="st">'POB0_14'</span>] <span class="op">/</span> db[<span class="st">'POBTOT'</span>]) <span class="op">&lt;</span> <span class="fl">0.25</span>, :]</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>db_seleccion.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ENTIDAD</th>
+      <th>NOM_ENT</th>
+      <th>MUN</th>
+      <th>NOM_MUN</th>
+      <th>LOC</th>
+      <th>NOM_LOC</th>
+      <th>AGEB</th>
+      <th>MZA</th>
+      <th>POBTOT</th>
+      <th>POBFEM</th>
+      <th>...</th>
+      <th>VPH_CEL</th>
+      <th>VPH_INTER</th>
+      <th>VPH_STVP</th>
+      <th>VPH_SPMVPI</th>
+      <th>VPH_CVJ</th>
+      <th>VPH_SINRTV</th>
+      <th>VPH_SINLTC</th>
+      <th>VPH_SINCINT</th>
+      <th>VPH_SINTIC</th>
+      <th>pct_fem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0010</td>
+      <td>0</td>
+      <td>3183.0</td>
+      <td>1695.0</td>
+      <td>...</td>
+      <td>772.0</td>
+      <td>692.0</td>
+      <td>313.0</td>
+      <td>221.0</td>
+      <td>145.0</td>
+      <td>8.0</td>
+      <td>14.0</td>
+      <td>148.0</td>
+      <td>5.0</td>
+      <td>0.532516</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0025</td>
+      <td>0</td>
+      <td>5593.0</td>
+      <td>2915.0</td>
+      <td>...</td>
+      <td>1510.0</td>
+      <td>1203.0</td>
+      <td>478.0</td>
+      <td>349.0</td>
+      <td>238.0</td>
+      <td>28.0</td>
+      <td>68.0</td>
+      <td>393.0</td>
+      <td>14.0</td>
+      <td>0.521187</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>003A</td>
+      <td>0</td>
+      <td>4235.0</td>
+      <td>2232.0</td>
+      <td>...</td>
+      <td>1049.0</td>
+      <td>878.0</td>
+      <td>361.0</td>
+      <td>339.0</td>
+      <td>247.0</td>
+      <td>5.0</td>
+      <td>12.0</td>
+      <td>250.0</td>
+      <td>NaN</td>
+      <td>0.527037</td>
+    </tr>
+    <tr>
+      <th>116</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0044</td>
+      <td>0</td>
+      <td>4768.0</td>
+      <td>2551.0</td>
+      <td>...</td>
+      <td>1237.0</td>
+      <td>1076.0</td>
+      <td>481.0</td>
+      <td>452.0</td>
+      <td>294.0</td>
+      <td>10.0</td>
+      <td>17.0</td>
+      <td>254.0</td>
+      <td>NaN</td>
+      <td>0.535025</td>
+    </tr>
+    <tr>
+      <th>163</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0097</td>
+      <td>0</td>
+      <td>2176.0</td>
+      <td>1115.0</td>
+      <td>...</td>
+      <td>562.0</td>
+      <td>507.0</td>
+      <td>276.0</td>
+      <td>260.0</td>
+      <td>153.0</td>
+      <td>4.0</td>
+      <td>3.0</td>
+      <td>70.0</td>
+      <td>0.0</td>
+      <td>0.512408</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 231 columns</p>
+</div>
+</div>
+</div>
+<p>Podemos hacer combinaciones arbitrarias de selectores utilizando los operadores lógicos <code>&amp;</code> (and) y <code>|</code> (or). Por ejemplo, podemos combinar nuestras selecciones anteriores para encontrar las AGEBs con menos de 50% de mujeres y población de 0 a 14 años sea menor a un cuarto de la población total</p>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>db_seleccion <span class="op">=</span> db.loc[(db[<span class="st">'pct_fem'</span>] <span class="op">&lt;</span> <span class="fl">0.5</span>) <span class="op">&amp;</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                      ((db[<span class="st">'POB0_14'</span>] <span class="op">/</span> db[<span class="st">'POBTOT'</span>]) <span class="op">&lt;</span> <span class="fl">0.25</span>), :]</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>db_seleccion.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ENTIDAD</th>
+      <th>NOM_ENT</th>
+      <th>MUN</th>
+      <th>NOM_MUN</th>
+      <th>LOC</th>
+      <th>NOM_LOC</th>
+      <th>AGEB</th>
+      <th>MZA</th>
+      <th>POBTOT</th>
+      <th>POBFEM</th>
+      <th>...</th>
+      <th>VPH_CEL</th>
+      <th>VPH_INTER</th>
+      <th>VPH_STVP</th>
+      <th>VPH_SPMVPI</th>
+      <th>VPH_CVJ</th>
+      <th>VPH_SINRTV</th>
+      <th>VPH_SINLTC</th>
+      <th>VPH_SINCINT</th>
+      <th>VPH_SINTIC</th>
+      <th>pct_fem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2342</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0877</td>
+      <td>0</td>
+      <td>821.0</td>
+      <td>403.0</td>
+      <td>...</td>
+      <td>174.0</td>
+      <td>135.0</td>
+      <td>56.0</td>
+      <td>44.0</td>
+      <td>34.0</td>
+      <td>3.0</td>
+      <td>23.0</td>
+      <td>70.0</td>
+      <td>NaN</td>
+      <td>0.490865</td>
+    </tr>
+    <tr>
+      <th>3292</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>1165</td>
+      <td>0</td>
+      <td>400.0</td>
+      <td>199.0</td>
+      <td>...</td>
+      <td>91.0</td>
+      <td>51.0</td>
+      <td>26.0</td>
+      <td>26.0</td>
+      <td>15.0</td>
+      <td>3.0</td>
+      <td>8.0</td>
+      <td>49.0</td>
+      <td>NaN</td>
+      <td>0.497500</td>
+    </tr>
+    <tr>
+      <th>5321</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>003</td>
+      <td>Coyoacán</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0770</td>
+      <td>0</td>
+      <td>326.0</td>
+      <td>160.0</td>
+      <td>...</td>
+      <td>137.0</td>
+      <td>136.0</td>
+      <td>88.0</td>
+      <td>96.0</td>
+      <td>50.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.0</td>
+      <td>0.0</td>
+      <td>0.490798</td>
+    </tr>
+    <tr>
+      <th>6016</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>003</td>
+      <td>Coyoacán</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>1092</td>
+      <td>0</td>
+      <td>5787.0</td>
+      <td>2887.0</td>
+      <td>...</td>
+      <td>1792.0</td>
+      <td>1744.0</td>
+      <td>1363.0</td>
+      <td>1206.0</td>
+      <td>614.0</td>
+      <td>11.0</td>
+      <td>5.0</td>
+      <td>55.0</td>
+      <td>NaN</td>
+      <td>0.498877</td>
+    </tr>
+    <tr>
+      <th>7919</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>003</td>
+      <td>Coyoacán</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>1660</td>
+      <td>0</td>
+      <td>3328.0</td>
+      <td>1653.0</td>
+      <td>...</td>
+      <td>895.0</td>
+      <td>823.0</td>
+      <td>552.0</td>
+      <td>379.0</td>
+      <td>259.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>88.0</td>
+      <td>0.0</td>
+      <td>0.496695</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 231 columns</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ordenar-valores" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="ordenar-valores"><span class="header-section-number">2.5</span> Ordenar valores</h2>
+<p>Finalmente, vamos a ver cómo ordenar los datos de acuerdo a los valores de un campo. Pensemos que queremos ver las 10 AGEBS más pobladas de la ciudad.</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>db.sort_values(<span class="st">'POBTOT'</span>, ascending <span class="op">=</span> <span class="va">False</span>).head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ENTIDAD</th>
+      <th>NOM_ENT</th>
+      <th>MUN</th>
+      <th>NOM_MUN</th>
+      <th>LOC</th>
+      <th>NOM_LOC</th>
+      <th>AGEB</th>
+      <th>MZA</th>
+      <th>POBTOT</th>
+      <th>POBFEM</th>
+      <th>...</th>
+      <th>VPH_CEL</th>
+      <th>VPH_INTER</th>
+      <th>VPH_STVP</th>
+      <th>VPH_SPMVPI</th>
+      <th>VPH_CVJ</th>
+      <th>VPH_SINRTV</th>
+      <th>VPH_SINLTC</th>
+      <th>VPH_SINCINT</th>
+      <th>VPH_SINTIC</th>
+      <th>pct_fem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>39932</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>010</td>
+      <td>Álvaro Obregón</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0135</td>
+      <td>0</td>
+      <td>21198.0</td>
+      <td>11128.0</td>
+      <td>...</td>
+      <td>7867.0</td>
+      <td>7512.0</td>
+      <td>5573.0</td>
+      <td>5568.0</td>
+      <td>3056.0</td>
+      <td>60.0</td>
+      <td>39.0</td>
+      <td>346.0</td>
+      <td>3.0</td>
+      <td>0.524955</td>
+    </tr>
+    <tr>
+      <th>63316</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>016</td>
+      <td>Miguel Hidalgo</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0444</td>
+      <td>0</td>
+      <td>18174.0</td>
+      <td>8931.0</td>
+      <td>...</td>
+      <td>7294.0</td>
+      <td>7187.0</td>
+      <td>5717.0</td>
+      <td>5903.0</td>
+      <td>2640.0</td>
+      <td>149.0</td>
+      <td>9.0</td>
+      <td>144.0</td>
+      <td>NaN</td>
+      <td>0.491416</td>
+    </tr>
+    <tr>
+      <th>65102</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>016</td>
+      <td>Miguel Hidalgo</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>1349</td>
+      <td>0</td>
+      <td>15549.0</td>
+      <td>8211.0</td>
+      <td>...</td>
+      <td>4279.0</td>
+      <td>3756.0</td>
+      <td>2213.0</td>
+      <td>1482.0</td>
+      <td>944.0</td>
+      <td>70.0</td>
+      <td>208.0</td>
+      <td>831.0</td>
+      <td>21.0</td>
+      <td>0.528073</td>
+    </tr>
+    <tr>
+      <th>9394</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>004</td>
+      <td>Cuajimalpa de Morelos</td>
+      <td>0020</td>
+      <td>Total AGEB urbana</td>
+      <td>0316</td>
+      <td>0</td>
+      <td>15087.0</td>
+      <td>7701.0</td>
+      <td>...</td>
+      <td>3434.0</td>
+      <td>2289.0</td>
+      <td>1277.0</td>
+      <td>738.0</td>
+      <td>512.0</td>
+      <td>110.0</td>
+      <td>205.0</td>
+      <td>1301.0</td>
+      <td>23.0</td>
+      <td>0.510439</td>
+    </tr>
+    <tr>
+      <th>9090</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>004</td>
+      <td>Cuajimalpa de Morelos</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0369</td>
+      <td>0</td>
+      <td>14609.0</td>
+      <td>7459.0</td>
+      <td>...</td>
+      <td>5989.0</td>
+      <td>5970.0</td>
+      <td>5155.0</td>
+      <td>4826.0</td>
+      <td>2486.0</td>
+      <td>23.0</td>
+      <td>9.0</td>
+      <td>19.0</td>
+      <td>0.0</td>
+      <td>0.510576</td>
+    </tr>
+    <tr>
+      <th>9190</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>004</td>
+      <td>Cuajimalpa de Morelos</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0373</td>
+      <td>0</td>
+      <td>14170.0</td>
+      <td>7457.0</td>
+      <td>...</td>
+      <td>3293.0</td>
+      <td>2650.0</td>
+      <td>1743.0</td>
+      <td>1430.0</td>
+      <td>889.0</td>
+      <td>59.0</td>
+      <td>130.0</td>
+      <td>782.0</td>
+      <td>13.0</td>
+      <td>0.526253</td>
+    </tr>
+    <tr>
+      <th>6211</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>003</td>
+      <td>Coyoacán</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>1162</td>
+      <td>0</td>
+      <td>14061.0</td>
+      <td>7267.0</td>
+      <td>...</td>
+      <td>3416.0</td>
+      <td>2780.0</td>
+      <td>1316.0</td>
+      <td>971.0</td>
+      <td>689.0</td>
+      <td>67.0</td>
+      <td>120.0</td>
+      <td>837.0</td>
+      <td>23.0</td>
+      <td>0.516820</td>
+    </tr>
+    <tr>
+      <th>52537</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>012</td>
+      <td>Tlalpan</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>2121</td>
+      <td>0</td>
+      <td>13974.0</td>
+      <td>7345.0</td>
+      <td>...</td>
+      <td>3954.0</td>
+      <td>3518.0</td>
+      <td>2477.0</td>
+      <td>2100.0</td>
+      <td>1259.0</td>
+      <td>34.0</td>
+      <td>61.0</td>
+      <td>476.0</td>
+      <td>8.0</td>
+      <td>0.525619</td>
+    </tr>
+    <tr>
+      <th>26177</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>007</td>
+      <td>Iztapalapa</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>1994</td>
+      <td>0</td>
+      <td>13946.0</td>
+      <td>3330.0</td>
+      <td>...</td>
+      <td>1069.0</td>
+      <td>767.0</td>
+      <td>327.0</td>
+      <td>231.0</td>
+      <td>180.0</td>
+      <td>18.0</td>
+      <td>25.0</td>
+      <td>329.0</td>
+      <td>4.0</td>
+      <td>0.238778</td>
+    </tr>
+    <tr>
+      <th>42074</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>010</td>
+      <td>Álvaro Obregón</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>1171</td>
+      <td>0</td>
+      <td>13918.0</td>
+      <td>7438.0</td>
+      <td>...</td>
+      <td>4387.0</td>
+      <td>3856.0</td>
+      <td>2895.0</td>
+      <td>2351.0</td>
+      <td>1244.0</td>
+      <td>51.0</td>
+      <td>96.0</td>
+      <td>655.0</td>
+      <td>12.0</td>
+      <td>0.534416</td>
+    </tr>
+  </tbody>
+</table>
+<p>10 rows × 231 columns</p>
+</div>
+</div>
+</div>
+<p>El método <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.sort_values.html"><code>sort_values</code></a> nos permite ordenar los datos de acuerdo al valor (o criterio) que queramos. El argumento <code>ascending = False</code> indica que los queremos ordenar de forma descendente.</p>
+</section>
+<section id="exploración-visual" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="exploración-visual"><span class="header-section-number">2.6</span> Exploración Visual</h2>
+<p>Ya que nos empezamos a familiarizar con el manejo de datos usando Pandas, podemos empezar a hacer cosas más divertidas, por ejemplo, explorar visualmente los datos.</p>
+<p>La librería <a href="https://seaborn.pydata.org/tutorial/introduction"><code>seaborn</code></a> nos ofrece una serie de herramientas para la exploración visual de los datos. Podemos comenzar con un histograma para ver la distribución de los valores de una columna.</p>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> sns.histplot(db[<span class="st">'POBTOT'</span>], kde <span class="op">=</span> <span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="01_transformacion_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>La función <a href=""><code>histplot</code></a> de seaborn nos regresa el histograma, el argumento <code>kde=False</code> le dice que no queremos que ajuste una distribución empírica.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Cuando hicimos <code>_ = sns.histplot(db['POBTOT'], kde = False)</code> estamos asignando el resultado a la variable <code>_</code>, esto se hace comunmente cuando no queremos ya hacer nada más con ese resultado. Más adelante haremos operaciones sobre las gráficas.</p>
+</div>
+</div>
+<section id="densidad-de-kernel" class="level4" data-number="2.6.0.1">
+<h4 data-number="2.6.0.1" class="anchored" data-anchor-id="densidad-de-kernel"><span class="header-section-number">2.6.0.1</span> Densidad de Kernel</h4>
+<p>Otra forma de representar la distribución de una variable es ajustando una <em>densidad de kernel</em>, que estima una distribución (empírica) de probabilidad a partir de nuestras observaciones.</p>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> sns.kdeplot(db[<span class="st">'POBTOT'</span>], fill <span class="op">=</span> <span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="01_transformacion_files/figure-html/cell-27-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Otra visualización muy útil es la de la <em>distribución conjunta</em> de dos variables. Por ejemplo, supongamos que queremos comparar las distribuciones de la población masculina y femenina.</p>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> sns.jointplot(data<span class="op">=</span>db, x<span class="op">=</span><span class="st">'POBFEM'</span>, y<span class="op">=</span><span class="st">'POBMAS'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="01_transformacion_files/figure-html/cell-28-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>La relación, como es de esperarse, es casi perfectamente lineal, pero ver las distribuciones conjuntas nos permite identificar algunas AGEBS con poblaciones masculinas desproporcionadamente grandes ¿Qué serán?.</p>
+<p>Muchas veces queremos visualizar la distribución conjunta de varias variables al mismo tiempo. Por ejemplo cuando queremos hacer ejercicios de regresión queremos explorar la correlación entre las covariables. Una forma de visualizar rápidamente estas distribuciones conjuntas es con un <a href="https://seaborn.pydata.org/generated/seaborn.PairGrid.html#seaborn.PairGrid"><code>PairGrid</code></a>. Utlicemos uno sencillo para ver las distribuciones de algunas variables.</p>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span> <span class="op">=</span> [<span class="st">'P_0A2'</span>, <span class="st">'P_15A17'</span>, <span class="st">'PNACOE'</span>, <span class="st">'P3YM_HLI'</span>]</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.PairGrid(db[<span class="bu">vars</span>])</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> g.<span class="bu">map</span>(sns.scatterplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="01_transformacion_files/figure-html/cell-29-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>La función <code>PairPlot</code> sólo nos prepara la malla (un cuadrado del número de variables de los datos) y con el <code>map</code> llenamos esa malla con la gráfica que queramos, en nuestro caso un diagrama de dispersión.</p>
+<p>En este caso la diagonal no es muy informativa, es un diagrama de dispersión de una variable consigo misma. <code>PairPlot</code> es muy flexible y nos permite <em>mapear</em> diferentes funciones para la diagonal y los demás elementos, por ejemplo:</p>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.PairGrid(db[<span class="bu">vars</span>])</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>g.map_diag(sns.histplot)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>g.map_offdiag(sns.scatterplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>&lt;seaborn.axisgrid.PairGrid at 0x7f62c77d80d0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="01_transformacion_files/figure-html/cell-30-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="organizando-los-datos" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="organizando-los-datos"><span class="header-section-number">2.7</span> Organizando los datos</h2>
+<p>Muchos flujos de análisis requieren organizar los datos en una estructura particular conocida como <em>Tidy Data</em> (algo así como <em>datos ordenados</em>). La idea es tener una estructura estandarizada con principios comunes de manipulación que sirva como entrada a diferentes tipos de análisis.</p>
+<p>Las tres características fundamentales de un conjunto de datos <em>bien ordenado</em> de acuerdo a los principios <em>tidy</em> son:</p>
+<ol type="1">
+<li>Cada variable en una columna</li>
+<li>Cada observación en una fila</li>
+<li>Cada unidad de observación en una tabla</li>
+</ol>
+<p>Para mayor información sobre el concepto de <em>Tidy Data</em>, puede consultarse el <a href="https://www.jstatsoft.org/article/view/v059i10">Artículo Académico</a> original (de Acceso Libre), así como el <a href="https://github.com/hadley/tidy-data">Repositorio Púlico</a> asociado a él.</p>
+<p>Tratemos de aplicar el concepto de <em>Tidy Data</em> a los datos de la práctica. Primero, recordando su estructura:</p>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>db.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ENTIDAD</th>
+      <th>NOM_ENT</th>
+      <th>MUN</th>
+      <th>NOM_MUN</th>
+      <th>LOC</th>
+      <th>NOM_LOC</th>
+      <th>AGEB</th>
+      <th>MZA</th>
+      <th>POBTOT</th>
+      <th>POBFEM</th>
+      <th>...</th>
+      <th>VPH_CEL</th>
+      <th>VPH_INTER</th>
+      <th>VPH_STVP</th>
+      <th>VPH_SPMVPI</th>
+      <th>VPH_CVJ</th>
+      <th>VPH_SINRTV</th>
+      <th>VPH_SINLTC</th>
+      <th>VPH_SINCINT</th>
+      <th>VPH_SINTIC</th>
+      <th>pct_fem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0010</td>
+      <td>0</td>
+      <td>3183.0</td>
+      <td>1695.0</td>
+      <td>...</td>
+      <td>772.0</td>
+      <td>692.0</td>
+      <td>313.0</td>
+      <td>221.0</td>
+      <td>145.0</td>
+      <td>8.0</td>
+      <td>14.0</td>
+      <td>148.0</td>
+      <td>5.0</td>
+      <td>0.532516</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0025</td>
+      <td>0</td>
+      <td>5593.0</td>
+      <td>2915.0</td>
+      <td>...</td>
+      <td>1510.0</td>
+      <td>1203.0</td>
+      <td>478.0</td>
+      <td>349.0</td>
+      <td>238.0</td>
+      <td>28.0</td>
+      <td>68.0</td>
+      <td>393.0</td>
+      <td>14.0</td>
+      <td>0.521187</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>003A</td>
+      <td>0</td>
+      <td>4235.0</td>
+      <td>2232.0</td>
+      <td>...</td>
+      <td>1049.0</td>
+      <td>878.0</td>
+      <td>361.0</td>
+      <td>339.0</td>
+      <td>247.0</td>
+      <td>5.0</td>
+      <td>12.0</td>
+      <td>250.0</td>
+      <td>NaN</td>
+      <td>0.527037</td>
+    </tr>
+    <tr>
+      <th>116</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0044</td>
+      <td>0</td>
+      <td>4768.0</td>
+      <td>2551.0</td>
+      <td>...</td>
+      <td>1237.0</td>
+      <td>1076.0</td>
+      <td>481.0</td>
+      <td>452.0</td>
+      <td>294.0</td>
+      <td>10.0</td>
+      <td>17.0</td>
+      <td>254.0</td>
+      <td>NaN</td>
+      <td>0.535025</td>
+    </tr>
+    <tr>
+      <th>163</th>
+      <td>09</td>
+      <td>Ciudad de México</td>
+      <td>002</td>
+      <td>Azcapotzalco</td>
+      <td>0001</td>
+      <td>Total AGEB urbana</td>
+      <td>0097</td>
+      <td>0</td>
+      <td>2176.0</td>
+      <td>1115.0</td>
+      <td>...</td>
+      <td>562.0</td>
+      <td>507.0</td>
+      <td>276.0</td>
+      <td>260.0</td>
+      <td>153.0</td>
+      <td>4.0</td>
+      <td>3.0</td>
+      <td>70.0</td>
+      <td>0.0</td>
+      <td>0.512408</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 231 columns</p>
+</div>
+</div>
+</div>
+<p>Esta base de datos no cumple con las características <em>tidy</em>. En efecto, tenemos las variables en columnas (sin contar los identificadores), pero:</p>
+<ul>
+<li>Tenemos dos tipos de unidades: personas y viviendas. El principio <em>tidy</em> nos indica que necesitamos dos tablas para representar los datos.</li>
+<li>Para cada tipoi de unidad tenemos en la misma fila tantas <em>observaciones</em> como variables (del mismo tipo). Por ejemplo, el valor de la población para cada grupo de edad en cada AGEB es una observación.</li>
+</ul>
+<p>Entonces, vamos a trabajar en acomodar la tabla a los principios <em>tidy</em>. Para comenzar, trabajemos sólo con las variables que representan segmentos de edad de la población. Seleccionar sólo estas columnas puede ser engorroso, pero si nos fijamos en el diccionario, podemos observar que todas las variables que nos interesan empiezan con ‘P_’ Podemos usar esta observación para seleccionar, a partir de la lista de columnas, sólo las que nos interesan:</p>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>cols_pob <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> db.columns <span class="cf">if</span> c.startswith(<span class="st">'P_'</span>)]</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cols_pob)               </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['P_0A2', 'P_0A2_F', 'P_0A2_M', 'P_3YMAS', 'P_3YMAS_F', 'P_3YMAS_M', 'P_5YMAS', 'P_5YMAS_F', 'P_5YMAS_M', 'P_12YMAS', 'P_12YMAS_F', 'P_12YMAS_M', 'P_15YMAS', 'P_15YMAS_F', 'P_15YMAS_M', 'P_18YMAS', 'P_18YMAS_F', 'P_18YMAS_M', 'P_3A5', 'P_3A5_F', 'P_3A5_M', 'P_6A11', 'P_6A11_F', 'P_6A11_M', 'P_8A14', 'P_8A14_F', 'P_8A14_M', 'P_12A14', 'P_12A14_F', 'P_12A14_M', 'P_15A17', 'P_15A17_F', 'P_15A17_M', 'P_18A24', 'P_18A24_F', 'P_18A24_M', 'P_15A49_F', 'P_60YMAS', 'P_60YMAS_F', 'P_60YMAS_M']</code></pre>
+</div>
+</div>
+<p>Ahora, vamos a construir un identificador único de AGEB para cada fila concatenando los identificadores de entidad, municipio, localidad y ageb:</p>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'AGEB_cvgeo'</span>] <span class="op">=</span> db[<span class="st">'ENTIDAD'</span>] <span class="op">+</span> db[<span class="st">'MUN'</span>] <span class="op">+</span> db[<span class="st">'LOC'</span>] <span class="op">+</span> db[<span class="st">'AGEB'</span>]</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>db[<span class="st">'AGEB_cvgeo'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="37">
+<pre><code>3      0900200010010
+30     0900200010025
+82     090020001003A
+116    0900200010044
+163    0900200010097
+Name: AGEB_cvgeo, dtype: object</code></pre>
+</div>
+</div>
+<p>Ya con este identificador, podemos eliminar de la tabla los identificadores que usamos para construirlo</p>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> db.drop(columns<span class="op">=</span>[<span class="st">'ENTIDAD'</span>, <span class="st">'MUN'</span>, <span class="st">'LOC'</span>, <span class="st">'AGEB'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Copiamos las columnas que nos interesan a una nueva tabla</p>
+<div class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>rangos <span class="op">=</span> db[[<span class="st">'AGEB_cvgeo'</span>] <span class="op">+</span> cols_pob]</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>rangos.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="48">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>AGEB_cvgeo</th>
+      <th>P_0A2</th>
+      <th>P_0A2_F</th>
+      <th>P_0A2_M</th>
+      <th>P_3YMAS</th>
+      <th>P_3YMAS_F</th>
+      <th>P_3YMAS_M</th>
+      <th>P_5YMAS</th>
+      <th>P_5YMAS_F</th>
+      <th>P_5YMAS_M</th>
+      <th>...</th>
+      <th>P_15A17</th>
+      <th>P_15A17_F</th>
+      <th>P_15A17_M</th>
+      <th>P_18A24</th>
+      <th>P_18A24_F</th>
+      <th>P_18A24_M</th>
+      <th>P_15A49_F</th>
+      <th>P_60YMAS</th>
+      <th>P_60YMAS_F</th>
+      <th>P_60YMAS_M</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>0900200010010</td>
+      <td>60.0</td>
+      <td>32.0</td>
+      <td>28.0</td>
+      <td>3123.0</td>
+      <td>1663.0</td>
+      <td>1460.0</td>
+      <td>3074.0</td>
+      <td>1639.0</td>
+      <td>1435.0</td>
+      <td>...</td>
+      <td>111.0</td>
+      <td>61.0</td>
+      <td>50.0</td>
+      <td>303.0</td>
+      <td>149.0</td>
+      <td>154.0</td>
+      <td>726.0</td>
+      <td>816.0</td>
+      <td>470.0</td>
+      <td>346.0</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>0900200010025</td>
+      <td>122.0</td>
+      <td>58.0</td>
+      <td>64.0</td>
+      <td>5470.0</td>
+      <td>2856.0</td>
+      <td>2614.0</td>
+      <td>5363.0</td>
+      <td>2805.0</td>
+      <td>2558.0</td>
+      <td>...</td>
+      <td>214.0</td>
+      <td>97.0</td>
+      <td>117.0</td>
+      <td>521.0</td>
+      <td>263.0</td>
+      <td>258.0</td>
+      <td>1436.0</td>
+      <td>1293.0</td>
+      <td>732.0</td>
+      <td>561.0</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>090020001003A</td>
+      <td>88.0</td>
+      <td>49.0</td>
+      <td>39.0</td>
+      <td>4147.0</td>
+      <td>2183.0</td>
+      <td>1964.0</td>
+      <td>4065.0</td>
+      <td>2138.0</td>
+      <td>1927.0</td>
+      <td>...</td>
+      <td>180.0</td>
+      <td>74.0</td>
+      <td>106.0</td>
+      <td>425.0</td>
+      <td>226.0</td>
+      <td>199.0</td>
+      <td>1067.0</td>
+      <td>931.0</td>
+      <td>546.0</td>
+      <td>385.0</td>
+    </tr>
+    <tr>
+      <th>116</th>
+      <td>0900200010044</td>
+      <td>110.0</td>
+      <td>49.0</td>
+      <td>61.0</td>
+      <td>4658.0</td>
+      <td>2502.0</td>
+      <td>2156.0</td>
+      <td>4560.0</td>
+      <td>2445.0</td>
+      <td>2115.0</td>
+      <td>...</td>
+      <td>175.0</td>
+      <td>87.0</td>
+      <td>88.0</td>
+      <td>487.0</td>
+      <td>241.0</td>
+      <td>246.0</td>
+      <td>1215.0</td>
+      <td>1132.0</td>
+      <td>672.0</td>
+      <td>460.0</td>
+    </tr>
+    <tr>
+      <th>163</th>
+      <td>0900200010097</td>
+      <td>40.0</td>
+      <td>16.0</td>
+      <td>24.0</td>
+      <td>2136.0</td>
+      <td>1099.0</td>
+      <td>1037.0</td>
+      <td>2100.0</td>
+      <td>1076.0</td>
+      <td>1024.0</td>
+      <td>...</td>
+      <td>90.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>204.0</td>
+      <td>96.0</td>
+      <td>108.0</td>
+      <td>508.0</td>
+      <td>562.0</td>
+      <td>311.0</td>
+      <td>251.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 41 columns</p>
+</div>
+</div>
+</div>
+<p>Ahora vamos a reorganizar la tabla de forma que cada grupo de edad corresponda a una fila en lugar de una columna, de esta forma tenemos las observaciones en filas, de acuerdo al principio <em>tidy</em>.</p>
+<p>Para lograr esto lo que tenemos que hacer es la operación inversa de un pivote, es decir, un <em>stack</em>. El método <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.stack.html"><code>stack</code></a> hace justo lo que necesitamos, sólo tenemos que especificar el índice (lo que distingue a cada observación) que queremos utilizar para cada fila, en este caso <code>AGEB_cvgeo</code>.</p>
+<div class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>rangos <span class="op">=</span> rangos.set_index(<span class="st">'AGEB_cvgeo'</span>).stack()</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>rangos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="49">
+<pre><code>AGEB_cvgeo               
+0900200010010  P_0A2           60.0
+               P_0A2_F         32.0
+               P_0A2_M         28.0
+               P_3YMAS       3123.0
+               P_3YMAS_F     1663.0
+                              ...  
+0901700011524  P_18A24_M      230.0
+               P_15A49_F     1111.0
+               P_60YMAS       706.0
+               P_60YMAS_F     394.0
+               P_60YMAS_M     312.0
+Length: 96555, dtype: float64</code></pre>
+</div>
+</div>
+<p>Perfecto, eso se parece bastante a lo que buscamos, sólo que en lugar de un DataFrame lo que tenemos es una Serie. Fíjense que para cada valor del índice (<code>AGEB_cvgeo</code>), tenemos todos los valores de los grupos de población.</p>
+<p>Para convertir esto en un DataFrame lo más sencillo es quitar el índice que creamos con la función <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reset_index.html"><code>reset_index</code></a>:</p>
+<div class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>rangos <span class="op">=</span> rangos.reset_index()</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>rangos.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="50">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>AGEB_cvgeo</th>
+      <th>level_1</th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0900200010010</td>
+      <td>P_0A2</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0900200010010</td>
+      <td>P_0A2_F</td>
+      <td>32.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0900200010010</td>
+      <td>P_0A2_M</td>
+      <td>28.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0900200010010</td>
+      <td>P_3YMAS</td>
+      <td>3123.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0900200010010</td>
+      <td>P_3YMAS_F</td>
+      <td>1663.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Ahora tenemos un DataFrame en el que el valor de la columna <code>AGEB_cvgeo</code> viene repetido para cada observación. Ya sólo necesitamos renombrar las columnas restantes para que nos indiquen más claramente su contenido:</p>
+<div class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>rangos <span class="op">=</span> rangos.rename(columns <span class="op">=</span> {<span class="st">'level_1'</span>:<span class="st">'Grupo'</span>, <span class="dv">0</span>:<span class="st">'Población'</span>})</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>rangos.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="51">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>AGEB_cvgeo</th>
+      <th>Grupo</th>
+      <th>Población</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0900200010010</td>
+      <td>P_0A2</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0900200010010</td>
+      <td>P_0A2_F</td>
+      <td>32.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0900200010010</td>
+      <td>P_0A2_M</td>
+      <td>28.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0900200010010</td>
+      <td>P_3YMAS</td>
+      <td>3123.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0900200010010</td>
+      <td>P_3YMAS_F</td>
+      <td>1663.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>!Ahora tenemos nuestra tabla acomodada a los principios _tidy!</p>
+</section>
+<section id="agrupamiento-transformación-y-agregación" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="agrupamiento-transformación-y-agregación"><span class="header-section-number">2.8</span> Agrupamiento, Transformación y Agregación</h2>
+<p>Una de las ventajas del proceso de limpieza anterior es que las tablas resultantes permiten realizar transformaciones avanzadas de forma directa; de las más comunes son las Operaciones de Agrupamiento (<em>Group-By</em>), las cuales permiten conjuntar observaciones utilizando sus etiquetas, índices o categorías, así como aplicar operaciones de caracter grupal.</p>
+<p>Por ejemplo, si se quisiera sumar el total de la población perteneciente a cada subgrupo de edad, primero se necesita emplear uno de los operadores más populares y utilizados de <code>pandas</code>, y razón por la cual ha sido tan popularizado, llamado <code>.groupby()</code>:</p>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>pop_grupos <span class="op">=</span> subgrupos_ordenDF.groupby(<span class="st">'Subgrupo'</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>pop_grupos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7fc68c622668&gt;</code></pre>
+</div>
+</div>
+<p>Aunque <code>pop_grupos</code> no genera un resultado inmediatamente visible, si almacena la manera en que se realiza la agrupación y, por ende, nos permite realizar una multitud de operaciones, como la suma buscada a través del método <code>.sum()</code>:</p>
+<div class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>pop_grupos.<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="39">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Frecuencia</th>
+    </tr>
+    <tr>
+      <th>Subgrupo</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>pob_0a2</th>
+      <td>354934</td>
+    </tr>
+    <tr>
+      <th>pob_12a14</th>
+      <td>392333</td>
+    </tr>
+    <tr>
+      <th>pob_15a17</th>
+      <td>423462</td>
+    </tr>
+    <tr>
+      <th>pob_18a24</th>
+      <td>1042926</td>
+    </tr>
+    <tr>
+      <th>pob_25a29</th>
+      <td>720664</td>
+    </tr>
+    <tr>
+      <th>pob_30a49</th>
+      <td>2591465</td>
+    </tr>
+    <tr>
+      <th>pob_3a5</th>
+      <td>388398</td>
+    </tr>
+    <tr>
+      <th>pob_50a59</th>
+      <td>895259</td>
+    </tr>
+    <tr>
+      <th>pob_60ymas</th>
+      <td>1001547</td>
+    </tr>
+    <tr>
+      <th>pob_6a11</th>
+      <td>788875</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Asímismo, puede generarse un resumen de cada subgroup utilizando <code>.describe()</code></p>
+<div class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>pop_grupos.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="8" halign="left">Frecuencia</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+    <tr>
+      <th>Subgrupo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>pob_0a2</th>
+      <td>2432.0</td>
+      <td>145.943257</td>
+      <td>112.056808</td>
+      <td>0.0</td>
+      <td>61.00</td>
+      <td>119.0</td>
+      <td>209.25</td>
+      <td>743.0</td>
+    </tr>
+    <tr>
+      <th>pob_12a14</th>
+      <td>2432.0</td>
+      <td>161.321135</td>
+      <td>115.647911</td>
+      <td>0.0</td>
+      <td>74.00</td>
+      <td>138.5</td>
+      <td>226.25</td>
+      <td>772.0</td>
+    </tr>
+    <tr>
+      <th>pob_15a17</th>
+      <td>2432.0</td>
+      <td>174.120888</td>
+      <td>121.923333</td>
+      <td>0.0</td>
+      <td>82.00</td>
+      <td>151.5</td>
+      <td>241.00</td>
+      <td>760.0</td>
+    </tr>
+    <tr>
+      <th>pob_18a24</th>
+      <td>2432.0</td>
+      <td>428.834704</td>
+      <td>288.072840</td>
+      <td>0.0</td>
+      <td>218.00</td>
+      <td>382.5</td>
+      <td>580.25</td>
+      <td>2905.0</td>
+    </tr>
+    <tr>
+      <th>pob_25a29</th>
+      <td>2432.0</td>
+      <td>296.325658</td>
+      <td>201.741121</td>
+      <td>0.0</td>
+      <td>155.00</td>
+      <td>263.0</td>
+      <td>402.00</td>
+      <td>3099.0</td>
+    </tr>
+    <tr>
+      <th>pob_30a49</th>
+      <td>2432.0</td>
+      <td>1065.569490</td>
+      <td>693.264089</td>
+      <td>0.0</td>
+      <td>578.00</td>
+      <td>963.5</td>
+      <td>1417.25</td>
+      <td>8195.0</td>
+    </tr>
+    <tr>
+      <th>pob_3a5</th>
+      <td>2432.0</td>
+      <td>159.703125</td>
+      <td>121.498713</td>
+      <td>0.0</td>
+      <td>67.00</td>
+      <td>133.0</td>
+      <td>226.25</td>
+      <td>746.0</td>
+    </tr>
+    <tr>
+      <th>pob_50a59</th>
+      <td>2432.0</td>
+      <td>368.116365</td>
+      <td>217.976714</td>
+      <td>0.0</td>
+      <td>221.75</td>
+      <td>342.0</td>
+      <td>492.50</td>
+      <td>1401.0</td>
+    </tr>
+    <tr>
+      <th>pob_60ymas</th>
+      <td>2432.0</td>
+      <td>411.820312</td>
+      <td>250.572492</td>
+      <td>0.0</td>
+      <td>233.75</td>
+      <td>392.0</td>
+      <td>562.00</td>
+      <td>1525.0</td>
+    </tr>
+    <tr>
+      <th>pob_6a11</th>
+      <td>2432.0</td>
+      <td>324.372944</td>
+      <td>240.267120</td>
+      <td>0.0</td>
+      <td>144.00</td>
+      <td>273.0</td>
+      <td>461.00</td>
+      <td>1586.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>La versatilidad de <code>.groupby()</code> permite que sobre los grupos no sólo se puedan aplicar funciones genéricas, como <code>.sum()</code> o <code>.describe()</code>, sino también funciones generadas por el propio usuario, lo cual permite realizar casi cualquier tipo de transformacioń y agregación.</p>
+<hr>
+<section id="para-practicar" class="level3" data-number="2.8.1">
+<h3 data-number="2.8.1" class="anchored" data-anchor-id="para-practicar"><span class="header-section-number">2.8.1</span> Para Practicar…</h3>
+<p>Resulta útil aplicar lo aprendido sobre otro tipo de Conjuntos de Datos. Por ejemplo, la organización <em>Wikileaks</em> posee una Base de Datos pública en la cual se contiene, entre otras cosas, el número de casualidades existentes durante los primeros años de la <a href="https://www.theguardian.com/news/datablog/2010/jul/27/wikileaks-afghanistan-data-datajournalism"><em>Guerra de Afganistán</em></a>, la cual puede ser consultada a través de la siguiente liga:</p>
+<blockquote class="blockquote">
+<p>https://docs.google.com/spreadsheets/d/1EAx8_ksSCmoWW_SlhFyq2QrRn0FNNhcg1TtDFJzZRgc/edit?hl=en#gid=1</p>
+</blockquote>
+<p>Desde Python es posible visualizar la apariencia de esta información utilizando los siguientes comandos:</p>
+<div class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importar la librería a utilizar</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> IFrame</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar en una variable la URL de la información</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://docs.google.com/spreadsheets/d/1EAx8_ksSCmoWW_SlhFyq2QrRn0FNNhcg1TtDFJzZRgc/edit?hl=en#gid=1'</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar como ventana lo que arrojaría la URL</span></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>IFrame(url, <span class="dv">700</span>, <span class="dv">400</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+
+        <iframe width="700" height="400" src="https://docs.google.com/spreadsheets/d/1EAx8_ksSCmoWW_SlhFyq2QrRn0FNNhcg1TtDFJzZRgc/edit?hl=en#gid=1" frameborder="0" allowfullscreen=""></iframe>
+        
+</div>
+</div>
+<p>Realiza lo siguiente con estos datos: * Descarga la tabla como un archivo de tipo <code>.csv</code> (Archivo –&gt; Descargar como –&gt; .csv, hoja actual) * Importa los datos a Python * Explora generando algunas gráficas * Examina qué tanto se ajusta a los principios del <em>Tidy Data</em> y conviértelo de forma que lo haga * Obten una cuenta total de las casualidades por mes y genera una gráfica con ésta</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../parte_1.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Geoinformática en Python</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../parte_1/02_ejemplo_transformacion.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ejemplo: datos COVID-19</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
