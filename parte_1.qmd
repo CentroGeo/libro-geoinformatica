@@ -1,8 +1,26 @@
 ---
-title: "Geoinformática en Python"
+title: "Geoinformática: las herramientas básicas"
 format: html
 ---
 
-Esta parte del libro cubre el manejo de datos espaciales utilizando Python.
+En esta parte del libro vamos a tratar de cubrir los fundamentos técnicos del procesaminto, análisis y visualización de datos geoespaciales con Python.
 
-Para los ejercicios de esta parte del libro vas a necesitar varios conjuntos de datos que puedes descargar de [aqui](https://www.dropbox.com/sh/ikl1f698rjx9uag/AAD_7bcvipFk6pWQ2IvP1gsZa?dl=1).
+Para seguir los talleres vas a necesitar varios conjuntos de datos que puedes descargar de [aqui](https://www.dropbox.com/sh/ikl1f698rjx9uag/AAD_7bcvipFk6pWQ2IvP1gsZa?dl=1).
+
+El libro está desarrollado a partir de [Notebooks de Jupyter](https://jupyter.org/), de forma que lo más natural es que vayas siguiendo el desarrollo del libro utilizando estos notebooks.
+
+La forma más sencilla de instalar Jupyter y las librerías que estaremos utilizando es utilizando el gestor de paquetes [`conda`](https://docs.conda.io/en/latest/), que nos permite instalar fácilmente paquetes de Python sin preocuparnos por dependencias del sistema.
+
+Existen varis formas de instalar y trabajar con conda. Para usuarios de Windows quizá lo más sencillo sea instalar el paquete de cómputo científico [Anaconda](https://www.anaconda.com/products/distribution). Anaconda contiene, además del gestor de paquetes `conda`, muchas librerías ya preinstaladas por lo que puede resultar un poco excesivo en tamaño.
+
+Para trabajar de mejor forma en Python es recomendable crear _environments_ de trabajo. Un _environment_ es algo así como una instalación independiente de Python que contiene todo lo necesario para el desarrollo de un proyecto específico. A continuación les dejo un par de tutoriales en video para aprender a trabajar con _environments_ de `conda`:
+
+
+[Anaconda Beginners Guide for Linux and Windows - Python Working Environments Tutorial](https://www.youtube.com/watch?v=MUZtVEDKXsk)
+
+[Master the basics of Conda environments in Python](https://www.youtube.com/watch?v=1VVCd0eSkYc)
+
+Finalmente, `conda` viene configurado por defecto para utilizar los repositorios de [Anaconda, Inc.](https://anaconda.org/). La epmpresa provee acceso a sus repositorios sin ningún costo, sin embargo en este repositorio no siempre se encuantran las versiones más actuañlizadoas y completas que vamos a necesitar. Para evitar dificultades les recomiendo utilizar los repositorios de `conda-forge`, acá les dejo un tutorial:
+
+[Tutorial conda-forge](https://conda-forge.org/docs/user/introduction.htm)
+
