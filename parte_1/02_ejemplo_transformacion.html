@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Geoinformática - 2&nbsp; Ejemplo: datos COVID-19</title>
+<title>Geoinformática - 2&nbsp; Limpieza y transformación de datos de COVID-19 en México</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -136,7 +136,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ejemplo: datos COVID-19</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Limpieza y transformación de datos de COVID-19 en México</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -184,7 +184,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../parte_1/02_ejemplo_transformacion.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ejemplo: datos COVID-19</span></a>
+  <a href="../parte_1/02_ejemplo_transformacion.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Limpieza y transformación de datos de COVID-19 en México</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -228,15 +228,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#limpieza-y-transformación-de-datos-de-covid-19-en-méxico" id="toc-limpieza-y-transformación-de-datos-de-covid-19-en-méxico" class="nav-link active" data-scroll-target="#limpieza-y-transformación-de-datos-de-covid-19-en-méxico"><span class="toc-section-number">3</span>  Limpieza y transformación de datos de COVID-19 en México</a>
+  <li><a href="#descargar-datos" id="toc-descargar-datos" class="nav-link active" data-scroll-target="#descargar-datos"><span class="toc-section-number">2.1</span>  Descargar datos</a></li>
+  <li><a href="#exploración-del-contenido" id="toc-exploración-del-contenido" class="nav-link" data-scroll-target="#exploración-del-contenido"><span class="toc-section-number">2.2</span>  Exploración del contenido</a></li>
+  <li><a href="#aplanado-de-datos" id="toc-aplanado-de-datos" class="nav-link" data-scroll-target="#aplanado-de-datos"><span class="toc-section-number">2.3</span>  Aplanado de datos</a></li>
+  <li><a href="#manejo-de-fechas" id="toc-manejo-de-fechas" class="nav-link" data-scroll-target="#manejo-de-fechas"><span class="toc-section-number">2.4</span>  Manejo de fechas</a>
   <ul class="collapse">
-  <li><a href="#descargar-datos" id="toc-descargar-datos" class="nav-link" data-scroll-target="#descargar-datos"><span class="toc-section-number">3.1</span>  Descargar datos</a></li>
-  <li><a href="#exploración-del-contenido" id="toc-exploración-del-contenido" class="nav-link" data-scroll-target="#exploración-del-contenido"><span class="toc-section-number">3.2</span>  Exploración del contenido</a></li>
-  <li><a href="#aplanado-de-datos" id="toc-aplanado-de-datos" class="nav-link" data-scroll-target="#aplanado-de-datos"><span class="toc-section-number">3.3</span>  Aplanado de datos</a></li>
-  <li><a href="#manejo-de-fechas" id="toc-manejo-de-fechas" class="nav-link" data-scroll-target="#manejo-de-fechas"><span class="toc-section-number">3.4</span>  Manejo de fechas</a>
-  <ul class="collapse">
-  <li><a href="#tarea" id="toc-tarea" class="nav-link" data-scroll-target="#tarea"><span class="toc-section-number">3.4.1</span>  Tarea</a></li>
-  </ul></li>
+  <li><a href="#tarea" id="toc-tarea" class="nav-link" data-scroll-target="#tarea"><span class="toc-section-number">2.4.1</span>  Tarea</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -246,7 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Ejemplo: datos COVID-19</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Limpieza y transformación de datos de COVID-19 en México</span></h1>
 </div>
 
 
@@ -261,15 +258,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="limpieza-y-transformación-de-datos-de-covid-19-en-méxico" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Limpieza y transformación de datos de COVID-19 en México</h1>
-<p>Las bases de datos provenientes de situaciones reales son problemáticas, no están limpias, pueden tener datos faltantes, codoficar los datos de formas extrañas, combinar tipos de datos, etcétera.</p>
-<p>Es bien sabido que dentro de la Ciencia de Datos, se tenga la componente espacial o no, el trabajo no sólo se enfoca a generar modelos sofisticados o al análisis mismo, sino también a tareas mucho más básicas y menos exóticas como obtener los datos, procesarlos y modificarlos de forma que puedan ser examinados y explorados para entender sus propiedades básicas.</p>
-<p>Dado lo extenuantes y relevantes que son estas tareas, es sorprendente encontrar que existen muy pocas publicaciones referentes a los patrones, técnicas y buenas prácticas existentes para una eficiente limpieza, manipulación y transformación de los datos.</p>
-<p>En este taller nos vamos a enfocar en utilizar una base de datos del mundo real para aprender, utilizando Python, tćnicas para manipularlas, transformarlas y lim,piarlas de forma que podamos hacer análisis.</p>
-<p>La base de datos que vamos a utilizar son los datos abiertos que publica diarimente la Dirección General de Epidemiología de la Secretaría de Salud. Esta es una base muy grande y compleja que incluye el seguimiento de todos los casos confirmados de COVID en México.</p>
+<p>En el capítulo anterior hicimos una introducción a las herramientas básicas de Python para manipular datos. Ahora, en este capítulo, vamos a trabajar con una base de datos más compleja y trataremos de seguir un flujo de trabajo real, basado en experiencias de trabajo con equipos de apoyo a la toma de decisiones.</p>
+<p>La base de datos que vamos a utilizar son los datos abiertos sobre COVID-19 que publica diarimente la Dirección General de Epidemiología de la Secretaría de Salud. Esta es una base muy grande y compleja que incluye el seguimiento de todos los casos confirmados de COVID en México. El tratamiento que vamos a dar a los datos, es el usado en diferentes flujos de trabajo de los grupos que estuvieron trabajando con la Secretaría de Salud para generar productos de análisis durante los primeros dos años de atención de la pandemia.</p>
 <p>Antes de empezar a analizar la base de datos, vamos a importar las librerías que utilizaremos en el taller.</p>
-<div class="cell" data-execution_count="1">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># hablar con el sistema operativo</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob <span class="co"># listar directorios y ese tipo de operaciones</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools <span class="co"># herramientas para iterar objetos</span></span>
@@ -282,8 +274,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests <span class="co"># Hablar con direcciones web</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="descargar-datos" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="descargar-datos"><span class="header-section-number">3.1</span> Descargar datos</h2>
+<section id="descargar-datos" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="descargar-datos"><span class="header-section-number">2.1</span> Descargar datos</h2>
 <p>El primer paso es, evidentemente, descargar los datos. Es claro que podríamos ir a la <a href="https://www.gob.mx/salud/documentos/datos-abiertos-152127">página</a> de la Dirección General de Epidemiología (DGE) y descargarlos, sin embargo, lo vamos a hacer por el camino difícil de bajarlos usando Python.</p>
 <p>Para eso, vamos a definir una función que tome como argumento la fecha para la que queremos descargar los datos y el <em>path</em> en donde los vamos a guardar. La función es relativamente simple, sólo hace un <em>request</em> al archivo histórico de la DGE y guarda los datos en la ruta configurada.</p>
 <p>Para trabajar vamos siempre a descargar tres archivos:</p>
@@ -326,15 +318,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>bajar_datos_salud(fecha<span class="op">=</span>ayer.strftime(<span class="st">'</span><span class="sc">%d</span><span class="st">-%m-%Y'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="exploración-del-contenido" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="exploración-del-contenido"><span class="header-section-number">3.2</span> Exploración del contenido</h2>
+<section id="exploración-del-contenido" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="exploración-del-contenido"><span class="header-section-number">2.2</span> Exploración del contenido</h2>
 <p>Antes de empezar a manipular los datos, lo primero que tenemos que hacer es explorarlos brevemente y entender cómo están organizados. Leamos los datos en un DataFrame.</p>
 <p>Fíjense en la ruta en donde la función de arriba descarga los datos, con la barra exploradora del lado izquierdo pueden navegar hasta esa ruta y copiar el <em>path</em>.</p>
 <p>Para leer los datos vamos a utilizar la función <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html">read_csv()</a>, esta función (como pueden ver) acepta que el csv venga comprimido en un zip.</p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/220110COVID19MEXICO.csv.zip'</span>, dtype<span class="op">=</span><span class="bu">object</span>, encoding<span class="op">=</span><span class="st">'latin-1'</span>)</span>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'datos/datos_abiertos_covid19.zip'</span>, dtype<span class="op">=</span><span class="bu">object</span>, encoding<span class="op">=</span><span class="st">'latin-1'</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="3">
 
 <div>
 
@@ -368,22 +360,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <tbody>
     <tr>
       <th>0</th>
-      <td>2022-01-10</td>
-      <td>zz7202</td>
-      <td>1</td>
-      <td>12</td>
-      <td>16</td>
+      <td>2023-01-03</td>
+      <td>01e27d</td>
       <td>2</td>
-      <td>16</td>
-      <td>16</td>
-      <td>112</td>
+      <td>9</td>
+      <td>25</td>
+      <td>2</td>
+      <td>25</td>
+      <td>25</td>
+      <td>001</td>
       <td>1</td>
       <td>...</td>
-      <td>1</td>
-      <td>1</td>
       <td>2</td>
       <td>2</td>
       <td>97</td>
+      <td>1</td>
+      <td>2</td>
       <td>7</td>
       <td>99</td>
       <td>MÃ©xico</td>
@@ -392,46 +384,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </tr>
     <tr>
       <th>1</th>
-      <td>2022-01-10</td>
-      <td>z58ed3</td>
+      <td>2023-01-03</td>
+      <td>180725</td>
       <td>2</td>
-      <td>12</td>
-      <td>18</td>
-      <td>1</td>
-      <td>18</td>
-      <td>18</td>
-      <td>017</td>
-      <td>1</td>
+      <td>9</td>
+      <td>09</td>
+      <td>2</td>
+      <td>09</td>
+      <td>09</td>
+      <td>012</td>
+      <td>2</td>
       <td>...</td>
-      <td>2</td>
-      <td>1</td>
       <td>2</td>
       <td>2</td>
       <td>97</td>
+      <td>1</td>
+      <td>2</td>
       <td>7</td>
       <td>99</td>
       <td>MÃ©xico</td>
       <td>97</td>
-      <td>97</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>2022-01-10</td>
-      <td>z3be8c</td>
-      <td>2</td>
+      <td>2023-01-03</td>
+      <td>06fce8</td>
+      <td>1</td>
       <td>12</td>
       <td>07</td>
       <td>1</td>
       <td>07</td>
       <td>07</td>
-      <td>101</td>
+      <td>059</td>
       <td>1</td>
       <td>...</td>
       <td>2</td>
-      <td>1</td>
-      <td>2</td>
       <td>2</td>
       <td>97</td>
+      <td>1</td>
+      <td>2</td>
       <td>7</td>
       <td>99</td>
       <td>MÃ©xico</td>
@@ -440,23 +432,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </tr>
     <tr>
       <th>3</th>
-      <td>2022-01-10</td>
-      <td>z526b3</td>
-      <td>2</td>
-      <td>12</td>
-      <td>09</td>
+      <td>2023-01-03</td>
+      <td>1a4a8d</td>
       <td>1</td>
-      <td>09</td>
-      <td>09</td>
-      <td>012</td>
+      <td>12</td>
+      <td>23</td>
+      <td>2</td>
+      <td>27</td>
+      <td>23</td>
+      <td>008</td>
       <td>1</td>
       <td>...</td>
-      <td>1</td>
+      <td>2</td>
       <td>2</td>
       <td>97</td>
       <td>1</td>
-      <td>1</td>
-      <td>3</td>
+      <td>2</td>
+      <td>7</td>
       <td>99</td>
       <td>MÃ©xico</td>
       <td>97</td>
@@ -464,23 +456,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </tr>
     <tr>
       <th>4</th>
-      <td>2022-01-10</td>
-      <td>z3d1e2</td>
-      <td>2</td>
+      <td>2023-01-03</td>
+      <td>1933c0</td>
+      <td>1</td>
       <td>12</td>
       <td>09</td>
-      <td>1</td>
+      <td>2</td>
       <td>09</td>
       <td>09</td>
-      <td>005</td>
+      <td>007</td>
       <td>1</td>
       <td>...</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
+      <td>2</td>
       <td>2</td>
       <td>97</td>
-      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>7</td>
       <td>99</td>
       <td>MÃ©xico</td>
       <td>97</td>
@@ -590,8 +582,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Lo que estamos viendo aquí es el catálogo de datos de la columna <code>CLASIFICACION_FINAL</code>. Este catálogo relaciona el valor de la <code>CLAVE</code> con su significado. En particular, la columna <code>CLASIFICACION_FINAL</code> es la que nos permite identificar los casos positivos como veremos más adelante.</p>
 <p>El resto de los catálogos funciona de la misma forma, en este momento sólo vamos a utilizar la clasificación de los pacientes, pero más adelante podemos utilzar algunas de las columnas restantes.</p>
 </section>
-<section id="aplanado-de-datos" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="aplanado-de-datos"><span class="header-section-number">3.3</span> Aplanado de datos</h2>
+<section id="aplanado-de-datos" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="aplanado-de-datos"><span class="header-section-number">2.3</span> Aplanado de datos</h2>
 <p>Como acabamos de ver, de alguna forma la información viene <em>distribuida</em> en tres archivos, uno con los datos, otro con las categorías que usa y un tercero con sus descripciones. Para utilizar los datos más fácilmente, sobre todo para poder hablarle a las cosas <em>por su nombre</em> en lugar de referirnos a sus valores codificados, vamos a realizar un conjunto de operaciones para <em>aplanar</em> los datos.</p>
 <p>En el bajo mundo del análisis de datos, <em>aplanar</em> una base de datos es la operación de substituir los valores codificados a partir de un diccionario. En este caso, los datos que leímos traen valores codificados, entonces la primera misión es substituir esos valores por sus equivalentes en el diccionario.</p>
 <p>Como la base de datos es muy grande, vamos a trabajar sólo con un estado de la república, en este caso la Ciudad de México (pero ustedes podrían elegir otro cualquiera).</p>
@@ -2080,8 +2072,8 @@ Name: FORMATO_O_FUENTE, dtype: object</code></pre>
 <p>Acá utilizamos para la última sustitución la función <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.replace.html">replace</a> de Pandas que toma dos parámetros: la lista de valores a reemplazar y la lista de los valoresa de reemplazo. El reemplazo sucede elemento a elemento, es decir, se sustituye el primer elemento de la lista <code>to_replace</code> por el primer elemento de la lista <code>value</code> y así sucesivamente.</p>
 <p>Hay más campos que podemos <em>aplanar</em> en la base de datos, como ejercicio pueden explorar algunos de ellos y sustituir como le hemos hecho aquí. Regresaremos a esto más adelante en el taller, pero por lo pronto nos vamos a mover a otra etapa del pre-procesamiento: el manejo de las fechas</p>
 </section>
-<section id="manejo-de-fechas" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="manejo-de-fechas"><span class="header-section-number">3.4</span> Manejo de fechas</h2>
+<section id="manejo-de-fechas" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="manejo-de-fechas"><span class="header-section-number">2.4</span> Manejo de fechas</h2>
 <p>En Python las fechas son un tipo especial de datos, nosotros estamos acostumbrados a verlas como cadenas de caractéres: 20 de febrero de 2010, por ejemplo. Python puede hacer muchas cosas con las fechas, pero para eso tienen que estar codificados de la forma correcta.</p>
 <p>En general el módulo <a href="https://docs.python.org/3/library/datetime.html"><code>datetime</code></a> de Python provee las utilerías necesarias para manejar/transformar objetos del tipo fecha. Una de las cosas más útiles es transformar strings en objetos <code>datetime</code>:</p>
 <div class="cell" data-execution_count="26">
@@ -2157,12 +2149,11 @@ Name: FECHA_INGRESO, dtype: datetime64[ns]</code></pre>
 </div>
 </div>
 <p>Hasta aquí hemos cubierto más o menos todo el pre-proceso de los datos. Claro no vimos todas las columnas, sólo nos fijamos en algunas, pero eso basta para darnos una buena idea de cómo se hacen las demás.</p>
-<section id="tarea" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="tarea"><span class="header-section-number">3.4.1</span> Tarea</h3>
+<section id="tarea" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="tarea"><span class="header-section-number">2.4.1</span> Tarea</h3>
 <p>Sustituyan los valores de la columna <code>TIPO_PACIENTE</code> por sus valores en el catálogo correspondiente</p>
 
 
-</section>
 </section>
 </section>
 
