@@ -1,3 +1,5 @@
 /.quarto/
 /_site/
 /_book/
+/parte_1/datos/
+!/parte_1/datos/.gitkeep
