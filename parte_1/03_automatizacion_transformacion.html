@@ -228,14 +228,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#automatizando-la-limpieza" id="toc-automatizando-la-limpieza" class="nav-link active" data-scroll-target="#automatizando-la-limpieza"><span class="toc-section-number">4</span>  Automatizando la limpieza</a>
-  <ul class="collapse">
-  <li><a href="#función-de-preproceso" id="toc-función-de-preproceso" class="nav-link" data-scroll-target="#función-de-preproceso"><span class="toc-section-number">4.1</span>  Función de preproceso</a></li>
-  <li><a href="#bajar-y-guardar-datos" id="toc-bajar-y-guardar-datos" class="nav-link" data-scroll-target="#bajar-y-guardar-datos"><span class="toc-section-number">4.2</span>  Bajar y guardar datos</a></li>
-  <li><a href="#preprocesar" id="toc-preprocesar" class="nav-link" data-scroll-target="#preprocesar"><span class="toc-section-number">4.3</span>  Preprocesar</a></li>
-  <li><a href="#bajar-y-preprocesar-usando-nuestras-funciones" id="toc-bajar-y-preprocesar-usando-nuestras-funciones" class="nav-link" data-scroll-target="#bajar-y-preprocesar-usando-nuestras-funciones"><span class="toc-section-number">4.4</span>  Bajar y preprocesar usando nuestras funciones</a></li>
-  <li><a href="#guardando-el-resultado" id="toc-guardando-el-resultado" class="nav-link" data-scroll-target="#guardando-el-resultado"><span class="toc-section-number">4.5</span>  Guardando el resultado</a></li>
-  </ul></li>
+  <li><a href="#bajar-y-guardar-datos" id="toc-bajar-y-guardar-datos" class="nav-link active" data-scroll-target="#bajar-y-guardar-datos"><span class="toc-section-number">3.1</span>  Bajar y guardar datos</a></li>
+  <li><a href="#preproceso" id="toc-preproceso" class="nav-link" data-scroll-target="#preproceso"><span class="toc-section-number">3.2</span>  Preproceso</a></li>
+  <li><a href="#preprocesar-usando-nuestras-funciones" id="toc-preprocesar-usando-nuestras-funciones" class="nav-link" data-scroll-target="#preprocesar-usando-nuestras-funciones"><span class="toc-section-number">3.3</span>  Preprocesar usando nuestras funciones</a></li>
+  <li><a href="#guardando-el-resultado" id="toc-guardando-el-resultado" class="nav-link" data-scroll-target="#guardando-el-resultado"><span class="toc-section-number">3.4</span>  Guardando el resultado</a></li>
   </ul>
 </nav>
     </div>
@@ -259,10 +255,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="automatizando-la-limpieza" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Automatizando la limpieza</h1>
-<section id="función-de-preproceso" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="función-de-preproceso"><span class="header-section-number">4.1</span> Función de preproceso</h2>
 <p>En el taller anterior vimos toda una serie de pasos para preprocesar los datos de COVUD-19. En esta actividad lo único que vamos a hacer es definir un par de funciones que realizan todo el flujo de preproceso. De esta forma podemos repetir todo el procedimiento de forma fácil.</p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># hablar con el sistema operativo</span></span>
@@ -277,193 +269,211 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests <span class="co"># Hablar con direcciones web</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="bajar-y-guardar-datos" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="bajar-y-guardar-datos"><span class="header-section-number">4.2</span> Bajar y guardar datos</h2>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bajar_datos_salud(directorio_datos<span class="op">=</span><span class="st">'data/'</span>, fecha<span class="op">=</span><span class="st">'10-01-2022'</span>):</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Descarga el archivo de datos y los diccionarios para la fecha solicitada.</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    fecha <span class="op">=</span> datetime.strptime(fecha, <span class="st">"</span><span class="sc">%d</span><span class="st">-%m-%Y"</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    url_salud_historicos <span class="op">=</span> <span class="st">'http://datosabiertos.salud.gob.mx/gobmx/salud/datos_abiertos/historicos/'</span>    </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    archivo_nombre <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>fecha<span class="sc">.</span>strftime(<span class="st">"%y%m</span><span class="sc">%d</span><span class="st">"</span>)<span class="sc">}</span><span class="ss">COVID19MEXICO.csv.zip'</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    archivo_ruta <span class="op">=</span> os.path.join(directorio_datos, archivo_nombre)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    url_diccionario <span class="op">=</span> <span class="st">'http://datosabiertos.salud.gob.mx/gobmx/salud/datos_abiertos/diccionario_datos_covid19.zip'</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    diccionario_ruta <span class="op">=</span> os.path.join(directorio_datos, <span class="st">'diccionario.zip'</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(archivo_ruta):</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        logging.debug(<span class="ss">f'Ya existe </span><span class="sc">{</span>archivo_nombre<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Bajando datos </span><span class="sc">{</span>fecha<span class="sc">.</span>strftime(<span class="st">"</span><span class="sc">%d</span><span class="st">.%m.%Y"</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        url_dia <span class="op">=</span> <span class="st">"</span><span class="sc">{}</span><span class="st">/</span><span class="sc">{}</span><span class="st">/datos_abiertos_covid19_</span><span class="sc">{}</span><span class="st">.zip"</span>.<span class="bu">format</span>(fecha.strftime(<span class="st">'%Y'</span>),</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                                                                fecha.strftime(<span class="st">'%m'</span>),</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                                                                fecha.strftime(<span class="st">'</span><span class="sc">%d</span><span class="st">.%m.%Y'</span>))</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        url <span class="op">=</span> url_salud_historicos <span class="op">+</span> url_dia</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> requests.get(url, allow_redirects<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">open</span>(archivo_ruta, <span class="st">'wb'</span>).write(r.content)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> requests.get(url_diccionario, allow_redirects<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">open</span>(diccionario_ruta, <span class="st">'wb'</span>).write(r.content)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> zipfile.ZipFile(diccionario_ruta, <span class="st">'r'</span>) <span class="im">as</span> zip_ref:</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>          zip_ref.extractall(directorio_datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="bajar-y-guardar-datos" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="bajar-y-guardar-datos"><span class="header-section-number">3.1</span> Bajar y guardar datos</h2>
+<p>En el taller anterior bajamos los datos directamente del sitio de la Secretaría de Salud, ahora vamos a automatizar el proceso de descarga de datos de forma que, desde Python, podamos descargar los datos y asegurarnos de que tenemos la última versión disponible.</p>
+<p>Descargar y guardar archivos en Python es relativamente sencillo, vamos a usar tres módulos de la distribución base de Python:</p>
+<ul>
+<li><a href="https://docs.python.org/3/library/os.html">os</a>. Este módulo provee herramientas para interactuar con el sistema operativo. La vamos a usar para construir los <em>paths</em> en donde vamos a guardar los datos y preguntar si el archivo ya existe.</li>
+<li><a href="https://requests.readthedocs.io/en/latest/">requests</a>. Esta librería provee diferentes formas de interactuar con el protocolo HTTP. La vamos a usar para hacer las <em>peticiones</em> a la página y procesar la respuesta.</li>
+<li><a href="https://docs.python.org/3/library/zipfile.html">zipfile</a>. Esta librería sirve para trabajar con archivos comprimidos en formato <em>zip</em>. En nuestro caso la usaremos para descomprimir los diccionarios.</li>
+</ul>
+<p>La parte complicada de entender es el uso de <code>requests</code> pra comunicarse con la página en donde están los datos.</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> requests.get(<span class="st">"https://www.centrogeo.org.mx/"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>r.content[<span class="dv">0</span>:<span class="dv">500</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>b'\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n&lt;!DOCTYPE html&gt;\r\n&lt;html lang="es-es" dir="ltr" class=\'com_content view-featured itemid-101 home j31 mm-hover\'&gt;\r\n&lt;head&gt;\r\n&lt;base href="https://www.centrogeo.org.mx/" /&gt;\n\t&lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;\n\t&lt;meta name="keywords" content="M\xc3\xa9xico, CONACYT, CentroGeo, Ciencias de Informaci\xc3\xb3n Geoespacial, Centro de Investigaci\xc3\xb3n, Ciencias de Informaci\xc3\xb3n, Investigaci\xc3\xb3n, Geoespacial" /&gt;\n\t&lt;meta name="rights" content="Esta obra est\xc3\xa1 bajo una licencia d'</code></pre>
 </div>
-</section>
-<section id="preprocesar" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="preprocesar"><span class="header-section-number">4.3</span> Preprocesar</h2>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> carga_datos_covid19_MX(data_dir <span class="op">=</span> <span class="st">'data/'</span>, fecha<span class="op">=</span><span class="st">'210505'</span>, resolver_claves<span class="op">=</span><span class="st">'si_no_binarias'</span>, entidad<span class="op">=</span><span class="st">'09'</span>):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Lee en un DataFrame el CSV con el reporte de casos de la Secretaría de Salud de México publicado en una fecha dada. Esta función</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">        también lee el diccionario de datos que acompaña a estas publicaciones para preparar algunos campos, en particular permite la funcionalidad</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">        de generar columnas binarias para datos con valores 'SI', 'No'.</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">        **Nota**: En esta versión la ruta esta y nombre de los archivos es fija. Asumimos que existe un directorio '/content/'</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">        donde se encuentran todos los archivos.</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">        **Nota 2**: Por las actualizaciones a los formatos de datos, esta función sólo va a servir para archivos posteriores a 20-11-28</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">        resolver_claves: 'sustitucion', 'agregar', 'si_no_binarias', 'solo_localidades'. Resuelve los valores del conjunto de datos usando el</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">        diccionario de datos y los catálogos. 'sustitucion' remplaza los valores en las columnas, 'agregar'</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">        crea nuevas columnas. 'si_no_binarias' cambia valores SI, NO, No Aplica, SE IGNORA, NO ESPECIFICADO por 1, 0, 0, 0, 0 respectivamente.</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    fecha_formato <span class="op">=</span> <span class="st">'201128'</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    nuevo_formato <span class="op">=</span> <span class="va">True</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    fecha_carga <span class="op">=</span> pd.to_datetime(fecha, yearfirst<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> fecha_carga <span class="op">&lt;</span> datetime.strptime(<span class="st">'20-11-28'</span>, <span class="st">"%y-%m-</span><span class="sc">%d</span><span class="st">"</span>):</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">'La fecha debe ser posterior a 20-11-28.'</span>)</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    catalogos<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>data_dir<span class="sc">}{</span>fecha_formato<span class="sc">}</span><span class="ss"> Catalogos.xlsx'</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    descriptores<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>data_dir<span class="sc">}{</span>fecha_formato<span class="sc">}</span><span class="ss"> Descriptores.xlsx'</span>    </span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    data_file <span class="op">=</span> os.path.join(data_dir, <span class="ss">f'</span><span class="sc">{</span>fecha<span class="sc">}</span><span class="ss">COVID19MEXICO.csv.zip'</span>)</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(data_file)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(data_file, dtype<span class="op">=</span><span class="bu">object</span>, encoding<span class="op">=</span><span class="st">'latin-1'</span>)</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> entidad <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>      df <span class="op">=</span> df[df[<span class="st">'ENTIDAD_RES'</span>] <span class="op">==</span> entidad]</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Hay un error y el campo OTRA_COMP es OTRAS_COMP según los descriptores</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    df.rename(columns<span class="op">=</span>{<span class="st">'OTRA_COM'</span>: <span class="st">'OTRAS_COM'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Asignar clave única a municipios</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'MUNICIPIO_RES'</span>] <span class="op">=</span> df[<span class="st">'ENTIDAD_RES'</span>] <span class="op">+</span> df[<span class="st">'MUNICIPIO_RES'</span>]</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'CLAVE_MUNICIPIO_RES'</span>] <span class="op">=</span> df[<span class="st">'MUNICIPIO_RES'</span>]</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Leer catalogos</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    nombres_catalogos <span class="op">=</span> [<span class="st">'Catálogo de ENTIDADES'</span>,</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'Catálogo MUNICIPIOS'</span>,</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'Catálogo RESULTADO'</span>,</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'Catálogo SI_NO'</span>,</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'Catálogo TIPO_PACIENTE'</span>]</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> nuevo_formato:</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        nombres_catalogos.append(<span class="st">'Catálogo CLASIFICACION_FINAL'</span>)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        nombres_catalogos[<span class="dv">2</span>] <span class="op">=</span> <span class="st">'Catálogo RESULTADO_LAB'</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    dict_catalogos <span class="op">=</span> pd.read_excel(catalogos,</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>                              nombres_catalogos,</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>                              dtype<span class="op">=</span><span class="bu">str</span>,</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>                              engine<span class="op">=</span><span class="st">'openpyxl'</span>)</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    entidades <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">0</span>]]</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    municipios <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">1</span>]]</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    tipo_resultado <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">2</span>]]</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    cat_si_no <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">3</span>]]</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    cat_tipo_pac <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">4</span>]]</span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Arreglar los catálogos que tienen mal las primeras líneas</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    dict_catalogos[nombres_catalogos[<span class="dv">2</span>]].columns <span class="op">=</span> [<span class="st">"CLAVE"</span>, <span class="st">"DESCRIPCIÓN"</span>]</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    dict_catalogos[nombres_catalogos[<span class="dv">5</span>]].columns <span class="op">=</span> [<span class="st">"CLAVE"</span>, <span class="st">"CLASIFICACIÓN"</span>, <span class="st">"DESCRIPCIÓN"</span>]</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> nuevo_formato:</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>        clasificacion_final <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">5</span>]]</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver códigos de entidad federal</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    cols_entidad <span class="op">=</span> [<span class="st">'ENTIDAD_RES'</span>, <span class="st">'ENTIDAD_UM'</span>, <span class="st">'ENTIDAD_NAC'</span>]</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'CLAVE_ENTIDAD_RES'</span>] <span class="op">=</span> df[<span class="st">'ENTIDAD_RES'</span>]</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>    df[cols_entidad] <span class="op">=</span> df[cols_entidad].replace(to_replace<span class="op">=</span>entidades[<span class="st">'CLAVE_ENTIDAD'</span>].values,</span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>                                               value<span class="op">=</span>entidades[<span class="st">'ENTIDAD_FEDERATIVA'</span>].values)</span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Construye clave unica de municipios de catálogo para resolver nombres de municipio</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    municipios[<span class="st">'CLAVE_MUNICIPIO'</span>] <span class="op">=</span> municipios[<span class="st">'CLAVE_ENTIDAD'</span>] <span class="op">+</span> municipios[<span class="st">'CLAVE_MUNICIPIO'</span>]</span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver códigos de municipio</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>    municipios_dict <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(municipios[<span class="st">'CLAVE_MUNICIPIO'</span>], municipios[<span class="st">'MUNICIPIO'</span>]))</span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'MUNICIPIO_RES'</span>] <span class="op">=</span> df[<span class="st">'MUNICIPIO_RES'</span>].<span class="bu">map</span>(municipios_dict.get)</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver resultados</span></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> nuevo_formato:</span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>        df.rename(columns<span class="op">=</span>{<span class="st">'RESULTADO_LAB'</span>: <span class="st">'RESULTADO'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>        tipo_resultado[<span class="st">'DESCRIPCIÓN'</span>].replace({<span class="st">'POSITIVO A SARS-COV-2'</span>: <span class="st">'Positivo SARS-CoV-2'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>    tipo_resultado <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(tipo_resultado[<span class="st">'CLAVE'</span>], tipo_resultado[<span class="st">'DESCRIPCIÓN'</span>]))</span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'RESULTADO'</span>] <span class="op">=</span> df[<span class="st">'RESULTADO'</span>].<span class="bu">map</span>(tipo_resultado.get)</span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>    clasificacion_final <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(clasificacion_final[<span class="st">'CLAVE'</span>], clasificacion_final[<span class="st">'CLASIFICACIÓN'</span>]))</span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'CLASIFICACION_FINAL'</span>] <span class="op">=</span> df[<span class="st">'CLASIFICACION_FINAL'</span>].<span class="bu">map</span>(clasificacion_final.get)</span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver datos SI - NO</span></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Necesitamos encontrar todos los campos que tienen este tipo de dato y eso</span></span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>    <span class="co"># viene en los descriptores, en el campo FORMATO_O_FUENTE</span></span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>    descriptores <span class="op">=</span> pd.read_excel(<span class="ss">f'</span><span class="sc">{</span>data_dir<span class="sc">}</span><span class="ss">201128 Descriptores_.xlsx'</span>,</span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>                                 index_col<span class="op">=</span><span class="st">'Nº'</span>,</span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>                                 engine<span class="op">=</span><span class="st">'openpyxl'</span>)</span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    descriptores.columns <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(<span class="kw">lambda</span> col: col.replace(<span class="st">' '</span>, <span class="st">'_'</span>), descriptores.columns))</span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    descriptores[<span class="st">'FORMATO_O_FUENTE'</span>] <span class="op">=</span> descriptores.FORMATO_O_FUENTE.<span class="bu">str</span>.strip()</span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>    datos_si_no <span class="op">=</span> descriptores.query(<span class="st">'FORMATO_O_FUENTE == "CATÁLOGO: SI_ NO"'</span>)</span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>    cat_si_no[<span class="st">'DESCRIPCIÓN'</span>] <span class="op">=</span> cat_si_no[<span class="st">'DESCRIPCIÓN'</span>].<span class="bu">str</span>.strip()</span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    campos_si_no <span class="op">=</span> datos_si_no.NOMBRE_DE_VARIABLE</span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>    nuevos_campos_si_no <span class="op">=</span> campos_si_no</span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> resolver_claves <span class="op">==</span> <span class="st">'agregar'</span>:</span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>        nuevos_campos_si_no <span class="op">=</span> [nombre_var <span class="op">+</span> <span class="st">'_NOM'</span> <span class="cf">for</span> nombre_var <span class="kw">in</span> campos_si_no]</span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> resolver_claves <span class="op">==</span> <span class="st">'si_no_binarias'</span>:</span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>        nuevos_campos_si_no <span class="op">=</span> [nombre_var <span class="op">+</span> <span class="st">'_BIN'</span> <span class="cf">for</span> nombre_var <span class="kw">in</span> campos_si_no]</span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>        cat_si_no[<span class="st">'DESCRIPCIÓN'</span>] <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(<span class="kw">lambda</span> val: <span class="dv">1</span> <span class="cf">if</span> val <span class="op">==</span> <span class="st">'SI'</span> <span class="cf">else</span> <span class="dv">0</span>, cat_si_no[<span class="st">'DESCRIPCIÓN'</span>]))</span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>    df[nuevos_campos_si_no] <span class="op">=</span> df[datos_si_no.NOMBRE_DE_VARIABLE].replace(</span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>                                                to_replace<span class="op">=</span>cat_si_no[<span class="st">'CLAVE'</span>].values,</span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>                                                value<span class="op">=</span>cat_si_no[<span class="st">'DESCRIPCIÓN'</span>].values)</span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver tipos de paciente</span></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>    cat_tipo_pac <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(cat_tipo_pac[<span class="st">'CLAVE'</span>], cat_tipo_pac[<span class="st">'DESCRIPCIÓN'</span>]))</span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'TIPO_PACIENTE'</span>] <span class="op">=</span> df[<span class="st">'TIPO_PACIENTE'</span>].<span class="bu">map</span>(cat_tipo_pac.get)</span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> procesa_fechas(df)</span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> procesa_fechas(covid_df):</span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> covid_df.copy()</span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'FECHA_INGRESO'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_INGRESO'</span>])</span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'FECHA_SINTOMAS'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_SINTOMAS'</span>])</span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'FECHA_DEF'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_DEF'</span>], <span class="st">'coerce'</span>)</span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'DEFUNCION'</span>] <span class="op">=</span> (df[<span class="st">'FECHA_DEF'</span>].notna()).astype(<span class="bu">int</span>)</span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'EDAD'</span>] <span class="op">=</span> df[<span class="st">'EDAD'</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>    df.set_index(<span class="st">'FECHA_INGRESO'</span>, drop<span class="op">=</span><span class="va">False</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'AÑO_INGRESO'</span>] <span class="op">=</span> df.index.year</span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'MES_INGRESO'</span>] <span class="op">=</span> df.index.month</span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'DIA_SEMANA_INGRESO'</span>] <span class="op">=</span> df.index.weekday</span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'SEMANA_AÑO_INGRESO'</span>] <span class="op">=</span> df.index.week</span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'DIA_MES_INGRESO'</span>] <span class="op">=</span> df.index.day</span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'DIA_AÑO_INGRESO'</span>] <span class="op">=</span> df.index.dayofyear</span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="bajar-y-preprocesar-usando-nuestras-funciones" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="bajar-y-preprocesar-usando-nuestras-funciones"><span class="header-section-number">4.4</span> Bajar y preprocesar usando nuestras funciones</h2>
-<div class="cell" data-tags="[]" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ayer <span class="op">=</span> datetime.now() <span class="op">-</span> timedelta(<span class="dv">2</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>bajar_datos_salud(fecha<span class="op">=</span>ayer.strftime(<span class="st">'</span><span class="sc">%d</span><span class="st">-%m-%Y'</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> carga_datos_covid19_MX(fecha<span class="op">=</span>ayer.strftime(<span class="st">'%y%m</span><span class="sc">%d</span><span class="st">'</span>), entidad<span class="op">=</span><span class="st">'09'</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Como ven, una <em>petición</em> de tipo <em>get</em> simplemente nos regresa, a través de la propiedad <em>content</em>, el contenido de la respuesta del servidor. En el caso de la página de CentroGeo, el contenido es el HTML de la página (que podríamos ver mejor con un browser), pero en el caso de que la dirección apunte a un archivo de descarga, el contenido es el <em>stream</em> de datos del archivo. Este <em>stream</em> de datos lo podemos usar como entrada para escribir un archivo utilizando la función <a href="https://www.w3schools.com/python/ref_func_open.asp">open</a>.</p>
+<p>La función <code>open</code> va a tomar como entrada el <em>path</em> en donde queremos guardar el archivo, este <em>path</em> puede ser simplemente una cadena de caracteres, sin embargo esto haría que nuestro código no fuera interoperable entre sistemas operativos, entonces, en lugar de escribir el <em>path</em> como cadena de caracteres, vamos a escribirlo como un <em>objeto</em> de <code>os</code>:</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>os.path.join(<span class="st">"datos"</span>, <span class="st">"datos_covid.zip"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>'datos/datos_covid.zip'</code></pre>
+</div>
+</div>
+<p>Esta forma de construir el <em>path</em> nos asegura que va a funcionar en cualquier sistema operativo.</p>
+<p>Ya con estas explicaciones, podemos escribir la función que descarga los datos:</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bajar_datos_salud(directorio_datos<span class="op">=</span><span class="st">'data/'</span>):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Descarga el ultimo archivo disponible en datos abiertos y los diccionarios correspondientes.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    fecha_descarga <span class="op">=</span> datetime.now().date()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    url_datos <span class="op">=</span> <span class="st">'https://datosabiertos.salud.gob.mx/gobmx/salud/datos_abiertos/datos_abiertos_covid19.zip'</span>    </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    archivo_nombre <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>fecha_descarga<span class="sc">.</span>strftime(<span class="st">"%y%m</span><span class="sc">%d</span><span class="st">"</span>)<span class="sc">}</span><span class="ss">COVID19MEXICO.csv.zip'</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    archivo_ruta <span class="op">=</span> os.path.join(directorio_datos, archivo_nombre)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    url_diccionario <span class="op">=</span> <span class="st">'https://datosabiertos.salud.gob.mx/gobmx/salud/datos_abiertos/diccionario_datos_covid19.zip'</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    diccionario_ruta <span class="op">=</span> os.path.join(directorio_datos, <span class="st">'diccionario.zip'</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(archivo_ruta):</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        logging.debug(<span class="ss">f'Ya existe </span><span class="sc">{</span>archivo_nombre<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Bajando datos...'</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> requests.get(url_datos, allow_redirects<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">open</span>(archivo_ruta, <span class="st">'wb'</span>).write(r.content)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> requests.get(url_diccionario, allow_redirects<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">open</span>(diccionario_ruta, <span class="st">'wb'</span>).write(r.content)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> zipfile.ZipFile(diccionario_ruta, <span class="st">'r'</span>) <span class="im">as</span> zip_ref:</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>          zip_ref.extractall(directorio_datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para utilizar la función hacemos:</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>bajar_datos_salud(<span class="st">'datos/'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Bajando datos 18.01.2022
-data/220118COVID19MEXICO.csv.zip</code></pre>
+<pre><code>Bajando datos...</code></pre>
+</div>
+</div>
+</section>
+<section id="preproceso" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="preproceso"><span class="header-section-number">3.2</span> Preproceso</h2>
+<p>Ahora, ya que tenemos los datos descargados, vamos a <em>empaquetar</em> en una función el flujo de preproceso que trabajamos en el taller anterior. Esta función va a tomar como entrada la carpeta en donde se encuentran los datos y dicionariosy el nombre del archivo de datos que queremos procesar. Toma dos parámetros adicionales, uno para decidir si queremos resolver o no las claves binarias y otro para definir la entidad que queremos procesar.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> carga_datos_covid19_MX(data_dir<span class="op">=</span><span class="st">'datos/'</span>, archivo<span class="op">=</span><span class="st">'datos_abiertos_covid19.zip'</span>, resolver_claves<span class="op">=</span><span class="st">'si_no_binarias'</span>, entidad<span class="op">=</span><span class="st">'09'</span>):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Lee en un DataFrame el CSV con el reporte de casos de la Secretaría de Salud de México publicado en una fecha dada. Esta función</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">        también lee el diccionario de datos que acompaña a estas publicaciones para preparar algunos campos, en particular permite la funcionalidad</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">        de generar columnas binarias para datos con valores 'SI', 'No'.</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">        **Nota 2**: Por las actualizaciones a los formatos de datos, esta función sólo va a servir para archivos posteriores a 20-11-28</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">        resolver_claves: 'sustitucion', 'agregar', 'si_no_binarias', 'solo_localidades'. Resuelve los valores del conjunto de datos usando el</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">        diccionario de datos y los catálogos. 'sustitucion' remplaza los valores en las columnas, 'agregar'</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">        crea nuevas columnas. 'si_no_binarias' cambia valores SI, NO, No Aplica, SE IGNORA, NO ESPECIFICADO por 1, 0, 0, 0, 0 respectivamente.</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    catalogo_nombre <span class="op">=</span><span class="st">'201128 Catalogos.xlsx'</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    catalogo_path <span class="op">=</span> os.path.join(data_dir, catalogo_nombre)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    descriptores_nombre <span class="op">=</span> <span class="st">'201128 Descriptores.xlsx'</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    descriptores_path <span class="op">=</span> os.path.join(data_dir, descriptores_nombre)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    data_file <span class="op">=</span> os.path.join(data_dir, archivo)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(data_file)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(data_file, dtype<span class="op">=</span><span class="bu">object</span>, encoding<span class="op">=</span><span class="st">'latin-1'</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> entidad <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>      df <span class="op">=</span> df[df[<span class="st">'ENTIDAD_RES'</span>] <span class="op">==</span> entidad]</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Hay un error y el campo OTRA_COMP es OTRAS_COMP según los descriptores</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    df.rename(columns<span class="op">=</span>{<span class="st">'OTRA_COM'</span>: <span class="st">'OTRAS_COM'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Asignar clave única a municipios</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'MUNICIPIO_RES'</span>] <span class="op">=</span> df[<span class="st">'ENTIDAD_RES'</span>] <span class="op">+</span> df[<span class="st">'MUNICIPIO_RES'</span>]</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'CLAVE_MUNICIPIO_RES'</span>] <span class="op">=</span> df[<span class="st">'MUNICIPIO_RES'</span>]</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Leer catalogos</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    nombres_catalogos <span class="op">=</span> [<span class="st">'Catálogo de ENTIDADES'</span>,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'Catálogo MUNICIPIOS'</span>,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'Catálogo RESULTADO'</span>,</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'Catálogo SI_NO'</span>,</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'Catálogo TIPO_PACIENTE'</span>]</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    nombres_catalogos.append(<span class="st">'Catálogo CLASIFICACION_FINAL'</span>)</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    nombres_catalogos[<span class="dv">2</span>] <span class="op">=</span> <span class="st">'Catálogo RESULTADO_LAB'</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    dict_catalogos <span class="op">=</span> pd.read_excel(catalogo_path,</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>                              nombres_catalogos,</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>                              dtype<span class="op">=</span><span class="bu">str</span>,</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>                              engine<span class="op">=</span><span class="st">'openpyxl'</span>)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    entidades <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">0</span>]]</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    municipios <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">1</span>]]</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    tipo_resultado <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">2</span>]]</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    cat_si_no <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">3</span>]]</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    cat_tipo_pac <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">4</span>]]</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Arreglar los catálogos que tienen mal las primeras líneas</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>    dict_catalogos[nombres_catalogos[<span class="dv">2</span>]].columns <span class="op">=</span> [<span class="st">"CLAVE"</span>, <span class="st">"DESCRIPCIÓN"</span>]</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    dict_catalogos[nombres_catalogos[<span class="dv">5</span>]].columns <span class="op">=</span> [<span class="st">"CLAVE"</span>, <span class="st">"CLASIFICACIÓN"</span>, <span class="st">"DESCRIPCIÓN"</span>]</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    clasificacion_final <span class="op">=</span> dict_catalogos[nombres_catalogos[<span class="dv">5</span>]]</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver códigos de entidad federal</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>    cols_entidad <span class="op">=</span> [<span class="st">'ENTIDAD_RES'</span>, <span class="st">'ENTIDAD_UM'</span>, <span class="st">'ENTIDAD_NAC'</span>]</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'CLAVE_ENTIDAD_RES'</span>] <span class="op">=</span> df[<span class="st">'ENTIDAD_RES'</span>]</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    df[cols_entidad] <span class="op">=</span> df[cols_entidad].replace(to_replace<span class="op">=</span>entidades[<span class="st">'CLAVE_ENTIDAD'</span>].values,</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>                                               value<span class="op">=</span>entidades[<span class="st">'ENTIDAD_FEDERATIVA'</span>].values)</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Construye clave unica de municipios de catálogo para resolver nombres de municipio</span></span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>    municipios[<span class="st">'CLAVE_MUNICIPIO'</span>] <span class="op">=</span> municipios[<span class="st">'CLAVE_ENTIDAD'</span>] <span class="op">+</span> municipios[<span class="st">'CLAVE_MUNICIPIO'</span>]</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver códigos de municipio</span></span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    municipios_dict <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(municipios[<span class="st">'CLAVE_MUNICIPIO'</span>], municipios[<span class="st">'MUNICIPIO'</span>]))</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'MUNICIPIO_RES'</span>] <span class="op">=</span> df[<span class="st">'MUNICIPIO_RES'</span>].<span class="bu">map</span>(municipios_dict.get)</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver resultados</span></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>    df.rename(columns<span class="op">=</span>{<span class="st">'RESULTADO_LAB'</span>: <span class="st">'RESULTADO'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>    tipo_resultado[<span class="st">'DESCRIPCIÓN'</span>].replace({<span class="st">'POSITIVO A SARS-COV-2'</span>: <span class="st">'Positivo SARS-CoV-2'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a>    tipo_resultado <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(tipo_resultado[<span class="st">'CLAVE'</span>], tipo_resultado[<span class="st">'DESCRIPCIÓN'</span>]))</span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'RESULTADO'</span>] <span class="op">=</span> df[<span class="st">'RESULTADO'</span>].<span class="bu">map</span>(tipo_resultado.get)</span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>    clasificacion_final <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(clasificacion_final[<span class="st">'CLAVE'</span>], clasificacion_final[<span class="st">'CLASIFICACIÓN'</span>]))</span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'CLASIFICACION_FINAL'</span>] <span class="op">=</span> df[<span class="st">'CLASIFICACION_FINAL'</span>].<span class="bu">map</span>(clasificacion_final.get)</span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver datos SI - NO</span></span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Necesitamos encontrar todos los campos que tienen este tipo de dato y eso</span></span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>    <span class="co"># viene en los descriptores, en el campo FORMATO_O_FUENTE</span></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>    descriptores <span class="op">=</span> pd.read_excel(<span class="ss">f'</span><span class="sc">{</span>data_dir<span class="sc">}</span><span class="ss">201128 Descriptores_.xlsx'</span>,</span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>                                 index_col<span class="op">=</span><span class="st">'Nº'</span>,</span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>                                 engine<span class="op">=</span><span class="st">'openpyxl'</span>)</span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a>    descriptores.columns <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(<span class="kw">lambda</span> col: col.replace(<span class="st">' '</span>, <span class="st">'_'</span>), descriptores.columns))</span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>    descriptores[<span class="st">'FORMATO_O_FUENTE'</span>] <span class="op">=</span> descriptores.FORMATO_O_FUENTE.<span class="bu">str</span>.strip()</span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>    datos_si_no <span class="op">=</span> descriptores.query(<span class="st">'FORMATO_O_FUENTE == "CATÁLOGO: SI_ NO"'</span>)</span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>    cat_si_no[<span class="st">'DESCRIPCIÓN'</span>] <span class="op">=</span> cat_si_no[<span class="st">'DESCRIPCIÓN'</span>].<span class="bu">str</span>.strip()</span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>    campos_si_no <span class="op">=</span> datos_si_no.NOMBRE_DE_VARIABLE</span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>    nuevos_campos_si_no <span class="op">=</span> campos_si_no</span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> resolver_claves <span class="op">==</span> <span class="st">'agregar'</span>:</span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a>        nuevos_campos_si_no <span class="op">=</span> [nombre_var <span class="op">+</span> <span class="st">'_NOM'</span> <span class="cf">for</span> nombre_var <span class="kw">in</span> campos_si_no]</span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> resolver_claves <span class="op">==</span> <span class="st">'si_no_binarias'</span>:</span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a>        nuevos_campos_si_no <span class="op">=</span> [nombre_var <span class="op">+</span> <span class="st">'_BIN'</span> <span class="cf">for</span> nombre_var <span class="kw">in</span> campos_si_no]</span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a>        cat_si_no[<span class="st">'DESCRIPCIÓN'</span>] <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(<span class="kw">lambda</span> val: <span class="dv">1</span> <span class="cf">if</span> val <span class="op">==</span> <span class="st">'SI'</span> <span class="cf">else</span> <span class="dv">0</span>, cat_si_no[<span class="st">'DESCRIPCIÓN'</span>]))</span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>    df[nuevos_campos_si_no] <span class="op">=</span> df[datos_si_no.NOMBRE_DE_VARIABLE].replace(</span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a>                                                to_replace<span class="op">=</span>cat_si_no[<span class="st">'CLAVE'</span>].values,</span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>                                                value<span class="op">=</span>cat_si_no[<span class="st">'DESCRIPCIÓN'</span>].values)</span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolver tipos de paciente</span></span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a>    cat_tipo_pac <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(cat_tipo_pac[<span class="st">'CLAVE'</span>], cat_tipo_pac[<span class="st">'DESCRIPCIÓN'</span>]))</span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'TIPO_PACIENTE'</span>] <span class="op">=</span> df[<span class="st">'TIPO_PACIENTE'</span>].<span class="bu">map</span>(cat_tipo_pac.get)</span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> procesa_fechas(df)</span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> procesa_fechas(covid_df):</span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> covid_df.copy()</span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'FECHA_INGRESO'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_INGRESO'</span>])</span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'FECHA_SINTOMAS'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_SINTOMAS'</span>])</span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'FECHA_DEF'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_DEF'</span>], <span class="st">'coerce'</span>)</span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'DEFUNCION'</span>] <span class="op">=</span> (df[<span class="st">'FECHA_DEF'</span>].notna()).astype(<span class="bu">int</span>)</span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'EDAD'</span>] <span class="op">=</span> df[<span class="st">'EDAD'</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a>    df.set_index(<span class="st">'FECHA_INGRESO'</span>, drop<span class="op">=</span><span class="va">False</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'AÑO_INGRESO'</span>] <span class="op">=</span> df.index.year</span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'MES_INGRESO'</span>] <span class="op">=</span> df.index.month</span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'DIA_SEMANA_INGRESO'</span>] <span class="op">=</span> df.index.weekday</span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'SEMANA_AÑO_INGRESO'</span>] <span class="op">=</span> df.index.week</span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'DIA_MES_INGRESO'</span>] <span class="op">=</span> df.index.day</span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'DIA_AÑO_INGRESO'</span>] <span class="op">=</span> df.index.dayofyear</span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="preprocesar-usando-nuestras-funciones" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="preprocesar-usando-nuestras-funciones"><span class="header-section-number">3.3</span> Preprocesar usando nuestras funciones</h2>
+<div class="cell" data-tags="[]" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>bajar_datos_salud(<span class="st">'datos/'</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> carga_datos_covid19_MX(entidad<span class="op">=</span><span class="st">'09'</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>datos/datos_abiertos_covid19.zip</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_3563/19327198.py:132: FutureWarning: weekofyear and week have been deprecated, please use DatetimeIndex.isocalendar().week instead, which returns a Series.  To exactly reproduce the behavior of week and weekofyear and return an Index, you may call pd.Int64Index(idx.isocalendar().week)
+<pre><code>/tmp/ipykernel_138343/243715272.py:124: FutureWarning: weekofyear and week have been deprecated, please use DatetimeIndex.isocalendar().week instead, which returns a Series. To exactly reproduce the behavior of week and weekofyear and return an Index, you may call pd.Int64Index(idx.isocalendar().week)
   df['SEMANA_AÑO_INGRESO'] = df.index.week</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="18">
 
 <div>
 
@@ -520,83 +530,83 @@ data/220118COVID19MEXICO.csv.zip</code></pre>
   </thead>
   <tbody>
     <tr>
-      <th>2020-07-06</th>
-      <td>2022-01-18</td>
-      <td>z12d63</td>
+      <th>2022-01-19</th>
+      <td>2023-01-03</td>
+      <td>180725</td>
       <td>2</td>
-      <td>12</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>2</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>VENUSTIANO CARRANZA</td>
-      <td>AMBULATORIO</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2020</td>
-      <td>7</td>
-      <td>0</td>
-      <td>28</td>
-      <td>6</td>
-      <td>188</td>
-    </tr>
-    <tr>
-      <th>2020-09-23</th>
-      <td>2022-01-18</td>
-      <td>z13788</td>
-      <td>1</td>
-      <td>12</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>1</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>CUAJIMALPA DE MORELOS</td>
-      <td>AMBULATORIO</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2020</td>
       <td>9</td>
+      <td>CIUDAD DE MÉXICO</td>
       <td>2</td>
-      <td>39</td>
-      <td>23</td>
-      <td>267</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>TLALPAN</td>
+      <td>HOSPITALIZADO</td>
+      <td>...</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2022</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>19</td>
+      <td>19</td>
     </tr>
     <tr>
-      <th>2020-06-15</th>
-      <td>2022-01-18</td>
-      <td>z2b144</td>
-      <td>2</td>
+      <th>2022-03-09</th>
+      <td>2023-01-03</td>
+      <td>1933c0</td>
+      <td>1</td>
       <td>12</td>
       <td>CIUDAD DE MÉXICO</td>
-      <td>1</td>
-      <td>MÉXICO</td>
+      <td>2</td>
       <td>CIUDAD DE MÉXICO</td>
-      <td>AZCAPOTZALCO</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>IZTAPALAPA</td>
       <td>AMBULATORIO</td>
+      <td>...</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2022</td>
+      <td>3</td>
+      <td>2</td>
+      <td>10</td>
+      <td>9</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <th>2022-02-20</th>
+      <td>2023-01-03</td>
+      <td>0741e4</td>
+      <td>2</td>
+      <td>6</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>2</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>MIGUEL HIDALGO</td>
+      <td>HOSPITALIZADO</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>2020</td>
+      <td>1</td>
+      <td>2022</td>
+      <td>2</td>
       <td>6</td>
-      <td>0</td>
-      <td>25</td>
-      <td>15</td>
-      <td>167</td>
+      <td>7</td>
+      <td>20</td>
+      <td>51</td>
     </tr>
     <tr>
-      <th>2020-12-21</th>
-      <td>2022-01-18</td>
-      <td>z526b3</td>
+      <th>2022-01-01</th>
+      <td>2023-01-03</td>
+      <td>1c4d2e</td>
       <td>2</td>
-      <td>12</td>
+      <td>9</td>
       <td>CIUDAD DE MÉXICO</td>
       <td>1</td>
       <td>CIUDAD DE MÉXICO</td>
@@ -608,36 +618,36 @@ data/220118COVID19MEXICO.csv.zip</code></pre>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>2020</td>
-      <td>12</td>
-      <td>0</td>
+      <td>2022</td>
+      <td>1</td>
+      <td>5</td>
       <td>52</td>
-      <td>21</td>
-      <td>356</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>2020-04-22</th>
-      <td>2022-01-18</td>
-      <td>z3d1e2</td>
+      <th>2022-06-28</th>
+      <td>2023-01-03</td>
+      <td>0a6cd6</td>
       <td>2</td>
-      <td>12</td>
+      <td>6</td>
       <td>CIUDAD DE MÉXICO</td>
       <td>1</td>
+      <td>NAYARIT</td>
       <td>CIUDAD DE MÉXICO</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>GUSTAVO A. MADERO</td>
+      <td>IZTAPALAPA</td>
       <td>AMBULATORIO</td>
       <td>...</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>2020</td>
-      <td>4</td>
-      <td>2</td>
-      <td>17</td>
-      <td>22</td>
-      <td>113</td>
+      <td>2022</td>
+      <td>6</td>
+      <td>1</td>
+      <td>26</td>
+      <td>28</td>
+      <td>179</td>
     </tr>
     <tr>
       <th>...</th>
@@ -664,142 +674,141 @@ data/220118COVID19MEXICO.csv.zip</code></pre>
       <td>...</td>
     </tr>
     <tr>
-      <th>2021-10-11</th>
-      <td>2022-01-18</td>
-      <td>m00073e</td>
-      <td>2</td>
-      <td>12</td>
-      <td>MÉXICO</td>
-      <td>2</td>
-      <td>NO ESPECIFICADO</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>CUAUHTÉMOC</td>
-      <td>AMBULATORIO</td>
-      <td>...</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2021</td>
-      <td>10</td>
-      <td>0</td>
-      <td>41</td>
-      <td>11</td>
-      <td>284</td>
-    </tr>
-    <tr>
-      <th>2021-10-13</th>
-      <td>2022-01-18</td>
-      <td>m030623</td>
-      <td>2</td>
-      <td>12</td>
-      <td>MÉXICO</td>
-      <td>2</td>
-      <td>MÉXICO</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>TLÁHUAC</td>
-      <td>AMBULATORIO</td>
-      <td>...</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2021</td>
-      <td>10</td>
-      <td>2</td>
-      <td>41</td>
-      <td>13</td>
-      <td>286</td>
-    </tr>
-    <tr>
-      <th>2021-10-13</th>
-      <td>2022-01-18</td>
-      <td>m049633</td>
+      <th>2022-01-23</th>
+      <td>2023-01-03</td>
+      <td>m1cd235</td>
       <td>2</td>
       <td>12</td>
       <td>MÉXICO</td>
       <td>1</td>
-      <td>CIUDAD DE MÉXICO</td>
+      <td>MÉXICO</td>
       <td>CIUDAD DE MÉXICO</td>
       <td>GUSTAVO A. MADERO</td>
-      <td>AMBULATORIO</td>
+      <td>HOSPITALIZADO</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>2021</td>
-      <td>10</td>
-      <td>2</td>
-      <td>41</td>
-      <td>13</td>
-      <td>286</td>
-    </tr>
-    <tr>
-      <th>2021-10-13</th>
-      <td>2022-01-18</td>
-      <td>m160d02</td>
-      <td>2</td>
-      <td>12</td>
-      <td>MÉXICO</td>
-      <td>2</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>GUSTAVO A. MADERO</td>
-      <td>AMBULATORIO</td>
-      <td>...</td>
+      <td>2022</td>
       <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2021</td>
-      <td>10</td>
-      <td>2</td>
-      <td>41</td>
-      <td>13</td>
-      <td>286</td>
-    </tr>
-    <tr>
-      <th>2021-10-14</th>
-      <td>2022-01-18</td>
-      <td>m0da9ec</td>
-      <td>2</td>
-      <td>12</td>
-      <td>MÉXICO</td>
-      <td>1</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>CIUDAD DE MÉXICO</td>
-      <td>GUSTAVO A. MADERO</td>
-      <td>AMBULATORIO</td>
-      <td>...</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2021</td>
-      <td>10</td>
+      <td>6</td>
       <td>3</td>
-      <td>41</td>
-      <td>14</td>
-      <td>287</td>
+      <td>23</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>2022-11-17</th>
+      <td>2023-01-03</td>
+      <td>m0dbc4c</td>
+      <td>2</td>
+      <td>12</td>
+      <td>MÉXICO</td>
+      <td>1</td>
+      <td>AGUASCALIENTES</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>AZCAPOTZALCO</td>
+      <td>AMBULATORIO</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2022</td>
+      <td>11</td>
+      <td>3</td>
+      <td>46</td>
+      <td>17</td>
+      <td>321</td>
+    </tr>
+    <tr>
+      <th>2022-11-16</th>
+      <td>2023-01-03</td>
+      <td>m13431e</td>
+      <td>2</td>
+      <td>12</td>
+      <td>MÉXICO</td>
+      <td>1</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>AZCAPOTZALCO</td>
+      <td>AMBULATORIO</td>
+      <td>...</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2022</td>
+      <td>11</td>
+      <td>2</td>
+      <td>46</td>
+      <td>16</td>
+      <td>320</td>
+    </tr>
+    <tr>
+      <th>2022-12-01</th>
+      <td>2023-01-03</td>
+      <td>m1493ea</td>
+      <td>2</td>
+      <td>12</td>
+      <td>MÉXICO</td>
+      <td>1</td>
+      <td>MÉXICO</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>GUSTAVO A. MADERO</td>
+      <td>AMBULATORIO</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2022</td>
+      <td>12</td>
+      <td>3</td>
+      <td>48</td>
+      <td>1</td>
+      <td>335</td>
+    </tr>
+    <tr>
+      <th>2022-12-16</th>
+      <td>2023-01-03</td>
+      <td>m0a22b8</td>
+      <td>2</td>
+      <td>12</td>
+      <td>MÉXICO</td>
+      <td>2</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>CIUDAD DE MÉXICO</td>
+      <td>TLALPAN</td>
+      <td>AMBULATORIO</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2022</td>
+      <td>12</td>
+      <td>4</td>
+      <td>50</td>
+      <td>16</td>
+      <td>350</td>
     </tr>
   </tbody>
 </table>
-<p>4279037 rows × 69 columns</p>
+<p>1896084 rows × 69 columns</p>
 </div>
 </div>
 </div>
 </section>
-<section id="guardando-el-resultado" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="guardando-el-resultado"><span class="header-section-number">4.5</span> Guardando el resultado</h2>
+<section id="guardando-el-resultado" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="guardando-el-resultado"><span class="header-section-number">3.4</span> Guardando el resultado</h2>
 <p>Listo, con nuestras funciones tenemos ya nuestros datos preprocesados, ahora vamos a guardarlos para poder utlizarlos rápidamente en otros notebooks. En general tenemos muchas opciones para guardar los datos, csv, por ejemplo. En esta ocasión vamos a usar un formato nativo de Python el <a href="https://docs.python.org/3/library/pickle.html">pickle</a>, que es una forma de <em>serializar</em> un objeto de Python. Pandas nos provee una función para guardar directamente un dataframe como pickle:</p>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df.to_pickle(<span class="st">"data/datos_covid_ene19.pkl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df.to_pickle(<span class="st">"data/datos_covid_ene19.pkl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>En la documentación de <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_pickle.html">to_pickle</a> pueden ver las opcioones completas.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
