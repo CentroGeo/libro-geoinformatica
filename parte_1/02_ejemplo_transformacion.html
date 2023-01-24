@@ -266,7 +266,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>En el capítulo anterior hicimos una introducción a las herramientas básicas de Python para manipular datos. Ahora, en este capítulo, vamos a trabajar con una base de datos más compleja y trataremos de seguir un flujo de trabajo real, basado en experiencias de trabajo con equipos de apoyo a la toma de decisiones.</p>
 <p>La base de datos que vamos a utilizar son los datos abiertos sobre COVID-19 que publica diarimente la Dirección General de Epidemiología de la Secretaría de Salud. Esta es una base muy grande y compleja que incluye el seguimiento de todos los casos confirmados de COVID en México. El tratamiento que vamos a dar a los datos, es el usado en diferentes flujos de trabajo de los grupos que estuvieron trabajando con la Secretaría de Salud para generar productos de análisis durante los primeros dos años de atención de la pandemia.</p>
 <p>Antes de empezar a analizar la base de datos, vamos a importar las librerías que utilizaremos en el taller.</p>
-<div class="cell" data-execution_count="1">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># hablar con el sistema operativo</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob <span class="co"># listar directorios y ese tipo de operaciones</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools <span class="co"># herramientas para iterar objetos</span></span>
@@ -283,10 +283,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 data-number="2.1" class="anchored" data-anchor-id="exploración-del-contenido"><span class="header-section-number">2.1</span> Exploración del contenido</h2>
 <p>Lo primero que vamos a hacer es explorar los datos publicados por la Secretaría de Salud para entender cómo están organizados. En la <a href="https://www.dropbox.com/sh/ikl1f698rjx9uag/AAD_7bcvipFk6pWQ2IvP1gsZa?dl=1">carpeta de datos del libro</a> puedes encontrar un ejemplo de la base de datos para el 9 de enero de 2023 bajo el nombre <code>datos_abiertos_covid19.zip</code>.</p>
 <p>Para leer los datos vamos a utilizar la función <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html">read_csv()</a>, esta función (como pueden ver) acepta que el csv venga comprimido en un zip.</p>
-<div class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'datos/datos_abiertos_covid19.zip'</span>, dtype<span class="op">=</span><span class="bu">object</span>, encoding<span class="op">=</span><span class="st">'latin-1'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="3">
 
 <div>
 
@@ -447,7 +447,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Cada renglón en la base de datos corresponde a un caso en seguimiento, el resultado de cada caso se puede actualizar en sucesivas publicaciones de la base de datos. Las columnas describen un conjunto de variables asociadas al seguimiento de cada uno de los casos. Las dos primeras columnas corresponden a la fecha en la que se actualizó el caso y a un id único para cada caso respectivamente, en este taller no vamos a usar esas dos columnas.</p>
 <p>Luego vienen un conjunto de columnas que describen la unidad médica de reporte y, después, las columnas que nos interesan más, que son las que describen al paciente.</p>
 <p>Para entender un poco mejor los datos, conviene leer el archívo de catálogo. Lo pueden descargar del sitio de datos abiertos o bien usar el que viene en la carpeta de datos del libro bajo el nombre <code>201128 Catalogos.xlsx</code>. Como el catálogo es un archivo de excel con varias hojas, lo vamos a leer usando openpyxl que nos va a devolver un diccionario de DataFrames que relacionan el nombre de la hoja con los datos que contiene.</p>
-<div class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>catalogos <span class="op">=</span> <span class="st">'datos/201128 Catalogos.xlsx'</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>nombres_catalogos <span class="op">=</span> [<span class="st">'Catálogo de ENTIDADES'</span>, <span class="co"># Acá están los nombres de las hojas del excel</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'Catálogo MUNICIPIOS'</span>,</span>
@@ -466,7 +466,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Aquí le damos nombre a las columnas porque en el excel se saltan dos líneas</span></span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>clasificacion_final.columns <span class="op">=</span> [<span class="st">"CLAVE"</span>, <span class="st">"CLASIFICACIÓN"</span>, <span class="st">"DESCRIPCIÓN"</span>] </span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>clasificacion_final</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="4">
 
 <div>
 
@@ -548,12 +548,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>En el bajo mundo del análisis de datos, <em>aplanar</em> una base de datos es la operación de substituir los valores codificados a partir de un diccionario. En este caso, los datos que leímos traen valores codificados, entonces la primera misión es substituir esos valores por sus equivalentes en el diccionario.</p>
 <p>Como la base de datos es muy grande, vamos a trabajar sólo con un estado de la república, en este caso la Ciudad de México (pero ustedes podrían elegir otro cualquiera).</p>
 <p>Para seleccionar un estado, tenemos que <em>elegir</em> las filas del DataFrame que contengan el valor que queremos en la columna <em>ENTIDAD</em>, para eso vamos a aprender a usar nuestro primer operador de Pandas, el operador <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html">loc</a> que nos permite seleccionar filas a partir de los valores de una o más columnas.</p>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># el copy() nos asegura tener una copia de los datos en lugar de una referencia, </span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># con eso podemos liberar la memoria más fácil</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.loc[df[<span class="st">'ENTIDAD_RES'</span>] <span class="op">==</span> <span class="st">'09'</span>].copy()</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="5">
 
 <div>
 
@@ -713,10 +713,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Fíjense que lo que hicimos fue reescribir en la variable <code>df</code> el resultado de nuestra selección, de forma que <code>df</code> ahora sólo contiene resultados para la CDMX.</p>
 <p>Ahora ya con los datos filtrados y, por lo tanto, con un tamaño más manejable, vamos a empezar a trabajarlos. Lo primero que vamos a hacer es cambiar los valores de la columna <em>MUNICIPIO_RES</em> por la concatenación de las claves de estado y municipio, esto porque nos hará más adelante más fácil el trabajo de unir los datos con las geometrías de los municipios y porque además así tendremos un identificador único para estos (claro que esto sólo tiene sentido al trabajar con varios estados al mismo tiempo).</p>
-<div class="cell" data-execution_count="5">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'MUNICIPIO_RES'</span>] <span class="op">=</span> df[<span class="st">'ENTIDAD_RES'</span>] <span class="op">+</span> df[<span class="st">'MUNICIPIO_RES'</span>]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="6">
 
 <div>
 
@@ -875,12 +875,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>Ahora vamos a corregir el nombre de una columna en la base de datos para que coincida con el nombre en el diccionario y después podamos buscar automáticamente. Pra corregir el nombre de la columna vamos a utilizar la función <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html">rename</a> de Pandas. Esta función nos sirve para renombrar filas (el índice del DataFrame, que vamos a ver más adelante) o columnas dependiendo de qué eje seleccionemos. El eje 0 son las filas y el 1 las columnas.</p>
-<div class="cell" data-execution_count="6">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Como estamos usando explícitamente el parámetro columns, </span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># no necesitamos especificar el eje</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">'OTRA_COM'</span>: <span class="st">'OTRAS_COM'</span>})</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>df.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>Index(['FECHA_ACTUALIZACION', 'ID_REGISTRO', 'ORIGEN', 'SECTOR', 'ENTIDAD_UM',
        'SEXO', 'ENTIDAD_NAC', 'ENTIDAD_RES', 'MUNICIPIO_RES', 'TIPO_PACIENTE',
        'FECHA_INGRESO', 'FECHA_SINTOMAS', 'FECHA_DEF', 'INTUBADO', 'NEUMONIA',
@@ -895,14 +895,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Fíjense cómo otra vez reescribimos la variable <code>df</code>. La mayor parte de las operaciones en Pandas regresan un DataFrame con el resultado de la operación y no modifican el DataFrame original, entonces para <em>guardar</em> los resultados, necesitamos reescribir la variable (o guardarla con otro nombre)</p>
 <p>Ahora sí podemos empezar a <em>aplanar</em> los datos. Vamos a empezar por resolver las claves de resultado de las pruebas COVID. En los datos originales estos vienen codificados en la columna <strong>RESULTADO_LAB</strong>, pero en el diccionario ese velor se llama <strong>RESULTADO</strong>, entonces otra vez vamos a empezar por renombrar una columna.</p>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">'RESULTADO_LAB'</span>: <span class="st">'RESULTADO'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Para sustituir los valores en nuestros datos originales vamos a usar la función <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.map.html">map</a> que toma una serie (una serie es una columna de un dataframe) y <em>mapea</em> sus valores de acuerdo a una correspondencia que podemos pasar como un diccionario. Veamos poco a poco cómo hacer lo que queremos.</p>
 <p>Lo primero que necesitamos es un diccionario que relacione los valores en nuestros datos con los nombres en el diccionario. Recordemos cómo se ve el diccionario:</p>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>clasificacion_final</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="9">
 
 <div>
 
@@ -977,21 +977,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Necesitamos un diccionario <code>{CLASIFICACION:CLAVE}</code> (ya sé que hay unos valores espurios, pero no nos importan porque simplemente esos no los va a encontrar en nuestra base de datos).</p>
 <p>Para construir este diccionario, vamos a empezar por construir la <em>tupla</em> que mantiene la relación que buscamos, para eso vamos a utilizar la función <a href="https://www.w3schools.com/python/ref_fu">zip</a> que toma dos <em>iteradores</em> como entrada y regresa un <em>iterador</em> que tiene por elementos las tuplas hechas elemento a elemento entre los dos iteradores de inicio. Veamoslo con calma:</p>
-<div class="cell" data-execution_count="9">
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> [<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>]</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>l2 <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>l3 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(l1,l2))</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>l3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>[('a', 1), ('b', 2), ('c', 3)]</code></pre>
 </div>
 </div>
 <p>Lo que nos regresa <code>zip</code> es un iterado con las tuplas formadas por los pares ordenados de los iteradores de entrada. En Python un iterador es cualquier cosa que se pueda <em>recorrer en orden</em>, a veces estos iteradores, como en el caso de <code>zip</code> no regresan todas las entradas sino, para ahorrar memoria, las generan conforme se recorren, por eso hay que hacer <code>list(zip)</code> para que se generen las entradas.</p>
 <p>Ahora sí podemos entonces crear el diccionario con el que vamos a actualizar los datos:</p>
-<div class="cell" data-execution_count="10">
+<div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>clasificacion_final <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(clasificacion_final[<span class="st">'CLAVE'</span>], clasificacion_final[<span class="st">'CLASIFICACIÓN'</span>]))</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>clasificacion_final</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>{nan: nan,
  'CLAVE': 'CLASIFICACIÓN',
  '1': 'CASO DE COVID-19 CONFIRMADO POR ASOCIACIÓN CLÍNICA EPIDEMIOLÓGICA',
@@ -1004,10 +1004,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>Y entonces pasarlo como argumento a la función <code>map</code>. Hay un truco aquí, <code>map</code> toma como argumento una función que, para cada llave, regresa el valor correspondiente, entonces no es propiamente el diccionario lo que vamos a pasar, sino la función <a href="https://www.w3schools.com/python/ref_dictionary_get.asp">get</a> del diccionario que hace justo lo que queremos. Esto nos revela una prpiedad curiosa de Python, los argumentos de una función pueden ser funciones.</p>
-<div class="cell" data-execution_count="11">
+<div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'CLASIFICACION_FINAL'</span>] <span class="op">=</span> df[<span class="st">'CLASIFICACION_FINAL'</span>].<span class="bu">map</span>(clasificacion_final.get)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'CLASIFICACION_FINAL'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>1                                 NEGATIVO A SARS-COV-2
 4                                 NEGATIVO A SARS-COV-2
 8     CASO DE COVID-19 CONFIRMADO POR COMITÉ DE  DIC...
@@ -1017,12 +1017,12 @@ Name: CLASIFICACION_FINAL, dtype: object</code></pre>
 </div>
 </div>
 <p>Ahora vamos a hacer una sustitución un poco más compleja, tenemos que encontrar todos los campos de tipo “SI - NO” y resolverlos (sustituir por valores que podamos manejar más fácil). Los campos que tienen este tipo de datos vienen en el excel de descriptores:</p>
-<div class="cell" data-execution_count="12">
+<div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>descriptores <span class="op">=</span> pd.read_excel(<span class="st">'datos/201128 Descriptores_.xlsx'</span>,</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                             index_col<span class="op">=</span><span class="st">'Nº'</span>,</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                             engine<span class="op">=</span><span class="st">'openpyxl'</span>)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>descriptores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="13">
 
 <div>
 
@@ -1288,9 +1288,9 @@ Name: CLASIFICACION_FINAL, dtype: object</code></pre>
 </div>
 </div>
 <p>Fíjense en alguno de estos campos en los datos:</p>
-<div class="cell" data-execution_count="13">
+<div class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'OBESIDAD'</span>].unique()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>array(['2', '98', '1'], dtype=object)</code></pre>
 </div>
 </div>
@@ -1300,10 +1300,10 @@ Name: CLASIFICACION_FINAL, dtype: object</code></pre>
 <li>Reemplazar los espacios en los nombres de columnas por guiones bajos (para poder “hablarles” más fácil a las columnas)</li>
 <li>Quitar espacios al principio o al final de los valores de los campos (para asegurarnos de que siempre van a ser los mismos)</li>
 </ul>
-<div class="cell" data-execution_count="14">
+<div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>descriptores.columns <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(<span class="kw">lambda</span> col: col.replace(<span class="st">' '</span>, <span class="st">'_'</span>), descriptores.columns))</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>descriptores.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="15">
 
 <div>
 
@@ -1365,10 +1365,10 @@ Name: CLASIFICACION_FINAL, dtype: object</code></pre>
 </ul>
 <p>Al final, lo que hacemos es sustituir los nombres de las columnas por una lista hecha por nosotros, para que esto funcione la lista que pasamos debe ser de igual tamaño que la lista original de columnas.</p>
 <p>Ahora vamos a hacer lo mismo pero con los valores de los campos:</p>
-<div class="cell" data-execution_count="15">
+<div class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>descriptores[<span class="st">'FORMATO_O_FUENTE'</span>] <span class="op">=</span> descriptores.FORMATO_O_FUENTE.<span class="bu">str</span>.strip()</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>descriptores[<span class="st">'FORMATO_O_FUENTE'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>Nº
 1             AAAA-MM-DD
 2                  TEXTO
@@ -1380,10 +1380,10 @@ Name: FORMATO_O_FUENTE, dtype: object</code></pre>
 </div>
 <p>Este fué más fácil. Fíjense cómo pedimos el campo del lado derecho: <code>descriptores.FORMATO_O_FUENTE</code>, esto es equivalente a <code>descriptores['FORMATO_O_FUENTE']</code> y los pueden usar indistintamente (claro, el primero sólo funciona si el nombre del campo no tiene espacios).</p>
 <p>Filtremos ahora los descriptores para quedarnos sólo con los que nos interesan, para eso vamos a usar la función <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html">query</a> de Pandas, que nos permite filtrar un DataFrame de forma conveniente usando una expresión <em>booleana</em>:</p>
-<div class="cell" data-execution_count="16">
+<div class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>datos_si_no <span class="op">=</span> descriptores.query(<span class="st">'FORMATO_O_FUENTE == "CATÁLOGO: SI_ NO"'</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>datos_si_no</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="17">
 
 <div>
 
@@ -1529,14 +1529,14 @@ Name: FORMATO_O_FUENTE, dtype: object</code></pre>
 </div>
 </div>
 <p>Por si acaso, quitémosle también los espacios al campo <code>FORMATO_O_FUENTE</code></p>
-<div class="cell" data-execution_count="17">
+<div class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>descriptores[<span class="st">'FORMATO_O_FUENTE'</span>] <span class="op">=</span> descriptores.FORMATO_O_FUENTE.<span class="bu">str</span>.strip()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Ahora sí, vamos a sustituir los valores como queremos en los datos originales. Para eso, lo primero que tenemos que hacer es fijarnos en el catálogo de estos campos:</p>
-<div class="cell" data-execution_count="18">
+<div class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>cat_si_no <span class="op">=</span> dict_catalogos[<span class="st">'Catálogo SI_NO'</span>]</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>cat_si_no</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="19">
 
 <div>
 
@@ -1585,7 +1585,7 @@ Name: FORMATO_O_FUENTE, dtype: object</code></pre>
 <li>Un mapeo de los valores con los que vamos a sustituir</li>
 <li>Hacer la sustitución primero en el diccionario y a partir de eso en los datos originales</li>
 </ul>
-<div class="cell" data-execution_count="19">
+<div class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lista de los nombres de los campos</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>campos_si_no <span class="op">=</span> datos_si_no.NOMBRE_DE_VARIABLE</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># sustituimos en el catálogo de acuerdo a lo que nos interesa</span></span>
@@ -1595,7 +1595,7 @@ Name: FORMATO_O_FUENTE, dtype: object</code></pre>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                                            to_replace<span class="op">=</span>cat_si_no[<span class="st">'CLAVE'</span>].values,</span>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>                                            value<span class="op">=</span>cat_si_no[<span class="st">'DESCRIPCIÓN'</span>].values)</span>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>df[campos_si_no]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="20">
 
 <div>
 
@@ -1892,25 +1892,25 @@ Name: FORMATO_O_FUENTE, dtype: object</code></pre>
 <h2 data-number="2.3" class="anchored" data-anchor-id="manejo-de-fechas"><span class="header-section-number">2.3</span> Manejo de fechas</h2>
 <p>En Python las fechas son un tipo especial de datos, nosotros estamos acostumbrados a verlas como cadenas de caractéres: 20 de febrero de 2010, por ejemplo. Python puede hacer muchas cosas con las fechas, pero para eso tienen que estar codificados de la forma correcta.</p>
 <p>En general el módulo <a href="https://docs.python.org/3/library/datetime.html"><code>datetime</code></a> de Python provee las utilerías necesarias para manejar/transformar objetos del tipo fecha. Una de las cosas más útiles es transformar strings en objetos <code>datetime</code>:</p>
-<div class="cell" data-execution_count="20">
+<div class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>datetime_object <span class="op">=</span> datetime.strptime(<span class="st">'Jun 1 2005  1:33PM'</span>, <span class="st">'%b </span><span class="sc">%d</span><span class="st"> %Y %I:%M%p'</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>datetime_object</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="20">
-<pre><code>datetime.datetime(2005, 6, 1, 13, 33)</code></pre>
-</div>
-</div>
-<p>Acá usamos un formato de fecha, <code>'%b %d %Y %I:%M%p'</code>, para convertir el string <code>'Jun 1 2005  1:33PM'</code>. De esa misma forma podemos especificar formatos diferentes:</p>
-<div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>datetime_object <span class="op">=</span> datetime.strptime(<span class="st">'06-01-2005  1:33PM'</span>, <span class="st">'%m-</span><span class="sc">%d</span><span class="st">-%Y %I:%M%p'</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>datetime_object</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>datetime.datetime(2005, 6, 1, 13, 33)</code></pre>
 </div>
 </div>
-<p>Pandas tiene la <em>interfase</em> <a href="https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html">to_datetime</a> para este tipo de operaciones que nos permite transformar campos de forma muy sencilla, por ejemplo, para transformar la columna <code>FECHA_INGRESO</code> de los datos originales en objetos de tipo datetime podemos hacer:</p>
+<p>Acá usamos un formato de fecha, <code>'%b %d %Y %I:%M%p'</code>, para convertir el string <code>'Jun 1 2005  1:33PM'</code>. De esa misma forma podemos especificar formatos diferentes:</p>
 <div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pd.to_datetime(df[<span class="st">'FECHA_INGRESO'</span>].head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>datetime_object <span class="op">=</span> datetime.strptime(<span class="st">'06-01-2005  1:33PM'</span>, <span class="st">'%m-</span><span class="sc">%d</span><span class="st">-%Y %I:%M%p'</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>datetime_object</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>datetime.datetime(2005, 6, 1, 13, 33)</code></pre>
+</div>
+</div>
+<p>Pandas tiene la <em>interfase</em> <a href="https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html">to_datetime</a> para este tipo de operaciones que nos permite transformar campos de forma muy sencilla, por ejemplo, para transformar la columna <code>FECHA_INGRESO</code> de los datos originales en objetos de tipo datetime podemos hacer:</p>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pd.to_datetime(df[<span class="st">'FECHA_INGRESO'</span>].head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
 <pre><code>1    2022-01-19
 4    2022-03-09
 8    2022-02-20
@@ -1920,9 +1920,9 @@ Name: FECHA_INGRESO, dtype: datetime64[ns]</code></pre>
 </div>
 </div>
 <p>Vean la diferencia con el tipo de datos original:</p>
-<div class="cell" data-execution_count="23">
+<div class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'FECHA_INGRESO'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="23">
+<div class="cell-output cell-output-display" data-execution_count="24">
 <pre><code>1     2022-01-19
 4     2022-03-09
 8     2022-02-20
@@ -1931,37 +1931,103 @@ Name: FECHA_INGRESO, dtype: datetime64[ns]</code></pre>
 Name: FECHA_INGRESO, dtype: object</code></pre>
 </div>
 </div>
-<p>Esto va a funcionar perfecto cuando el campo tiene sólo datos válidos (todos se ajustan a algún formato de fecha), pero ¿qué pasa en campos en donde no todos los datos son fechas válidas?</p>
-<div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pd.to_datetime(df[<span class="st">'FECHA_DEF'</span>].head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pandas <em>intenta</em> transformar los datos al tipo fecha usando formatos comunes. En general hace un buen trabajo, sin embargo, si nosotros conocemos el formato en el que están escritas las fechas, siempre es mejor ser explícito y usarlo para la transformación. En el caso de nuestros datos, el formato es: <code>%Y-%m-%d</code>, es decir, el año en cuatro caractéres, dos para el mes y dos para los días, separados por guiones medios. Para pasar el formato utilizamos la opción <code>format</code> de <code>pd.to_datetime()</code></p>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pd.to_datetime(df.FECHA_INGRESO, <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>1         2022-01-19
+4         2022-03-09
+8         2022-02-20
+13        2022-01-01
+15        2022-06-28
+             ...    
+6393642   2022-01-23
+6394417   2022-11-17
+6394626   2022-11-16
+6394988   2022-12-01
+6395781   2022-12-16
+Name: FECHA_INGRESO, Length: 1896084, dtype: datetime64[ns]</code></pre>
+</div>
+</div>
+<p>Aunque el resultado debería ser el mismo, ser explícito nos ayuda a entender mejor el código y a asegurarnos de que nuestros datos se comportan como nosotros esperamos. Por ejemplo, ¿qué sucedería si algún registro no se contiene datos en el formato que especificamos? Veamos el campo <code>FECHA_DEF</code> que contiene registros <em>intencionalmente</em> inválidos.</p>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>pd.to_datetime(df[<span class="st">'FECHA_DEF'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
-<pre><code>ParserError: month must be in 1..12: 9999-99-99 present at position 0</code></pre>
+<pre><code>ValueError: time data "9999-99-99" at position 0 doesn't match format specified</code></pre>
 </div>
 </div>
-<p>ERROR!!!!! Efectívamente, pandas no puede transformar algunos datos en fechas verdaderas (porque no todos los registros tienen una fecha de defunción válida). Entonces hay que decirle a Pandas qué hacer con estos registros, lo que queremos en este caso es que los registros inválidos los regrese como nulos, para eso usamos la opción <code>coerce</code></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>pd.to_datetime(df[<span class="st">'FECHA_DEF'</span>].head(), <span class="st">'coerce'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
-<pre><code>1           NaT
-4           NaT
-8    2022-02-21
-13          NaT
-15          NaT
-Name: FECHA_DEF, dtype: datetime64[ns]</code></pre>
+<p>!Tenemos un ERROR! Pandas no puede transformar algunos datos utilizando el formato que le especificamos. En estos casos hay que especificar el copmportamiento que <em>queremos</em> cuando Pandas encuentra una fecha que no se ajusta al formato. El comportamiento por defecto es arrojar una excepción, es decir, detenerse al encontrar un error y reportárnoslo. Eso puede resultar útil en algunos casos, sin embargo no en el nuestro en el que una fecha que no se ajusta al formato significa que el paciente no ha fallecido, es decit las fechas codificadas como <code>9999-99-99</code> corresponden a valores nulos en el campo. Para que pandas regrese un valor nulo cuiando encuentre un error en la conversión de fechas, usamos la opción <code>coerce</code>:</p>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pd.to_datetime(df[<span class="st">'FECHA_DEF'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>, errors<span class="op">=</span><span class="st">'coerce'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<pre><code>1                NaT
+4                NaT
+8         2022-02-21
+13               NaT
+15               NaT
+             ...    
+6393642          NaT
+6394417          NaT
+6394626          NaT
+6394988          NaT
+6395781          NaT
+Name: FECHA_DEF, Length: 1896084, dtype: datetime64[ns]</code></pre>
 </div>
 </div>
-<p>Listo, los registros que no se pueden convertir en fechas ahopra regresan <code>NaT</code> (Not a Time) en lugar de error.</p>
-<p>Con esto en realidad ya es muy simple convertir toda una columna en tipo fecha:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'FECHA_INGRESO'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_INGRESO'</span>])</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'FECHA_INGRESO'</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="25">
-<pre><code>1    2022-01-19
-4    2022-03-09
-8    2022-02-20
-13   2022-01-01
-15   2022-06-28
-Name: FECHA_INGRESO, dtype: datetime64[ns]</code></pre>
+<p>Ahora los registros que no se pueden convertir en fechas con el formato que especificamos regresan <code>NaT</code> (Not a Time) en lugar de error.</p>
+<p>Una vez que entendimos las formas en las que queremos convertir las columnas con fechas, podemos transformar todas:</p>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'FECHA_INGRESO'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_INGRESO'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'FECHA_SINTOMAS'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_SINTOMAS'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'FECHA_DEF'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'FECHA_DEF'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>, errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">'FECHA_INGRESO'</span>, <span class="st">'FECHA_SINTOMAS'</span>, <span class="st">'FECHA_DEF'</span>]].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>FECHA_INGRESO</th>
+      <th>FECHA_SINTOMAS</th>
+      <th>FECHA_DEF</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2022-01-19</td>
+      <td>2022-01-17</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2022-03-09</td>
+      <td>2022-03-09</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2022-02-20</td>
+      <td>2022-02-13</td>
+      <td>2022-02-21</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>2022-01-01</td>
+      <td>2022-01-01</td>
+      <td>NaT</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>2022-06-28</td>
+      <td>2022-06-28</td>
+      <td>NaT</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 </div>
 </section>
@@ -1969,7 +2035,7 @@ Name: FECHA_INGRESO, dtype: datetime64[ns]</code></pre>
 <h2 data-number="2.4" class="anchored" data-anchor-id="exportar-datos"><span class="header-section-number">2.4</span> Exportar datos</h2>
 <p>Ya que tenemos procesados los datos, es muy posible que los querramos guardar para usarlos más adelante. La forma más sencilla de exportar los datos es guardarlos como un csv. Para esto Pandas tiene el método <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html"><code>to_csv</code></a></p>
 <div class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"datos/covid_enero_2023_procesados.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"datos/covid_enero_2023_procesados.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Hasta aquí hemos cubierto más o menos todo el pre-proceso de los datos. Claro no vimos todas las columnas, sólo nos fijamos en algunas, pero eso basta para darnos una buena idea de cómo se hacen las demás.</p>
 <section id="tarea" class="level3" data-number="2.4.1">
