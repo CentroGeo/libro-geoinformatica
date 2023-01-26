@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Geoinformática - 6&nbsp; Trabajando con objetos espaciales</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../parte_2.html" rel="next">
+<link href="../parte_1/05_intro_geopandas.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Trabajando con objetos espaciales</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Geoinformática</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">Prefacio</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">Introducción</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parte_1.html" class="sidebar-item-text sidebar-link">Geoinformática: las herramientas básicas</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/01_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Transformación de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/02_ejemplo_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Limpieza y transformación de datos de COVID-19 en México</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/03_automatizacion_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Automatización</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/04_visualizacion_covid_1.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Curvas epidémicas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/05_intro_geopandas.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objetos geográficos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/06_manipulacion_espacial.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Trabajando con objetos espaciales</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parte_2.html" class="sidebar-item-text sidebar-link">Geoinformática en R</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_2/intro_R.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Introducción a R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../summary.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#manipulación-de-datos-espaciales-geodataframes" id="toc-manipulación-de-datos-espaciales-geodataframes" class="nav-link active" data-scroll-target="#manipulación-de-datos-espaciales-geodataframes"><span class="toc-section-number">6.1</span>  Manipulación de Datos Espaciales (<code>GeoDataFrames</code>)</a>
+  <ul class="collapse">
+  <li><a href="#unión-de-tablas" id="toc-unión-de-tablas" class="nav-link" data-scroll-target="#unión-de-tablas"><span class="toc-section-number">6.1.1</span>  Unión de Tablas</a></li>
+  <li><a href="#manipulaciones-no-espaciales" id="toc-manipulaciones-no-espaciales" class="nav-link" data-scroll-target="#manipulaciones-no-espaciales"><span class="toc-section-number">6.1.2</span>  Manipulaciones No Espaciales</a></li>
+  <li><a href="#manipulaciones-espaciales" id="toc-manipulaciones-espaciales" class="nav-link" data-scroll-target="#manipulaciones-espaciales"><span class="toc-section-number">6.1.3</span>  Manipulaciones Espaciales</a></li>
+  <li><a href="#coropletas" id="toc-coropletas" class="nav-link" data-scroll-target="#coropletas"><span class="toc-section-number">6.1.4</span>  Coropletas</a></li>
+  <li><a href="#mejorando-el-estilo" id="toc-mejorando-el-estilo" class="nav-link" data-scroll-target="#mejorando-el-estilo"><span class="toc-section-number">6.1.5</span>  Mejorando el estilo</a></li>
+  <li><a href="#varios-mapas-en-la-misma-figura" id="toc-varios-mapas-en-la-misma-figura" class="nav-link" data-scroll-target="#varios-mapas-en-la-misma-figura"><span class="toc-section-number">6.1.6</span>  Varios mapas en la misma figura</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Trabajando con objetos espaciales</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<hr>
+<section id="manipulación-de-datos-espaciales-geodataframes" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="manipulación-de-datos-espaciales-geodataframes"><span class="header-section-number">6.1</span> Manipulación de Datos Espaciales (<code>GeoDataFrames</code>)</h2>
+<p>Una vez teniendo el conocimiento de cómo visualizar la información espacial, es posible estudiar cómo puede ser combinada con las operaciones aprendidas en sesiones pasadas sobre la manipulación de datos tabulares no espaciales. En esencia, la clave es entender que un <code>GeoDataFrame</code> contiene la mayoría de su información espacial en una sola columna llamada <code>geometry</code>, teniendo el resto de la tabla la misma apariencia y comportamiento que un <code>DataFrame</code> no espacial, lo que les concede toda la flexibilidad y conveniencia estudiada en la manipulación, segmentación y transformación de datos tabulares; además de ello, la naturaleza de un <code>GeoDataFrame</code> también incorpora un conjunto de operaciones explícitamente espaciales para combinar y transformar los datos. En esta sección, ambos tipos de operaciones serán consideradas.</p>
+<p>Primero, vale la pena repasar algunas de las técnicas aprendidas en sesiones pasadas sobre datos no espaciales, y entender cómo pueden ser combinados con el mapeo de sus contrapartes espaciales. Para esto, se utilizarán los datos de población abordados anteriormente:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Importar la tabla</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>poblacion <span class="op">=</span> pd.read_csv(f <span class="op">+</span> <span class="st">'poblacion_cdmx.csv'</span> , index_col <span class="op">=</span> <span class="st">'ageb_urbana_cvegeo'</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar la tabla</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>poblacion.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>pob_0a2</th>
+      <th>pob_3a5</th>
+      <th>pob_6a11</th>
+      <th>pob_12a14</th>
+      <th>pob_15a17</th>
+      <th>pob_18a24</th>
+      <th>pob_25a29</th>
+      <th>pob_30a49</th>
+      <th>pob_50a59</th>
+      <th>pob_60ymas</th>
+    </tr>
+    <tr>
+      <th>ageb_urbana_cvegeo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0900200010010</th>
+      <td>71</td>
+      <td>77</td>
+      <td>235</td>
+      <td>129</td>
+      <td>137</td>
+      <td>298</td>
+      <td>182</td>
+      <td>1055</td>
+      <td>293</td>
+      <td>822</td>
+    </tr>
+    <tr>
+      <th>0900200010025</th>
+      <td>206</td>
+      <td>241</td>
+      <td>466</td>
+      <td>212</td>
+      <td>261</td>
+      <td>622</td>
+      <td>426</td>
+      <td>1705</td>
+      <td>699</td>
+      <td>974</td>
+    </tr>
+    <tr>
+      <th>090020001003A</th>
+      <td>157</td>
+      <td>137</td>
+      <td>347</td>
+      <td>202</td>
+      <td>197</td>
+      <td>478</td>
+      <td>273</td>
+      <td>1395</td>
+      <td>370</td>
+      <td>902</td>
+    </tr>
+    <tr>
+      <th>0900200010044</th>
+      <td>148</td>
+      <td>162</td>
+      <td>391</td>
+      <td>178</td>
+      <td>203</td>
+      <td>459</td>
+      <td>365</td>
+      <td>1422</td>
+      <td>469</td>
+      <td>993</td>
+    </tr>
+    <tr>
+      <th>0900200010097</th>
+      <td>56</td>
+      <td>82</td>
+      <td>150</td>
+      <td>80</td>
+      <td>88</td>
+      <td>202</td>
+      <td>157</td>
+      <td>626</td>
+      <td>248</td>
+      <td>523</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<section id="unión-de-tablas" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="unión-de-tablas"><span class="header-section-number">6.1.1</span> Unión de Tablas</h3>
+<p>En la práctica se han importado dos tablas importantes: por una parte, toda la información espacial está contenida en la tabla <code>agebs</code>, mientras que los datos tabulares se encuentran contenidos en <code>poblacion</code>. Para trabajar con ambos, es necesario <em>conectar</em> las tablas; en idioma de <code>pandas</code>, esto recibe el nombre de <code>join</code> (<em>Unión</em>), siendo los elementos claves para la unión los <em>índices</em> de cada tabla, esto es, los nombres asignados a cada fila; esto es lo que se determina utilizando el argumento <code>index_col</code> al momento de importar un <code>.csv</code>.</p>
+<p>Tanto en el caso de <code>agebs</code> como de <code>poblacion</code>, el índice corresponde a la Clave Geográfica (CVEGEO) de cada una de las AGEB’s, lo cual permite ejecutar el <code>join</code> de la siguiente manera:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ageb_pob <span class="op">=</span> agebs.join(poblacion , on <span class="op">=</span> <span class="st">'ageb_urbana_cvegeo'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ageb_pob.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>geometry</th>
+      <th>pob_0a2</th>
+      <th>pob_3a5</th>
+      <th>pob_6a11</th>
+      <th>pob_12a14</th>
+      <th>pob_15a17</th>
+      <th>pob_18a24</th>
+      <th>pob_25a29</th>
+      <th>pob_30a49</th>
+      <th>pob_50a59</th>
+      <th>pob_60ymas</th>
+    </tr>
+    <tr>
+      <th>ageb_urbana_cvegeo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0900700013628</th>
+      <td>MULTIPOLYGON (((-99.03887 19.39128, -99.03851 ...</td>
+      <td>40</td>
+      <td>45</td>
+      <td>104</td>
+      <td>48</td>
+      <td>49</td>
+      <td>126</td>
+      <td>96</td>
+      <td>345</td>
+      <td>144</td>
+      <td>133</td>
+    </tr>
+    <tr>
+      <th>0900300011533</th>
+      <td>MULTIPOLYGON (((-99.18010 19.30772, -99.17845 ...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>0901500010235</th>
+      <td>MULTIPOLYGON (((-99.14495 19.45625, -99.14536 ...</td>
+      <td>29</td>
+      <td>37</td>
+      <td>87</td>
+      <td>57</td>
+      <td>47</td>
+      <td>152</td>
+      <td>111</td>
+      <td>396</td>
+      <td>178</td>
+      <td>229</td>
+    </tr>
+    <tr>
+      <th>0900200010097</th>
+      <td>MULTIPOLYGON (((-99.20573 19.50454, -99.20630 ...</td>
+      <td>56</td>
+      <td>82</td>
+      <td>150</td>
+      <td>80</td>
+      <td>88</td>
+      <td>202</td>
+      <td>157</td>
+      <td>626</td>
+      <td>248</td>
+      <td>523</td>
+    </tr>
+    <tr>
+      <th>0900200011184</th>
+      <td>MULTIPOLYGON (((-99.20723 19.50387, -99.20652 ...</td>
+      <td>38</td>
+      <td>54</td>
+      <td>84</td>
+      <td>50</td>
+      <td>65</td>
+      <td>144</td>
+      <td>112</td>
+      <td>416</td>
+      <td>187</td>
+      <td>239</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Analizando un poco la lógica detrás de la operación <code>.join()</code>: * En primer lugar, se trata de una operación en la que se está “anexando” un conjunto de datos a uno ya existente. En este caso en particular, se anexan los datos de población contenidos en la tabla <code>poblacion</code> a la tabla espacial <code>agebs</code>. * La tabla que se está anexando (<code>población</code>) necesita tener sus índices bien definidos para que la operación pueda proceder correctamente. En este caso, los índices fueron asignados desde la importación de la tabla, por lo que se trata de un requerimiento ya cumplido. * La función <code>.join()</code> posee dos argumentos: el primero, referente a la tabla que se está anexando; el segundo, determinado por <code>on</code>, determina el nombre de la columna o del índice de la tabla principal que servirá como referencia para la unión.</p>
+</section>
+<section id="manipulaciones-no-espaciales" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="manipulaciones-no-espaciales"><span class="header-section-number">6.1.2</span> Manipulaciones No Espaciales</h3>
+<p>Una vez unidos los datos espaciales con los no espaciales, pueden utilizarse las técnicas aprendidas en la manipulación y segmentación de tablas no espaciales para crear mapas más complejos. En particular, se utilizarán las funciones requeridas para seleccionar filas basándose en las características de su población, añadiendo la posibilidad de visualizarlas en un mapa.</p>
+<p>En primer lugar, puede generarse nuevamente la columna que contiene la Población Total de cada AGEB replicando los comandos ya aprendidos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ageb_pob[<span class="st">'pob_total'</span>] <span class="op">=</span> poblacion.<span class="bu">sum</span>(axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ageb_pob.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>geometry</th>
+      <th>pob_0a2</th>
+      <th>pob_3a5</th>
+      <th>pob_6a11</th>
+      <th>pob_12a14</th>
+      <th>pob_15a17</th>
+      <th>pob_18a24</th>
+      <th>pob_25a29</th>
+      <th>pob_30a49</th>
+      <th>pob_50a59</th>
+      <th>pob_60ymas</th>
+      <th>pob_total</th>
+    </tr>
+    <tr>
+      <th>ageb_urbana_cvegeo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0900700013628</th>
+      <td>MULTIPOLYGON (((-99.03887 19.39128, -99.03851 ...</td>
+      <td>40</td>
+      <td>45</td>
+      <td>104</td>
+      <td>48</td>
+      <td>49</td>
+      <td>126</td>
+      <td>96</td>
+      <td>345</td>
+      <td>144</td>
+      <td>133</td>
+      <td>1130</td>
+    </tr>
+    <tr>
+      <th>0900300011533</th>
+      <td>MULTIPOLYGON (((-99.18010 19.30772, -99.17845 ...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>0901500010235</th>
+      <td>MULTIPOLYGON (((-99.14495 19.45625, -99.14536 ...</td>
+      <td>29</td>
+      <td>37</td>
+      <td>87</td>
+      <td>57</td>
+      <td>47</td>
+      <td>152</td>
+      <td>111</td>
+      <td>396</td>
+      <td>178</td>
+      <td>229</td>
+      <td>1323</td>
+    </tr>
+    <tr>
+      <th>0900200010097</th>
+      <td>MULTIPOLYGON (((-99.20573 19.50454, -99.20630 ...</td>
+      <td>56</td>
+      <td>82</td>
+      <td>150</td>
+      <td>80</td>
+      <td>88</td>
+      <td>202</td>
+      <td>157</td>
+      <td>626</td>
+      <td>248</td>
+      <td>523</td>
+      <td>2212</td>
+    </tr>
+    <tr>
+      <th>0900200011184</th>
+      <td>MULTIPOLYGON (((-99.20723 19.50387, -99.20652 ...</td>
+      <td>38</td>
+      <td>54</td>
+      <td>84</td>
+      <td>50</td>
+      <td>65</td>
+      <td>144</td>
+      <td>112</td>
+      <td>416</td>
+      <td>187</td>
+      <td>239</td>
+      <td>1389</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Posteriormente, se seleccionan las 10 AGEB’s con la mayor cantidad de población, a través de la función <code>.sort_values()</code> y añadiendo el valor de la selección deseado a <code>.head()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>agebs_mas_pobladas <span class="op">=</span> ageb_pob.sort_values(<span class="st">'pob_total'</span>, ascending <span class="op">=</span> <span class="va">False</span>).head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ahora, puede crearse un mapa de la Ciuda de México y sobreponer como una nueva capa estas áreas:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, fila <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(facecolor<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">0.025</span>, ax<span class="op">=</span>fila)              <span class="co"># Capa Base de AGEB's</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>agebs_mas_pobladas.plot(alpha<span class="op">=</span><span class="dv">1</span>, facecolor<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">0</span>, ax<span class="op">=</span>fila) <span class="co"># Capa AGEB's más pobladas</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fila.set_axis_off()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"AGEB's de la CDMX con Mayor Población"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="manipulaciones-espaciales" class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="manipulaciones-espaciales"><span class="header-section-number">6.1.3</span> Manipulaciones Espaciales</h3>
+<p>Además de las operaciones basadas únicamente en valores, como las realizadas anteriormente, es posible realizar sobre un <code>GeoDataFrame</code> una gran variedad de operaciones encontradas en los SIG. A continuación se detallarán algunas de las más comunes</p>
+<section id="cálculo-de-centroides" class="level4" data-number="6.1.3.1">
+<h4 data-number="6.1.3.1" class="anchored" data-anchor-id="cálculo-de-centroides"><span class="header-section-number">6.1.3.1</span> Cálculo de Centroides</h4>
+<p>En algunos casos, resulta útil simplificar un polígono en un sólo punto y, para ello, se calculan los Centroides (siendo algo como el análogo espacial de la media estadística). El siguiente comando dará como resultado un objeto del tipo <code>GeoSeries</code> (una sola columna con datos espaciales) con los Centroides de los polígonos contenidos en un <code>GeoDataFrame</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>centroides <span class="op">=</span> ageb_pob.centroid</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>centroides.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_498/4168445328.py:1: UserWarning: Geometry is in a geographic CRS. Results from 'centroid' are likely incorrect. Use 'GeoSeries.to_crs()' to re-project geometries to a projected CRS before this operation.
+
+  centroides = ageb_pob.centroid</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>ageb_urbana_cvegeo
+0900700013628    POINT (-99.03839 19.39066)
+0900300011533    POINT (-99.17801 19.30761)
+0901500010235    POINT (-99.14579 19.45542)
+0900200010097    POINT (-99.20697 19.50685)
+0900200011184    POINT (-99.20608 19.50239)
+dtype: geometry</code></pre>
+</div>
+</div>
+<p>Es importante destacar que <code>centroides</code> no es una tabla completa, sino una sola columna, esto es, un objeto del tipo <code>GeoSeries</code>; esto brinda la posibilidad de graficarlo de forma similar a como se ha hecho anteriormente:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>centroides.plot(figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f08bb39ce80&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-8-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>En el caso de un objeto del tipo <code>GeoSeries</code>, ya no es necesario hacer referencia a la columna <code>geometry</code> para inspeccionar su contenido, ya que, al tratarse de una columna de datos espaciales, el objetivo es en sí la geometría.</p>
+</section>
+<section id="point-in-polygon-pip" class="level4" data-number="6.1.3.2">
+<h4 data-number="6.1.3.2" class="anchored" data-anchor-id="point-in-polygon-pip"><span class="header-section-number">6.1.3.2</span> Point-In-Polygon (PiP)</h4>
+<p>El saber si un punto se encuentra dentro de un polígono es un ejercicio simple desde el punto de vista conceptual; sin embargo, al momento de trasladarlo a la programación, puede tratarse de una acción difícil de completar. La forma más sencilla de realizar esto en <code>GeoPandas</code> es a través del método <code>.contains()</code>, disponible para todo polígono.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>poligono <span class="op">=</span> ageb_pob[<span class="st">'geometry'</span>][<span class="dv">0</span>]  <span class="co"># Se aisla el primer polígono dela tabla</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>punto1 <span class="op">=</span> centroides[<span class="dv">0</span>]              <span class="co"># Se aisla el primer punto de la serie</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>punto2 <span class="op">=</span> centroides[<span class="dv">1</span>]              <span class="co"># Se aisla el segundo punto de la serie</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>poligono.contains(punto1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>True</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>poligono.contains(punto2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>False</code></pre>
+</div>
+</div>
+<p>El método anterior permite realizar una verificación rápida y cualitativa de si un punto se encuentra dentro de un polígono; sin embargo, en muchos otros casos esto no resulta ser muy eficiente, por lo que se recurre a una operación conocida como <em>Spatial Join</em>; éstos serán estudiados más a fondo en futuras prácticas.</p>
+</section>
+<section id="buffers" class="level4" data-number="6.1.3.3">
+<h4 data-number="6.1.3.3" class="anchored" data-anchor-id="buffers"><span class="header-section-number">6.1.3.3</span> Buffers</h4>
+<p>Los Buffers son parte de las operaciones clásicas de un SIG, y consisten en trazar un área alrededor de una geometría en particular, dado un radio específico. Éstos resultan bastate útiles al momento de combinarlos, por ejemplo, con operaciones de <em>Point-In-Polygon</em> para calcular valores de accesibilidad, áreas de influencia, entre otros.</p>
+<p>Para crear un Buffer a través de <code>GeoPandas</code>, puede utilizarse el método <code>.buffer()</code>, al cual se le coloca como argumento el radio deseado. Es importante tomar en cuenta que el radio especificado necesita encontrarse en las mismas unidades que el Sistema de Coordenadas de Referencia (CRS) de la geometría con la que se esté trabajando. Por ejemplo, revisando la capa importada anteriormente de Estaciones del Metro:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>estaciones.crs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Derived Projected CRS: EPSG:32614&gt;
+Name: WGS 84 / UTM zone 14N
+Axis Info [cartesian]:
+- E[east]: Easting (metre)
+- N[north]: Northing (metre)
+Area of Use:
+- name: Between 102°W and 96°W, northern hemisphere between equator and 84°N, onshore and offshore. Canada - Manitoba; Nunavut; Saskatchewan. Mexico. United States (USA).
+- bounds: (-102.0, 0.0, -96.0, 84.0)
+Coordinate Operation:
+- name: UTM zone 14N
+- method: Transverse Mercator
+Datum: World Geodetic System 1984 ensemble
+- Ellipsoid: WGS 84
+- Prime Meridian: Greenwich</code></pre>
+</div>
+</div>
+<p>La propiedad <code>crs</code> indica que se trata de la proyección con Código EPSG 32614, de la cual, <a href="http://epsg.io/32614">al investigar sobre ella</a>, se tiene que se trata de una proyección que trabaja en metros. Como tal, si se buscara generar un Buffer de 500m alrededor de cada estación, simplemente se tendría que:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>buff <span class="op">=</span> estaciones.<span class="bu">buffer</span>(<span class="dv">500</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>buff.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>0    POLYGON ((485905.843 2149860.572, 485903.435 2...
+1    POLYGON ((486208.110 2152724.378, 486205.702 2...
+2    POLYGON ((480784.558 2142470.874, 480782.151 2...
+3    POLYGON ((487661.939 2146081.726, 487659.532 2...
+4    POLYGON ((480876.875 2142406.938, 480874.468 2...
+dtype: geometry</code></pre>
+</div>
+</div>
+<p>Para representar éstos en un mapa, se recurre a los métodos estudiados anteriormente:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fig, fila <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los Buffers</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>buff.plot(ax <span class="op">=</span> fila , alpha <span class="op">=</span> <span class="fl">0.5</span> , facecolor <span class="op">=</span> <span class="st">'red'</span>, linewidth <span class="op">=</span> <span class="dv">0</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar las Estaciones de Metro sobre las referencias</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>estaciones.plot(ax <span class="op">=</span> fila , color <span class="op">=</span> <span class="st">'green'</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="ejercicio-opcional" class="level4" data-number="6.1.3.4">
+<h4 data-number="6.1.3.4" class="anchored" data-anchor-id="ejercicio-opcional"><span class="header-section-number">6.1.3.4</span> Ejercicio Opcional</h4>
+<p>Genera un mapa de la Ciudad de México donde los polígonos de las AGEB’s sean de color negro, y sobre ellos y de color amarillo los Buffers a 250m de cada uno de sus centroides.</p>
+</section>
+</section>
+<section id="coropletas" class="level3" data-number="6.1.4">
+<h3 data-number="6.1.4" class="anchored" data-anchor-id="coropletas"><span class="header-section-number">6.1.4</span> Coropletas</h3>
+<p>Para terminar la práctica de geovisualización vamos a hacer mapas de coropletas usando dos métodos diferentes. Primero vamos a usar directamente GeoPandas para generar los mapas y después vamos a usar <a href="https://ipyleaflet.readthedocs.io/en/latest/">ipyLeaflet</a> para hacer una visualización interactiva.</p>
+<p>Primero, recordemos que ya tenemos los datos de población unidos a las geometrías de las AGEBS</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ageb_pob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>geometry</th>
+      <th>pob_0a2</th>
+      <th>pob_3a5</th>
+      <th>pob_6a11</th>
+      <th>pob_12a14</th>
+      <th>pob_15a17</th>
+      <th>pob_18a24</th>
+      <th>pob_25a29</th>
+      <th>pob_30a49</th>
+      <th>pob_50a59</th>
+      <th>pob_60ymas</th>
+      <th>pob_total</th>
+    </tr>
+    <tr>
+      <th>ageb_urbana_cvegeo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0900700013628</th>
+      <td>MULTIPOLYGON (((-99.03887 19.39128, -99.03851 ...</td>
+      <td>40</td>
+      <td>45</td>
+      <td>104</td>
+      <td>48</td>
+      <td>49</td>
+      <td>126</td>
+      <td>96</td>
+      <td>345</td>
+      <td>144</td>
+      <td>133</td>
+      <td>1130</td>
+    </tr>
+    <tr>
+      <th>0900300011533</th>
+      <td>MULTIPOLYGON (((-99.18010 19.30772, -99.17845 ...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>0901500010235</th>
+      <td>MULTIPOLYGON (((-99.14495 19.45625, -99.14536 ...</td>
+      <td>29</td>
+      <td>37</td>
+      <td>87</td>
+      <td>57</td>
+      <td>47</td>
+      <td>152</td>
+      <td>111</td>
+      <td>396</td>
+      <td>178</td>
+      <td>229</td>
+      <td>1323</td>
+    </tr>
+    <tr>
+      <th>0900200010097</th>
+      <td>MULTIPOLYGON (((-99.20573 19.50454, -99.20630 ...</td>
+      <td>56</td>
+      <td>82</td>
+      <td>150</td>
+      <td>80</td>
+      <td>88</td>
+      <td>202</td>
+      <td>157</td>
+      <td>626</td>
+      <td>248</td>
+      <td>523</td>
+      <td>2212</td>
+    </tr>
+    <tr>
+      <th>0900200011184</th>
+      <td>MULTIPOLYGON (((-99.20723 19.50387, -99.20652 ...</td>
+      <td>38</td>
+      <td>54</td>
+      <td>84</td>
+      <td>50</td>
+      <td>65</td>
+      <td>144</td>
+      <td>112</td>
+      <td>416</td>
+      <td>187</td>
+      <td>239</td>
+      <td>1389</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>0901700011469</th>
+      <td>MULTIPOLYGON (((-99.06175 19.42993, -99.06174 ...</td>
+      <td>88</td>
+      <td>79</td>
+      <td>165</td>
+      <td>64</td>
+      <td>84</td>
+      <td>199</td>
+      <td>132</td>
+      <td>367</td>
+      <td>117</td>
+      <td>61</td>
+      <td>1356</td>
+    </tr>
+    <tr>
+      <th>0901700011473</th>
+      <td>MULTIPOLYGON (((-99.06098 19.42894, -99.06098 ...</td>
+      <td>81</td>
+      <td>81</td>
+      <td>127</td>
+      <td>71</td>
+      <td>61</td>
+      <td>175</td>
+      <td>100</td>
+      <td>332</td>
+      <td>98</td>
+      <td>53</td>
+      <td>1179</td>
+    </tr>
+    <tr>
+      <th>0901700011488</th>
+      <td>MULTIPOLYGON (((-99.05931 19.42789, -99.05934 ...</td>
+      <td>80</td>
+      <td>83</td>
+      <td>133</td>
+      <td>62</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>317</td>
+      <td>134</td>
+      <td>51</td>
+      <td>1245</td>
+    </tr>
+    <tr>
+      <th>0901700011492</th>
+      <td>MULTIPOLYGON (((-99.05931 19.42789, -99.05794 ...</td>
+      <td>67</td>
+      <td>52</td>
+      <td>122</td>
+      <td>54</td>
+      <td>59</td>
+      <td>139</td>
+      <td>94</td>
+      <td>271</td>
+      <td>66</td>
+      <td>59</td>
+      <td>983</td>
+    </tr>
+    <tr>
+      <th>0901700011524</th>
+      <td>MULTIPOLYGON (((-99.05709 19.42377, -99.05723 ...</td>
+      <td>191</td>
+      <td>211</td>
+      <td>434</td>
+      <td>235</td>
+      <td>233</td>
+      <td>559</td>
+      <td>343</td>
+      <td>1388</td>
+      <td>419</td>
+      <td>537</td>
+      <td>4550</td>
+    </tr>
+  </tbody>
+</table>
+<p>2432 rows × 12 columns</p>
+</div>
+</div>
+</div>
+<p>Hacer un primer mapa sencillo usando GeoPandas es tan sencillo como pasarle el nombre de la columna que queremos usar para colorear el mapa</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'pob_total'</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;AxesSubplot:&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Incluir una leyenda también es muy sencillo</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'pob_total'</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>), legend<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;AxesSubplot:&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-17-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Y cambiar la paleta de colores</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'pob_total'</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>), legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;AxesSubplot:&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-18-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>En la documentación de <a href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.plot.html">GeoDtaFrame.plot()</a> pueden ver la lista completa de opciones.</p>
+<p>En estos primeros mapas que hemos hecho usamos una escala continua para representar la variable de interés. Otra forma de representar la variación espacial es utilizando un esquema de clasificación discreto sobre nuestra variable de interés, por ejemplo cuantiles, intervalos iguales, etcétera. Para esto, <code>GeoDtaFrame.plot()</code> admite pasarle el parámetro <code>scheme</code> que toma cualquier esquema de clasificación admitido por <a href="https://github.com/pysal/mapclassify">mapclassify</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'pob_total'</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>), legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, scheme<span class="op">=</span><span class="st">'quantiles'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;AxesSubplot:&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-19-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="ejercicio" class="level4" data-number="6.1.4.1">
+<h4 data-number="6.1.4.1" class="anchored" data-anchor-id="ejercicio"><span class="header-section-number">6.1.4.1</span> Ejercicio</h4>
+<p>Prueben diferentes esquemas de clasificación (<a href="https://geopandas.org/en/stable/docs/user_guide/mapping.html">aquí</a> pueden encontrar la lista de esquemas disponibles) y discutanb sobre qué esquema representa mejor la variación espacial de los datos</p>
+</section>
+</section>
+<section id="mejorando-el-estilo" class="level3" data-number="6.1.5">
+<h3 data-number="6.1.5" class="anchored" data-anchor-id="mejorando-el-estilo"><span class="header-section-number">6.1.5</span> Mejorando el estilo</h3>
+<p>Los mapas que hemos hecho son relativamente sencillos, para darles una mejor presentación podemos tomar algunas cosas que ya hemos aprendido, por ejemplo eliminar los ejes y ponerles un título:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>fig , fila <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'pob_total'</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>), legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, scheme<span class="op">=</span><span class="st">'quantiles'</span>, ax<span class="op">=</span>fila)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"Población por AGEB"</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>fila.set_axis_off()  </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-20-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>También es posible agregar un mapa base utilizando la librería <a href="https://contextily.readthedocs.io/en/latest/">contextily</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> contextily <span class="im">as</span> ctx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>fig , fila <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'pob_total'</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>), legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, scheme<span class="op">=</span><span class="st">'quantiles'</span>, ax<span class="op">=</span>fila, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"Población por AGEB"</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>fila.set_axis_off()</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ctx.add_basemap(fila, source<span class="op">=</span>ctx.providers.OpenStreetMap.Mapnik, crs<span class="op">=</span>ageb_pob.crs.to_string())</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="ejercicio-1" class="level4" data-number="6.1.5.1">
+<h4 data-number="6.1.5.1" class="anchored" data-anchor-id="ejercicio-1"><span class="header-section-number">6.1.5.1</span> Ejercicio</h4>
+<p>Prueben usando diferentes mapas base, y cambiando el fondo de la imágen.</p>
+</section>
+</section>
+<section id="varios-mapas-en-la-misma-figura" class="level3" data-number="6.1.6">
+<h3 data-number="6.1.6" class="anchored" data-anchor-id="varios-mapas-en-la-misma-figura"><span class="header-section-number">6.1.6</span> Varios mapas en la misma figura</h3>
+<p>A veces queremos hacer una imagen que nos permita comparar rápidamente una variable, para eso es conveniente poner juntos dos mapas. Pensemos en este momento en comparar la población por AGEB con la densidad de población por AGEB. Obviamente el pri er paso es calcular la densidad de población, para esto vamos a usar la propiedad <code>área</code> de los GeoDataFrames. Fíjense como reproyectamos antes de calcular el area para obtener un valor en metros cuadrados</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ageb_pob.to_crs(<span class="dv">32614</span>).area</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>ageb_urbana_cvegeo
+0900700013628     37323.787352
+0900300011533     91454.392482
+0901500010235     31110.848381
+0900200010097    178129.071473
+0900200011184     48626.677816
+                     ...      
+0901700011469     22976.721781
+0901700011473     19149.811749
+0901700011488     22732.498079
+0901700011492     25787.042294
+0901700011524    223050.891018
+Length: 2432, dtype: float64</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ageb_pob[<span class="st">'densidad_pob'</span>] <span class="op">=</span> ageb_pob[<span class="st">'pob_total'</span>] <span class="op">/</span> ageb_pob.to_crs(<span class="dv">32614</span>).area</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>ageb_pob.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>geometry</th>
+      <th>pob_0a2</th>
+      <th>pob_3a5</th>
+      <th>pob_6a11</th>
+      <th>pob_12a14</th>
+      <th>pob_15a17</th>
+      <th>pob_18a24</th>
+      <th>pob_25a29</th>
+      <th>pob_30a49</th>
+      <th>pob_50a59</th>
+      <th>pob_60ymas</th>
+      <th>pob_total</th>
+      <th>densidad_pob</th>
+    </tr>
+    <tr>
+      <th>ageb_urbana_cvegeo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0900700013628</th>
+      <td>MULTIPOLYGON (((-99.03887 19.39128, -99.03851 ...</td>
+      <td>40</td>
+      <td>45</td>
+      <td>104</td>
+      <td>48</td>
+      <td>49</td>
+      <td>126</td>
+      <td>96</td>
+      <td>345</td>
+      <td>144</td>
+      <td>133</td>
+      <td>1130</td>
+      <td>0.030276</td>
+    </tr>
+    <tr>
+      <th>0900300011533</th>
+      <td>MULTIPOLYGON (((-99.18010 19.30772, -99.17845 ...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>0901500010235</th>
+      <td>MULTIPOLYGON (((-99.14495 19.45625, -99.14536 ...</td>
+      <td>29</td>
+      <td>37</td>
+      <td>87</td>
+      <td>57</td>
+      <td>47</td>
+      <td>152</td>
+      <td>111</td>
+      <td>396</td>
+      <td>178</td>
+      <td>229</td>
+      <td>1323</td>
+      <td>0.042525</td>
+    </tr>
+    <tr>
+      <th>0900200010097</th>
+      <td>MULTIPOLYGON (((-99.20573 19.50454, -99.20630 ...</td>
+      <td>56</td>
+      <td>82</td>
+      <td>150</td>
+      <td>80</td>
+      <td>88</td>
+      <td>202</td>
+      <td>157</td>
+      <td>626</td>
+      <td>248</td>
+      <td>523</td>
+      <td>2212</td>
+      <td>0.012418</td>
+    </tr>
+    <tr>
+      <th>0900200011184</th>
+      <td>MULTIPOLYGON (((-99.20723 19.50387, -99.20652 ...</td>
+      <td>38</td>
+      <td>54</td>
+      <td>84</td>
+      <td>50</td>
+      <td>65</td>
+      <td>144</td>
+      <td>112</td>
+      <td>416</td>
+      <td>187</td>
+      <td>239</td>
+      <td>1389</td>
+      <td>0.028565</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Ahora sí podemos hacer una figura que incluya dos mapas. Hasta ahora siempre hemos usado <code>fig , fila = plt.subplots(1, figsize=(10,10))</code> para hacer un subplot con una sóla gráfica, lo que vamos a hacer es usarlo ahora para obtener dos ejes en los que graficar.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">24</span>,<span class="dv">12</span>)) <span class="co"># Pedimos subfiguras con un renglón y dos columnas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">24</span>,<span class="dv">12</span>))<span class="co"># Pedimos subfiguras con un renglón y dos columnas</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'pob_total'</span>, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, scheme<span class="op">=</span><span class="st">'quantiles'</span>, ax<span class="op">=</span>ax1, alpha<span class="op">=</span><span class="fl">0.8</span>)<span class="co"># Graficamos en el primer ax</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">"Población por AGEB"</span>) <span class="co"># Este título está en el nivel ax, no en el figure</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>ax1.set_axis_off()</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>ctx.add_basemap(ax1, source<span class="op">=</span>ctx.providers.OpenStreetMap.Mapnik, crs<span class="op">=</span>ageb_pob.crs.to_string())</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'densidad_pob'</span>, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, scheme<span class="op">=</span><span class="st">'quantiles'</span>, ax<span class="op">=</span>ax2, alpha<span class="op">=</span><span class="fl">0.8</span>)<span class="co"># Graficamos en el segndo ax</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"Densidad de Población por AGEB"</span>) <span class="co"># Este título está en el nivel ax, no en el figure</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>ax2.set_axis_off()</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>ctx.add_basemap(ax2, source<span class="op">=</span>ctx.providers.OpenStreetMap.Mapnik, crs<span class="op">=</span>ageb_pob.crs.to_string())</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout() <span class="co"># Para disminuir el espacio entre gráficas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Como pueden ver es relatívamente fácil poner dos gráficas, sólo hay que especificar cómo las queremos organizar y entender que <code>subplots</code> nos va a regresar un <code>array</code> de ejes. Para que quede aún más claro, vamos a hacer ahora cuatro mapas, comparando los porcentajes de poblaión para distintos grupos de edad. Primero vamos a calcular las variables que vamos a mapear</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>ageb_pob[<span class="st">'prop_0a2'</span>] <span class="op">=</span> ageb_pob[<span class="st">'pob_0a2'</span>] <span class="op">/</span> ageb_pob[<span class="st">'pob_total'</span>]</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>ageb_pob[<span class="st">'prop_12a14'</span>] <span class="op">=</span> ageb_pob[<span class="st">'pob_12a14'</span>] <span class="op">/</span> ageb_pob[<span class="st">'pob_total'</span>]</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>ageb_pob[<span class="st">'prop_18a24'</span>] <span class="op">=</span> ageb_pob[<span class="st">'pob_18a24'</span>] <span class="op">/</span> ageb_pob[<span class="st">'pob_total'</span>]</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>ageb_pob[<span class="st">'prop_60ymas'</span>] <span class="op">=</span> ageb_pob[<span class="st">'pob_60ymas'</span>] <span class="op">/</span> ageb_pob[<span class="st">'pob_total'</span>]</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>ageb_pob.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>geometry</th>
+      <th>pob_0a2</th>
+      <th>pob_3a5</th>
+      <th>pob_6a11</th>
+      <th>pob_12a14</th>
+      <th>pob_15a17</th>
+      <th>pob_18a24</th>
+      <th>pob_25a29</th>
+      <th>pob_30a49</th>
+      <th>pob_50a59</th>
+      <th>pob_60ymas</th>
+      <th>pob_total</th>
+      <th>densidad_pob</th>
+      <th>prop_0a2</th>
+      <th>prop_12a14</th>
+      <th>prop_18a24</th>
+      <th>prop_60ymas</th>
+    </tr>
+    <tr>
+      <th>ageb_urbana_cvegeo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0900700013628</th>
+      <td>MULTIPOLYGON (((-99.03887 19.39128, -99.03851 ...</td>
+      <td>40</td>
+      <td>45</td>
+      <td>104</td>
+      <td>48</td>
+      <td>49</td>
+      <td>126</td>
+      <td>96</td>
+      <td>345</td>
+      <td>144</td>
+      <td>133</td>
+      <td>1130</td>
+      <td>0.030276</td>
+      <td>0.035398</td>
+      <td>0.042478</td>
+      <td>0.111504</td>
+      <td>0.117699</td>
+    </tr>
+    <tr>
+      <th>0900300011533</th>
+      <td>MULTIPOLYGON (((-99.18010 19.30772, -99.17845 ...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>0901500010235</th>
+      <td>MULTIPOLYGON (((-99.14495 19.45625, -99.14536 ...</td>
+      <td>29</td>
+      <td>37</td>
+      <td>87</td>
+      <td>57</td>
+      <td>47</td>
+      <td>152</td>
+      <td>111</td>
+      <td>396</td>
+      <td>178</td>
+      <td>229</td>
+      <td>1323</td>
+      <td>0.042525</td>
+      <td>0.021920</td>
+      <td>0.043084</td>
+      <td>0.114890</td>
+      <td>0.173091</td>
+    </tr>
+    <tr>
+      <th>0900200010097</th>
+      <td>MULTIPOLYGON (((-99.20573 19.50454, -99.20630 ...</td>
+      <td>56</td>
+      <td>82</td>
+      <td>150</td>
+      <td>80</td>
+      <td>88</td>
+      <td>202</td>
+      <td>157</td>
+      <td>626</td>
+      <td>248</td>
+      <td>523</td>
+      <td>2212</td>
+      <td>0.012418</td>
+      <td>0.025316</td>
+      <td>0.036166</td>
+      <td>0.091320</td>
+      <td>0.236438</td>
+    </tr>
+    <tr>
+      <th>0900200011184</th>
+      <td>MULTIPOLYGON (((-99.20723 19.50387, -99.20652 ...</td>
+      <td>38</td>
+      <td>54</td>
+      <td>84</td>
+      <td>50</td>
+      <td>65</td>
+      <td>144</td>
+      <td>112</td>
+      <td>416</td>
+      <td>187</td>
+      <td>239</td>
+      <td>1389</td>
+      <td>0.028565</td>
+      <td>0.027358</td>
+      <td>0.035997</td>
+      <td>0.103672</td>
+      <td>0.172066</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Ahora vamos a hacer un <em>layout</em> con cuatro subplots en dos renglones y dos columnas</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>,<span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">24</span>,<span class="dv">24</span>))<span class="co"># Pedimos subfiguras con un renglón y dos columnas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-28-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Fíjense lo que tenemos ahora en el objeto <code>axes</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>axes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>array([[&lt;AxesSubplot:&gt;, &lt;AxesSubplot:&gt;],
+       [&lt;AxesSubplot:&gt;, &lt;AxesSubplot:&gt;]], dtype=object)</code></pre>
+</div>
+</div>
+<p>Es un <em>array</em> de 2x2 que tiene la misma forma de la figura. Para manejarlo más fácil, vamos a aplanar el <em>array</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>axes.ravel()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>array([&lt;AxesSubplot:&gt;, &lt;AxesSubplot:&gt;, &lt;AxesSubplot:&gt;, &lt;AxesSubplot:&gt;],
+      dtype=object)</code></pre>
+</div>
+</div>
+<p>Eso ya iene una sola dimensión y lo podemos usar de la misma forma que antes</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>,<span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">24</span>,<span class="dv">12</span>))<span class="co"># Pedimos subfiguras con un renglón y dos columnas</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.ravel() <span class="co"># aplanamos el array</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'prop_0a2'</span>, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, scheme<span class="op">=</span><span class="st">'quantiles'</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>], alpha<span class="op">=</span><span class="fl">0.8</span>)<span class="co"># Graficamos en el primer ax</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Proporción de 0 a 2"</span>) <span class="co"># Este título está en el nivel ax, no en el figure</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_axis_off()</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>ctx.add_basemap(axes[<span class="dv">0</span>], source<span class="op">=</span>ctx.providers.OpenStreetMap.Mapnik, crs<span class="op">=</span>ageb_pob.crs.to_string())</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'prop_12a14'</span>, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, scheme<span class="op">=</span><span class="st">'quantiles'</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.8</span>)<span class="co"># Graficamos en el segndo ax</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Proporción de 12 a 14"</span>) <span class="co"># Este título está en el nivel ax, no en el figure</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_axis_off()</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>ctx.add_basemap(axes[<span class="dv">1</span>], source<span class="op">=</span>ctx.providers.OpenStreetMap.Mapnik, crs<span class="op">=</span>ageb_pob.crs.to_string())</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'prop_18a24'</span>, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, scheme<span class="op">=</span><span class="st">'quantiles'</span>, ax<span class="op">=</span>axes[<span class="dv">2</span>], alpha<span class="op">=</span><span class="fl">0.8</span>)<span class="co"># Graficamos en el segndo ax</span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_title(<span class="st">"Proporción de 18 a 24"</span>) <span class="co"># Este título está en el nivel ax, no en el figure</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_axis_off()</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>ctx.add_basemap(axes[<span class="dv">2</span>], source<span class="op">=</span>ctx.providers.OpenStreetMap.Mapnik, crs<span class="op">=</span>ageb_pob.crs.to_string())</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>ageb_pob.plot(<span class="st">'prop_60ymas'</span>, legend<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, scheme<span class="op">=</span><span class="st">'quantiles'</span>, ax<span class="op">=</span>axes[<span class="dv">3</span>], alpha<span class="op">=</span><span class="fl">0.8</span>)<span class="co"># Graficamos en el segndo ax</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].set_title(<span class="st">"Proporción de 60 y más"</span>) <span class="co"># Este título está en el nivel ax, no en el figure</span></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].set_axis_off()</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>ctx.add_basemap(axes[<span class="dv">3</span>], source<span class="op">=</span>ctx.providers.OpenStreetMap.Mapnik, crs<span class="op">=</span>ageb_pob.crs.to_string())</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout() <span class="co"># Para disminuir el espacio entre gráficas</span></span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="06_manipulacion_espacial_files/figure-html/cell-31-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../parte_1/05_intro_geopandas.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objetos geográficos</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../parte_2.html" class="pagination-link">
+        <span class="nav-page-text">Geoinformática en R</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

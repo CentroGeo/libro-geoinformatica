@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Geoinformática - 5&nbsp; Objetos geográficos</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../parte_1/06_manipulacion_espacial.html" rel="next">
+<link href="../parte_1/04_visualizacion_covid_1.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objetos geográficos</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Geoinformática</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">Prefacio</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">Introducción</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parte_1.html" class="sidebar-item-text sidebar-link">Geoinformática: las herramientas básicas</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/01_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Transformación de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/02_ejemplo_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Limpieza y transformación de datos de COVID-19 en México</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/03_automatizacion_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Automatización</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/04_visualizacion_covid_1.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Curvas epidémicas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/05_intro_geopandas.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objetos geográficos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/06_manipulacion_espacial.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Trabajando con objetos espaciales</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parte_2.html" class="sidebar-item-text sidebar-link">Geoinformática en R</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_2/intro_R.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Introducción a R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../summary.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#leyendo-datos-geográficos" id="toc-leyendo-datos-geográficos" class="nav-link active" data-scroll-target="#leyendo-datos-geográficos"><span class="toc-section-number">5.1</span>  Leyendo datos geográficos</a></li>
+  <li><a href="#produciendo-mejores-mapas" id="toc-produciendo-mejores-mapas" class="nav-link" data-scroll-target="#produciendo-mejores-mapas"><span class="toc-section-number">5.2</span>  Produciendo mejores mapas</a>
+  <ul class="collapse">
+  <li><a href="#transpariencia" id="toc-transpariencia" class="nav-link" data-scroll-target="#transpariencia"><span class="toc-section-number">5.2.1</span>  Transpariencia</a></li>
+  <li><a href="#añadir-un-título" id="toc-añadir-un-título" class="nav-link" data-scroll-target="#añadir-un-título"><span class="toc-section-number">5.2.2</span>  Añadir un Título</a></li>
+  <li><a href="#propiedades-del-dibujo" id="toc-propiedades-del-dibujo" class="nav-link" data-scroll-target="#propiedades-del-dibujo"><span class="toc-section-number">5.2.3</span>  Propiedades del dibujo</a></li>
+  </ul></li>
+  <li><a href="#sistemas-de-coordenadas" id="toc-sistemas-de-coordenadas" class="nav-link" data-scroll-target="#sistemas-de-coordenadas"><span class="toc-section-number">5.3</span>  Sistemas de coordenadas</a></li>
+  <li><a href="#múltiples-capas" id="toc-múltiples-capas" class="nav-link" data-scroll-target="#múltiples-capas"><span class="toc-section-number">5.4</span>  Múltiples Capas</a></li>
+  <li><a href="#paletas-de-colores" id="toc-paletas-de-colores" class="nav-link" data-scroll-target="#paletas-de-colores"><span class="toc-section-number">5.5</span>  Paletas de Colores</a></li>
+  <li><a href="#exportar-mapas" id="toc-exportar-mapas" class="nav-link" data-scroll-target="#exportar-mapas"><span class="toc-section-number">5.6</span>  Exportar Mapas</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objetos geográficos</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>En los talleres previos hemos explorado el uso de Pandas para el manejo y visualización de datos. Ahora vamos a aprender a usar <a href="https://geopandas.org/en/stable/">Geopandas</a> para manipular y visualizar datos geográficos. En general, Geopandas funciona de forma muy similar a Pandas, de hecho, todo lo que se puede hacer con Pandas se puede hacer con Geopandas, pero además nos provee una serie de métodos específicos pára trabajar con información geoespacial.</p>
+<p>La <em>clase</em> básica de Geopandas es el <a href="https://geopandas.org/en/stable/docs/user_guide/data_structures.html#geodataframe">GeoDataFrame</a>, que es una extensión del concepto de DataFrame que incluye una columna especial con la <em>geometría</em> de los objetos geográficos.</p>
+<p>Para ir empezando a trabajar con este tipo de datos, vamos a utilizar datos del Censo de Población y Vivienda 2020 del INEGI.</p>
+<p>Primero, importamos las librerías que vamos a utilizar</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> palettable <span class="im">as</span> pltt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> seaborn <span class="im">import</span> palplot</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="leyendo-datos-geográficos" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="leyendo-datos-geográficos"><span class="header-section-number">5.1</span> Leyendo datos geográficos</h2>
+<p>A través del método <a href="https://geopandas.org/en/stable/docs/reference/api/geopandas.read_file.html"><code>read_file()</code></a>, Geopandas nos permite leer archivos en una variedad de formatos. Vamos a comenzar por leer el <em>shapefile</em> de las AGEBS para la Ciudad de México.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>agebs <span class="op">=</span> gpd.read_file(<span class="st">"datos/agebs_cdmx.zip"</span>)  <span class="co"># Importar los datos espaciales</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>agebs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>CVEGEO</th>
+      <th>CVE_ENT</th>
+      <th>CVE_MUN</th>
+      <th>CVE_LOC</th>
+      <th>CVE_AGEB</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0901000011716</td>
+      <td>09</td>
+      <td>010</td>
+      <td>0001</td>
+      <td>1716</td>
+      <td>POLYGON ((2787237.541 816989.461, 2787288.728 ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0901000012150</td>
+      <td>09</td>
+      <td>010</td>
+      <td>0001</td>
+      <td>2150</td>
+      <td>POLYGON ((2794154.458 823013.444, 2794155.774 ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0901000011133</td>
+      <td>09</td>
+      <td>010</td>
+      <td>0001</td>
+      <td>1133</td>
+      <td>POLYGON ((2795690.723 820050.788, 2795684.238 ...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0901000011307</td>
+      <td>09</td>
+      <td>010</td>
+      <td>0001</td>
+      <td>1307</td>
+      <td>POLYGON ((2792584.475 815678.668, 2792624.325 ...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0901000010281</td>
+      <td>09</td>
+      <td>010</td>
+      <td>0001</td>
+      <td>0281</td>
+      <td>POLYGON ((2788845.392 823526.074, 2788840.549 ...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2426</th>
+      <td>0900700012564</td>
+      <td>09</td>
+      <td>007</td>
+      <td>0001</td>
+      <td>2564</td>
+      <td>POLYGON ((2814016.268 821043.511, 2814019.319 ...</td>
+    </tr>
+    <tr>
+      <th>2427</th>
+      <td>0900700012615</td>
+      <td>09</td>
+      <td>007</td>
+      <td>0001</td>
+      <td>2615</td>
+      <td>POLYGON ((2814358.791 820744.850, 2814405.087 ...</td>
+    </tr>
+    <tr>
+      <th>2428</th>
+      <td>0900700012969</td>
+      <td>09</td>
+      <td>007</td>
+      <td>0001</td>
+      <td>2969</td>
+      <td>POLYGON ((2815993.470 819777.763, 2816019.848 ...</td>
+    </tr>
+    <tr>
+      <th>2429</th>
+      <td>0900700013721</td>
+      <td>09</td>
+      <td>007</td>
+      <td>0001</td>
+      <td>3721</td>
+      <td>POLYGON ((2807966.150 821578.350, 2807941.550 ...</td>
+    </tr>
+    <tr>
+      <th>2430</th>
+      <td>0900700011034</td>
+      <td>09</td>
+      <td>007</td>
+      <td>0001</td>
+      <td>1034</td>
+      <td>POLYGON ((2808319.196 821552.683, 2808243.251 ...</td>
+    </tr>
+  </tbody>
+</table>
+<p>2431 rows × 6 columns</p>
+</div>
+</div>
+</div>
+<p>Como pueden ver, el resultado es similar a un DataFrame, pero con la columna especial <code>geometry</code></p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>agebs.geometry.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>0    POLYGON ((2787237.541 816989.461, 2787288.728 ...
+1    POLYGON ((2794154.458 823013.444, 2794155.774 ...
+2    POLYGON ((2795690.723 820050.788, 2795684.238 ...
+3    POLYGON ((2792584.475 815678.668, 2792624.325 ...
+4    POLYGON ((2788845.392 823526.074, 2788840.549 ...
+Name: geometry, dtype: geometry</code></pre>
+</div>
+</div>
+<p>Esta columna guarda las geometrías de nuestros datos. Una primera cosa que siempre queremos hacer cuando leemos una <em>capa</em> es visualizarla rápidamente, de la misma forma en la que lo hacemos en QGis o Arc. Para esto, los GeoDataFrames tienen el método <a href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.plot.html"><code>plot</code></a> que nos permite una exploración rápida.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>agebs.plot(figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-5-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Esta es sólo una primera visualización rápida que nos permite asegurarnos explorar los datos, más addelante vamos a ver diferentes formas de mejorar estos mapas.</p>
+<section id="líneas" class="level4" data-number="5.1.0.1">
+<h4 data-number="5.1.0.1" class="anchored" data-anchor-id="líneas"><span class="header-section-number">5.1.0.1</span> Líneas</h4>
+<p>De la misma forma en que leimos un archivo con polígonos, podemos leer un archivo que contiene líneas, en este caso las calles de la delegación Cuahutemoc. Noten además que este archivo es un <em>geojson</em> y GeoPandas es capaz de inferir el tipo de archiovo a través de la extensión.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vias <span class="op">=</span> gpd.read_file(<span class="st">"datos/vias_cuauhtemoc.geojson"</span>) <span class="co"># Se importan los datos espaciales</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>vias <span class="op">=</span> vias.set_index(<span class="st">'id'</span>)                         <span class="co"># Se establece una columna como índice</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>vias.head()                                         <span class="co"># Visualizar los primeros registros de la fila</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>geometry</th>
+    </tr>
+    <tr>
+      <th>id</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>LINESTRING (-99.17041 19.40092, -99.17047 19.4...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>LINESTRING (-99.17850 19.40720, -99.17868 19.4...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>LINESTRING (-99.14905 19.43796, -99.14871 19.4...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>LINESTRING (-99.14735 19.44531, -99.14718 19.4...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>LINESTRING (-99.17655 19.42105, -99.17645 19.4...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Al igual que con los polígonos, es posible utilizar la función <code>.plot()</code> para graficar las líneas rápidamente:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>vias.plot(figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-7-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Una vez más, estas no son las mejores visualizaciones pero nos ayudan a explorar rápidamente la capa.</p>
+</section>
+<section id="puntos" class="level4" data-number="5.1.0.2">
+<h4 data-number="5.1.0.2" class="anchored" data-anchor-id="puntos"><span class="header-section-number">5.1.0.2</span> Puntos</h4>
+<p>Las capas de puntos se comportan de la misma forma. Por ejemplo, leamos un shape con las estaciones de metro:</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>estaciones <span class="op">=</span> gpd.read_file(<span class="st">"datos/estaciones_metro.zip"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>estaciones.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>stop_lat</th>
+      <th>stop_lon</th>
+      <th>geopoint</th>
+      <th>agency_id</th>
+      <th>stop_id</th>
+      <th>stop_desc</th>
+      <th>stop_name</th>
+      <th>trip_heads</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>19.443082</td>
+      <td>-99.139034</td>
+      <td>(2:19.443082,-99.139034)</td>
+      <td>METRO</td>
+      <td>14169.0</td>
+      <td>Metro Línea 8 correspondencia con línea B.</td>
+      <td>Garibaldi_1</td>
+      <td>Garibaldi - Constitución de 1917</td>
+      <td>POINT (485405.843 2149860.572)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>19.468965</td>
+      <td>-99.136176</td>
+      <td>(2:19.468965,-99.13617600000001)</td>
+      <td>METRO</td>
+      <td>14103.0</td>
+      <td>Metro Línea 5 correspondencia con línea 3.</td>
+      <td>La Raza_1_3</td>
+      <td>Pantitlán - Politécnico</td>
+      <td>POINT (485708.110 2152724.378)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>19.376256</td>
+      <td>-99.187746</td>
+      <td>(2:19.37625563,-99.18774605)</td>
+      <td>METRO</td>
+      <td>14079.0</td>
+      <td>Metro Línea 7 correspondencia con línea 12.</td>
+      <td>Mixcoac_1</td>
+      <td>Tláhuac - Mixcoac</td>
+      <td>POINT (480284.558 2142470.874)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>19.408944</td>
+      <td>-99.122279</td>
+      <td>(2:19.40894369,-99.12227869)</td>
+      <td>METRO</td>
+      <td>14144.0</td>
+      <td>Metro Línea 9 correspondencia con línea 4.</td>
+      <td>Jamaica</td>
+      <td>Tacubaya - Pantitlán</td>
+      <td>POINT (487161.939 2146081.726)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>19.375679</td>
+      <td>-99.186866</td>
+      <td>(2:19.37567873,-99.18686628)</td>
+      <td>METRO</td>
+      <td>132131.0</td>
+      <td>Metro Línea 12 correspondencia con línea 7.</td>
+      <td>Mixcoac</td>
+      <td>Mixcoac - Tláhuac</td>
+      <td>POINT (480376.875 2142406.938)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Y la visualización se produce de forma idéntica a los casos anteriores:</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>estaciones.plot(figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-9-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="produciendo-mejores-mapas" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="produciendo-mejores-mapas"><span class="header-section-number">5.2</span> Produciendo mejores mapas</h2>
+<p>Los mapas que hicimos hasta aquí sirven como forma de explorar los datos rápidamente, sin embargo, es posible producir mucho mejores visualizaciones de forma relativamente sencilla cambiando los parámetros que usamos para graficar.</p>
+<section id="transpariencia" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="transpariencia"><span class="header-section-number">5.2.1</span> Transpariencia</h3>
+<p>La intensidad del color de un polígono puede ser cambiado a través del parámetro <code>alpha</code> del método <code>plot()</code>. Este parámetro es un valor entre cero y uno, donde el 0 representa transparencia completa y el 1 completa opacidad (máxima intensidad):</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>agebs.plot(alpha <span class="op">=</span> <span class="fl">0.5</span> , figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-10-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="eliminar-ejes" class="level4" data-number="5.2.1.1">
+<h4 data-number="5.2.1.1" class="anchored" data-anchor-id="eliminar-ejes"><span class="header-section-number">5.2.1.1</span> Eliminar Ejes</h4>
+<p>Los mapas que hemos visto son, por debajo, gráficas de <code>matplotlib</code>, <code>matplotlib</code> está hecha para producir gráficas generales sobre una infinidad de temáticas. En general, entender una gráfica necesita información sobre la escala de variación de los datos, esta información suele proveerse a través de <em>ejes</em>. Por otro lado, en los mapas, a veces los ejes resultan redundantes y es mejor omitirlos.</p>
+<p>Elimiar los ejes (y otras operaciones) involucra <em>hablar</em> con la <em>figura</em> que contiene nuestro mapa. Las gráficas de <code>matplotlib</code> están organizadas en una estructura jerárquica que, en su forma más sencilla contiene un objeto de tipo <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html"><code>figure</code></a>, adentro del cual hay uno o más objetos de tipo <a href="https://matplotlib.org/stable/api/axes_api.html"><code>axes</code></a>. Son estos últimos los que se encargan propiamente de <em>dibujar</em> la gráfica.</p>
+<p>Para poder manipular las propiedades de nuestros mapas (o gráficas en general), necesitamos tener acceso a los objetos <code>figure</code> y <code>axes</code>. La forma más simple es <em>instanciándolos</em> diréctamente a la hora de crear nuestra gráfica.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))  <span class="co"># Preparación de la Figura y sus Ejes, así como el tamaño</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>agebs.plot(ax <span class="op">=</span> ax)                          <span class="co"># Grafica la capa de polígonos sobre la fila</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ax.set_axis_off()                            <span class="co"># Eliminar las ventanas de los ejes</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>plt.show()                                     <span class="co"># Mostrar el resultado</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Analicemos a detalle cada una de las líneas anteriores: 1. Creamos una figura con el nombre <code>fig</code> que contiene un sólo eje llamado <code>ax</code>. Para eso usamos la función <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html"><code>subplots()</code></a>. Este método genera dos elementos que pueden ser asignados a dos variables diferentes (<code>fig</code> y <code>ax</code>), lo cual se logra colocando sus nombres al inicio de la línea, separándolos por comas. 2. Graficamos las geometrías de la misma forma que en los ejemplos anteriores, esta vez indicándole a la función que dibuje los polígonos en el eje que generamos anteriormente, a través del argumento <code>ax</code>. 3. Finalmente, eliminamos los ejes llamando al método <code>set_axis_off()</code> del eje.</p>
+</section>
+</section>
+<section id="añadir-un-título" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="añadir-un-título"><span class="header-section-number">5.2.2</span> Añadir un Título</h3>
+<p>Así como los ejes son parte del objeto <code>axes</code>, el título de la gráfica es propiedad del objeto <code>figure</code>. Para cambiarlo simplemente llamamos al método <code>suptitle</code> de la figura.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>agebs.plot(ax <span class="op">=</span> ax)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"AGEB's de la CDMX"</span>) <span class="co"># A través de la función '.suptitle()' aplicada a la figura se coloca el título.</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-12-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="cambiar-el-tamaño-del-mapa" class="level4" data-number="5.2.2.1">
+<h4 data-number="5.2.2.1" class="anchored" data-anchor-id="cambiar-el-tamaño-del-mapa"><span class="header-section-number">5.2.2.1</span> Cambiar el Tamaño del Mapa</h4>
+<p>En los primeros ejemplos fijamos el tamaño de la gráfica a través del argumento <code>figsize</code> del m´todo <code>plot()</code> de nuestros GeoDataFrames. También podemos cambiarlo en el momento de crear las figuras.</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">4</span>,<span class="dv">4</span>))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>agebs.plot(ax <span class="op">=</span> ax)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"AGEB's de la CDMX"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-13-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="propiedades-del-dibujo" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="propiedades-del-dibujo"><span class="header-section-number">5.2.3</span> Propiedades del dibujo</h3>
+<p>Hasta aquí hemos modificado algunas propiedades generales de la figura y los ejes. También queremos tener una forma de modoficar propiedades del dibujo como el estilo de las líneas y de los polígonos.</p>
+<p>Cambiar estas propiedades se hace desde el método <code>plot()</code>y, aunque tienen unos nombres medio extraños, es muy fácil cambiarlos.</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># En la siguiente línea se modifica el color de los polígonos ('facecolor'), del borde ('edgecolor') y su ancho ('linewidth')</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>agebs.plot(linewidth <span class="op">=</span> <span class="fl">0.1</span>, facecolor <span class="op">=</span> <span class="st">'#50C879'</span>, edgecolor<span class="op">=</span><span class="st">'#000702'</span>,ax <span class="op">=</span> ax)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Simplemente modoficamos los valores de los parámetros <code>linewidth</code>, <code>facecolor</code> y <code>edgecolor</code> que modifican el ancho de la línea, el color del polígono y el color del borde respectivamente.</p>
+<p>De la misma forma podemos cambiar los colores y ancho de una capa de líneas.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>vias.plot(linewidth <span class="op">=</span> <span class="fl">0.5</span>, color <span class="op">=</span> <span class="st">'red'</span>,ax <span class="op">=</span> ax)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Ahora para cambiar el color usamos la propiedad <code>color</code>, las líneas no tienen <code>facecolor</code>.</p>
+</section>
+</section>
+<section id="sistemas-de-coordenadas" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="sistemas-de-coordenadas"><span class="header-section-number">5.3</span> Sistemas de coordenadas</h2>
+<p>Una de las características distintivas de los datos geográficos es el Sistema de Referencia espacial (CRS, en inglés). El CRS nos dice cómo están <em>referidos</em> los datos a la superficie de la tierra.</p>
+<p>Geopandas provee métodos para trabajar con sistemas de referencia. Primero, si la fuente de donde leímos los datos, tiene una referencia, esta se va a conservar a través de la propiedad <code>crs</code>:</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>agebs.crs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>&lt;Derived Projected CRS: PROJCS["MEXICO_ITRF_2008_LCC",GEOGCS["ITRF2008",DA ...&gt;
+Name: MEXICO_ITRF_2008_LCC
+Axis Info [cartesian]:
+- [east]: Easting (metre)
+- [north]: Northing (metre)
+Area of Use:
+- undefined
+Coordinate Operation:
+- name: unnamed
+- method: Lambert Conic Conformal (2SP)
+Datum: International Terrestrial Reference Frame 2008
+- Ellipsoid: GRS 1980
+- Prime Meridian: Greenwich</code></pre>
+</div>
+</div>
+<p>Para reproyectar nuestros datos a un sistema diferente se requiere conocer el código SRID del nuevo sistema. En el sitio <a href="https://spatialreference.org/">Spatial Reference</a> podemos buscar los códigos de diferentes proyecciones y sistemas de referencia.</p>
+<p>Por ejemplo, para cambiar la proyección de nuestros datos al sistema UTM, hacemos:</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>agebs.to_crs(<span class="dv">32614</span>).plot(figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-17-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Debido a que el área de trabajo es relativamente pequeña, la forma de los polígonos observados es casi idéntica a la observada en los ejemplos anteriores. Sin embargo, la escala utilizada para la gráfica es ahora diferente. ___ ### Para practicar</p>
+<p>Genera un mapa de las AGEB’s de la Ciudad de México que posea las siguientes características: * Posea un título * No muestre los ejes * Posea un tamaño de 10in x 11in * Todos los polígonos tengan un relleno del color “#525252” y sean completamente opacos * Los bordes del polígono tengan un ancho de 0.3 y sean del color “#B9EBE3” ___</p>
+</section>
+<section id="múltiples-capas" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="múltiples-capas"><span class="header-section-number">5.4</span> Múltiples Capas</h2>
+<p>Por lo pronto nuestros mapas se han limitado a una sola capa, sin embargo es bastante común querer sobreponer <em>visualmente</em> diferentes capas de información. Hacer esto con Geopandas es muy sencillo, simplemente necesitamos agragar los nuevos dibujos a los <em>ejes</em> ya existentes. Por ejemplo, podemos combinar en un sólo mapa las vialidades de la alcaldía Cuahutemoc con sus límites.</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Primero se necesita importar el polígono de la alcaldía, pues no se ha utilizado en ejemplos anteriores</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>cuauhtemoc <span class="op">=</span> gpd.read_file(<span class="st">"datos/cuauhtemoc.geojson"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Se establece la figura y su eje con '.subplots()'</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Se añade primero el polígono base en la fila</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>cuauhtemoc.plot(ax <span class="op">=</span> ax)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Y después se colocan las vialidades en la misma fila</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>vias.plot(ax <span class="op">=</span> ax)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Por último, y como se ha hecho en ejemplos anteriores, el comando para mostrar el resultado</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Se alcanza a ver que ahí debajo del polígono están las líneas, pero claramente necesitamos trabajar más el mapa. Cambiemos los colores y la transparencia.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Para el polígono, se utilizan los argumentos aplicables al polígono</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>cuauhtemoc.plot(ax <span class="op">=</span> ax, facecolor <span class="op">=</span> <span class="st">'grey'</span>, alpha <span class="op">=</span> <span class="fl">0.8</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Y pra las líneas, se utilizan los argumentos usados para las líneas</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>vias.plot(ax <span class="op">=</span> ax, color <span class="op">=</span> <span class="st">'white'</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-19-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="paletas-de-colores" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="paletas-de-colores"><span class="header-section-number">5.5</span> Paletas de Colores</h2>
+<p>La elección de colores en un mapa está muy relacionada con la efectividad para comunicar. Aunque en algunos casos elegir estos colores a mano sea suficiente, a veces es conveniente recurrir a paletas ya previamente diseñadas (por ejemplo, para dseñar mapas accesibles a personas daltónicas).</p>
+<p>En este caso vamos a usar la librería <a href="https://jiffyclub.github.io/palettable/"><code>palettable</code></a> que nos provee con diferentes paletas de colores.</p>
+<p>Llamemos entonces a una paleta de colores y guardemosla en una variable.</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>paleta <span class="op">=</span> pltt.wesanderson.Darjeeling2_5.hex_colors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para visualizar la apariencia de esta paleta, se recurre a la función <code>palplot()</code> de <code>seaborn</code>:</p>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>palplot(paleta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Si se ve la variable por sí misma, podrá notarse que no se trata más que de una lista de colores bajo su Código Hexadecimal:</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>paleta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>['#D5E3D8', '#618A98', '#F9DA95', '#AE4B16', '#787064']</code></pre>
+</div>
+</div>
+<p>Esta paleta será la que le dará color a nuestro mapa. Como elemento adicional, se colocarán las colonias en las que se subdivide la alcaldía y en donde se han registrado 10 o más homicidios entre los años 2016 a 2018, por lo que primero es necesario importarlas:</p>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>agebs_cuau <span class="op">=</span> gpd.read_file(<span class="st">"datos/agebs_cuauhtemoc.geojson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para esto, no se utilizará nada más que lo aprendido en secciones anteriores de la práctica, siendo la única diferencia que dentro de los argumentos de color correspondientes se colocará el Código Hexadecimal del color que se pretenda utilizar para esa capa:</p>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se define la figura con sus respectivas filas</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Se añade el polígono base de la alcaldía</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>cuauhtemoc.plot(ax <span class="op">=</span> ax, facecolor <span class="op">=</span> <span class="st">'#F9DA95'</span>, edgecolor<span class="op">=</span> <span class="st">'#787064'</span>, linewidth <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Se añaden las vías</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>vias.plot(ax <span class="op">=</span> ax, color <span class="op">=</span> <span class="st">'#AE4B16'</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Se aladen las AGEB's con el mayor número de homicidios</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>agebs_cuau.plot(ax <span class="op">=</span> ax, facecolor <span class="op">=</span> <span class="st">'#D5E3D8'</span>, edgecolor <span class="op">=</span> <span class="st">'#618A98'</span>, linewidth <span class="op">=</span> <span class="dv">2</span>, alpha <span class="op">=</span> <span class="fl">0.8</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Se remueve el marco con los ejes de la fila</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>ax.set_axis_off()</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="exportar-mapas" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="exportar-mapas"><span class="header-section-number">5.6</span> Exportar Mapas</h2>
+<p>Una vez producido el mapa final, puede que se busque el exportar la imagen de modo que pueda ser colocada en un reporte, artículo, sitio web, etc. Para exportar mapas en Python, basta con sustituir la función <code>plt.show()</code> por <code>plt.savefig()</code> al final de las líneas de código para especificar el dónde y cómo guardarla. Por ejemplo, para guardar el mapa anterior en un archivo de tipo <code>.png</code> en la carpeta <code>data</code>, donde se encuentra toda la información con la que se ha trabajado hasta ahora, simplemente basta con:</p>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se define la figura con sus respectivas filas</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Se añade el polígono base de la alcaldía</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>cuauhtemoc.plot(ax <span class="op">=</span> ax, facecolor <span class="op">=</span> <span class="st">'#F9DA95'</span>, edgecolor<span class="op">=</span> <span class="st">'#787064'</span>, linewidth <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Se añaden las vías</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>vias.plot(ax <span class="op">=</span> ax, color <span class="op">=</span> <span class="st">'#AE4B16'</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Se aladen las AGEB's con el mayor número de homicidios</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>agebs_cuau.plot(ax <span class="op">=</span> ax, facecolor <span class="op">=</span> <span class="st">'#D5E3D8'</span>, edgecolor <span class="op">=</span> <span class="st">'#618A98'</span>, linewidth <span class="op">=</span> <span class="dv">2</span>, alpha <span class="op">=</span> <span class="fl">0.8</span>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Se remueve el marco con los ejes de la fila</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>ax.set_axis_off()</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Se guarda el mapa como un archivo PNG en la carpeta 'data/'</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'datos/mapa_final.png'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Si se revisa la carpeta, se encontrará la imagen <code>.png</code> con el mapa.</p>
+<p>La función <code>plt.savefig()</code>, de la librería <code>matplotlib.pyplot</code> contiene un gran número de parámetros y opciones para trabajar. Dado que el tamaño del mapa generado no es muy grande, es posible incrementar la calidad de éste a través del argumento <code>dpi</code>, o <em>Puntos Por Pulgada</em> (dpi), el cual es una medida estándar de la resolución de las imágenes. Por ejemplo, para obtener una imagen de Alta Definición (HD), se puede cambiar el argumento a 1,080:</p>
+<p><strong>Importante</strong> - Si el proceso tarda demasiado, cambiar el argumento por 500 también funciona, pues también arrojará una imagen de buena calidad y más fácil de generar.</p>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se define la figura con sus respectivas filas</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>fig , ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Se añade el polígono base de la alcaldía</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>cuauhtemoc.plot(ax <span class="op">=</span> ax, facecolor <span class="op">=</span> <span class="st">'#F9DA95'</span>, edgecolor<span class="op">=</span> <span class="st">'#787064'</span>, linewidth <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Se añaden las vías</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>vias.plot(ax <span class="op">=</span> ax, color <span class="op">=</span> <span class="st">'#AE4B16'</span>, linewidth <span class="op">=</span> <span class="fl">0.5</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Se aladen las AGEB's con el mayor número de homicidios</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>agebs_cuau.plot(ax <span class="op">=</span> ax, facecolor <span class="op">=</span> <span class="st">'#D5E3D8'</span>, edgecolor <span class="op">=</span> <span class="st">'#618A98'</span>, linewidth <span class="op">=</span> <span class="dv">2</span>, alpha <span class="op">=</span> <span class="fl">0.8</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Se remueve el marco con los ejes de la fila</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>ax.set_axis_off()</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Se guarda el mapa como un archivo PNG en la carpeta 'data/'</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'datos/mapa_final.png'</span>, dpi <span class="op">=</span> <span class="dv">1080</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="05_intro_geopandas_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../parte_1/04_visualizacion_covid_1.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Curvas epidémicas</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../parte_1/06_manipulacion_espacial.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Trabajando con objetos espaciales</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
