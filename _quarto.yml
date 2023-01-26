@@ -14,7 +14,8 @@ book:
         - parte_1/02_ejemplo_transformacion.ipynb
         - parte_1/03_automatizacion_transformacion.ipynb
         - parte_1/04_visualizacion_covid_1.ipynb
-        - parte_1/05_geovisualizacion.ipynb
+        - parte_1/05_intro_geopandas.ipynb
+        - parte_1/06_manipulacion_espacial.ipynb
     - part: parte_2.qmd
       chapters:
         - parte_2/intro_R.qmd
