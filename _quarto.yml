@@ -16,6 +16,7 @@ book:
         - parte_1/04_visualizacion_covid_1.ipynb
         - parte_1/05_intro_geopandas.ipynb
         - parte_1/06_manipulacion_espacial.ipynb
+        - parte_1/07_mapas_COVID.ipynb
     - part: parte_2.qmd
       chapters:
         - parte_2/intro_R.qmd
