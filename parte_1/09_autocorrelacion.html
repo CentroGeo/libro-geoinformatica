@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Geoinformática - 9&nbsp; Autocorrelación espacial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../parte_2.html" rel="next">
+<link href="../parte_1/08_pesos_espaciales.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Autocorrelación espacial</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Geoinformática</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">Prefacio</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">Introducción</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parte_1.html" class="sidebar-item-text sidebar-link">Geoinformática: las herramientas básicas</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/01_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Transformación de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/02_ejemplo_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Limpieza y transformación de datos de COVID-19 en México</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/03_automatizacion_transformacion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Automatización</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/04_visualizacion_covid_1.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Curvas epidémicas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/05_intro_geopandas.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Objetos geográficos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/06_manipulacion_espacial.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Trabajando con objetos espaciales</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/07_mapas_COVID.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Mapas COVID</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/08_pesos_espaciales.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Pesos Espaciales</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_1/09_autocorrelacion.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Autocorrelación espacial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parte_2.html" class="sidebar-item-text sidebar-link">Geoinformática en R</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../parte_2/intro_R.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducción a R</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../summary.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#autocorrelación-espacial-y-análisis-exploratorio-de-datos-espaciales" id="toc-autocorrelación-espacial-y-análisis-exploratorio-de-datos-espaciales" class="nav-link active" data-scroll-target="#autocorrelación-espacial-y-análisis-exploratorio-de-datos-espaciales"><span class="toc-section-number">9.1</span>  Autocorrelación Espacial y Análisis Exploratorio de Datos Espaciales</a></li>
+  <li><a href="#datos" id="toc-datos" class="nav-link" data-scroll-target="#datos"><span class="toc-section-number">9.2</span>  Datos</a></li>
+  <li><a href="#rezago-espacial" id="toc-rezago-espacial" class="nav-link" data-scroll-target="#rezago-espacial"><span class="toc-section-number">9.3</span>  Rezago Espacial</a></li>
+  <li><a href="#autocorrelación-espacial-global" id="toc-autocorrelación-espacial-global" class="nav-link" data-scroll-target="#autocorrelación-espacial-global"><span class="toc-section-number">9.4</span>  Autocorrelación Espacial Global</a>
+  <ul class="collapse">
+  <li><a href="#gráfico-de-moran" id="toc-gráfico-de-moran" class="nav-link" data-scroll-target="#gráfico-de-moran"><span class="toc-section-number">9.4.1</span>  Gráfico de Moran</a></li>
+  <li><a href="#i-de-moran" id="toc-i-de-moran" class="nav-link" data-scroll-target="#i-de-moran"><span class="toc-section-number">9.4.2</span>  I de Moran</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Autocorrelación espacial</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="autocorrelación-espacial-y-análisis-exploratorio-de-datos-espaciales" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="autocorrelación-espacial-y-análisis-exploratorio-de-datos-espaciales"><span class="header-section-number">9.1</span> Autocorrelación Espacial y Análisis Exploratorio de Datos Espaciales</h2>
+<p>La <em>Autocorrelación Espacial</em> se refiere a la relación local de una variable observada en el espacio ¿Qué tanto los valores cercanos tienden a parecerse? De forma muy semejante a como ocurre con la Correlación Tradicional (que determina cómo los valores de una variable cambian en función de los valores de otra) y de forma análoga a su homólogo en una serie temporal (que relaciona el valor de una variable en algún punto del tiempo con los valores en periodos anteriores), la Autocorrelación Espacial relaciona los valores de la variable de interés en un lugar dado con los valores de ella misma en sus alrededores.</p>
+<p>Una idea clave dentro de este contexto es el de <em>Aleatoriedad Espacial</em>, esto es, una situación en la cual la ubicación de una observación no guarda relación alguna con el valor de una variable; en otras palabras, una variable es aleatoria espacialmente si la distribución que sigue en el espacio parece no tener algún patrón discernible. Como tal, la <em>Autocorrelación Espacial</em> puede ser definida formalmente como la “absencia de Aleatoriedad Espacial”, y, al igual que con la correlación tradicional, puede presentarse en dos variaciones:</p>
+<ul>
+<li><em>Correlación Espacial Positiva</em> - Donde los valores similares tienden a agruparse entre sí en ubicaciones similares.</li>
+<li><em>Correlación Espacial Negativa</em> - Donde los valores similares tienden a estar dispersos y alejados entre sí.</li>
+</ul>
+<p>En esta práctica, se aprenderá a explorar la Autocorrelación Espacial de un conjunto de datos determinado, analizando la presencia, naturaleza y robustez de los datos utilizados. Para esto, se utilizará un conjunto de herramientas colectivamente conocidos como <em>Análisis Exploratorio de Datos Espaciales</em> (ESDA, por sus siglas en inglés), diseñado específicamente para este propósito. El alcance de los Métodos ESDA es bastante amplio y abarca desde aproximaciones sencilllas, como Coropletas (Choropleths) y Consultas a Bases de Datos, hasta metodologías más avanzadas y robustas, como la Inferencia Estadística y la Identificación de la Dimensión Geográfica de los Datos. El propósito de esta sesión es explorar más a detalle estas últimas técnicas.</p>
+<p>Los Métodos ESDA comúnmente se dividen en dos grupos principales: herramientas para analizar a la autocorrelación espacial a nivel <em>global</em>, y otras a nivel <em>local</em>. Las primeras consideran el patrón general que sigue la localización de los valores, y hacen posible realizar conclusiones sobre el grado de Agrupamiento (<em>Clustering</em>) que siguen los datos; pueden responderse preguntas como <em>¿Los valores en general siguen un patrón en particular en su distribución geográfica?</em> o <em>¿Los valores similares se encuentran más cerca de lo que se encontrarían en una distribución aleatoria?</em>. Se analizará la Autocorrelación Espacial Global utilizando el estadístico de <em>I de Moran</em>.</p>
+<p>Los métodos utilizados para la Autocorrelación Espacial <em>Local</em> se enfocan en la inestabilidad espacial, esto es, que tanto se alejan ciertas ubicaciones en particular del patrón general; la idea detrás de esto es que, aún cuando existe un patrón general en términos de la naturaleza y robustez de la asociación espacial, algunas áreas en particular pueden divergir sustancialmente de éste mismo. Sin importar el grado general de concentración de los valores, existen focos donde valores inusualmente altos (o bajos) se encuentran cercanos a otros valores altos (o bajos), zonas que son conocidas como <em>Hotspots</em> (o <em>Coldspots</em>, para valores bajos); además, también es posible observar valores muy altos rodeados de valores muy bajos (o viceversa), los cuales reciben el nombre de <em>Outliers Espaciales</em> (Valores Atípicos). La ténica principal que se utilizará en esta sesión para explorar la Autocorrelación Espacial Local serán los <em>Indicadores Locales de Asociación Espacial</em> (LISA, por sus siglas en inglés).</p>
+<p>Para este talles vamos a instalas dos librerías nuevas:</p>
+<ul>
+<li><a href="https://pysal.org/libpysal/">libpysal</a></li>
+<li><a href="https://pysal.org/esda/">esda</a></li>
+</ul>
+<p>Estas librerías son parte del conjunto de módulos <a href="https://pysal.org/">pysal</a> que es el estándar para realizar análisis espacial en Python.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> libpysal.weights <span class="im">import</span> W,Queen, Rook, KNN, DistanceBand, min_threshold_distance, block_weights, lag_spatial</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> esda</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mapclassify</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="datos" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="datos"><span class="header-section-number">9.2</span> Datos</h2>
+<p>En esta práctica, se continuarán utilizando las AGEB’s como unidad espacial. Además vamos a trabajar con datos sobre Personas sin Derechohabiencia a Servicios Públic de Salud compilados por el <a href="https://www.coneval.org.mx/Medicion/IRS/Paginas/Rezago_social_AGEB_2010.aspx">Consejo Nacional de Evaluación de Política del Desarrollo Social</a></p>
+<p>Los datos los puedes encontrar en la <a href="https://www.dropbox.com/s/chm152w8yha4w6t/pob_sinderechohab.zip?dl=1">carpeta de datos</a></p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importar el ShapeFile</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>agebs <span class="op">=</span> gpd.read_file(<span class="st">'datos/pob_sinderechohab.zip'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar el GeoDataFrame</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>agebs.plot(cmap <span class="op">=</span> <span class="st">'Set1'</span>, figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="09_autocorrelacion_files/figure-html/cell-3-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Antes de continuar con la parte analítica, resulta pertinente crear un Mapa de Coropletas para, de entrada, tener una idea visual de cómo es que se distribuye la variable en el espacio. A continuación, se muestra el código necesario para construir este mapa, en el cual cabe resaltar el uso del argumento <code>scheme</code> dentro de la función <code>.plot()</code> para indicar cómo deben de ser clasificados los datos, para después asignarles el color correspondiente:</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparación de la figura y sus filas</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fig , filas <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfica del GeoDataFrame, generando un Mapa de Coropletas a través de 'scheme'</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>agebs.plot(ax <span class="op">=</span> filas, column <span class="op">=</span> <span class="st">'p_sderech'</span>, scheme <span class="op">=</span> <span class="st">'fisherjenks'</span> , cmap <span class="op">=</span> <span class="st">'YlGn'</span>, legend <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Adición de título a la gráfica</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Población sin Derechohabiencia a Servicios de Salud Públicos en la CDMX'</span>, size <span class="op">=</span> <span class="dv">20</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la gráfica</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="09_autocorrelacion_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="ejercicio-opcional" class="level4" data-number="9.2.0.1">
+<h4 data-number="9.2.0.1" class="anchored" data-anchor-id="ejercicio-opcional"><span class="header-section-number">9.2.0.1</span> Ejercicio Opcional</h4>
+<p>Crea un mapa similar al anterior, pero utilizando como Métodos de Clasificación los Cuantiles (<code>quantiles</code>) e Intervalor Iguales (<code>equalinterval</code>), y responde las preguntas: ¿En qué difieren los mapas generados? ¿Cómo varía la interpretación de lo observado en cada uno de los casos? ¿Cuál es la distribución de los datos? Confirma esta última respuesta generando un Diagrama de Densidad de Kernel o un Histograma. ___ ## Matriz de Pesos Espaciales Una Matriz de Pesos Espaciales es la forma en la que el espacio geográfico es codificado de forma numérica para poder utilizar la estructura como base para el análisis. Pysal provee diferentes formas para calcular estas matrices a partir de conjuntos de datos geográficos. Podemos distinguir tres grandes grupos:</p>
+<ul>
+<li>Contigüidad. Cuando la matriz obtiene las relaciones de vecindad a partir de la contigüidad en el espacio, es dicir, si los objetos comparten fronteras.</li>
+<li>Basados en distancia. En este caso los objetos espaciales son vecinos siempre que se encuentren a una distancia menos a un umbral especificado.</li>
+<li>Bloques. Este tipo de matrices está dada por la pertenencia a una unidad de nivel superior, por ejemplo, podemos decir que todos los municipios pertenecientes a un mismo estado sonvecinos.</li>
+</ul>
+<p>Comencemos por utilizar una <a href="https://pysal.org/libpysal/generated/libpysal.weights.Queen.html">vecindad de Reina</a> para las AGEBs:</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m_reina <span class="op">=</span> Queen.from_dataframe(agebs, idVariable<span class="op">=</span><span class="st">'cvegeo'</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>m_reina.transform <span class="op">=</span> <span class="st">'R'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>('WARNING: ', '090090015012A', ' is an island (no neighbors)')</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/plablo/.miniconda3/envs/geoinformatica/lib/python3.10/site-packages/libpysal/weights/weights.py:172: UserWarning: The weights matrix is not fully connected: 
+ There are 8 disconnected components.
+ There is 1 island with id: 090090015012A.
+  warnings.warn(message)</code></pre>
+</div>
+</div>
+<p>El parámetro <code>transform</code> obliga a que los pesos asignados a cada vecindad sumen <span class="math inline">\(1\)</span>, esto es importante para algunos cálculos estadísticos.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m_reina[<span class="st">'090150001056A'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>{'0901500010610': 0.25,
+ '0901500010574': 0.25,
+ '0901500010517': 0.25,
+ '0901500010502': 0.25}</code></pre>
+</div>
+</div>
+<p>Al calcular las vecindades nos salió una advertencia sobre la existencia de una <em>isla</em>, esto es, una observación que, bajo nuestro modelo de vecindad, no está conectyada a ninguna otra. Eliminemos esa observación para que no cause ruido.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>agebs <span class="op">=</span> agebs.set_index(<span class="st">'cvegeo'</span>).drop(<span class="st">'090090015012A'</span>).reset_index()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Volvemos a calcular nuestra matriz de vecindad</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m_reina <span class="op">=</span> Queen.from_dataframe(agebs, idVariable<span class="op">=</span><span class="st">'cvegeo'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>m_reina.transform <span class="op">=</span> <span class="st">'R'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/plablo/.miniconda3/envs/geoinformatica/lib/python3.10/site-packages/libpysal/weights/weights.py:172: UserWarning: The weights matrix is not fully connected: 
+ There are 7 disconnected components.
+  warnings.warn(message)</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="rezago-espacial" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="rezago-espacial"><span class="header-section-number">9.3</span> Rezago Espacial</h2>
+<p>Una vez que se encuentran listos los datos y la Matriz de Pesos Espaciales, es posible calcular el <a href="https://pysal.org/libpysal/generated/libpysal.weights.lag_spatial.html">Rezago Espacial</a> de la variable <code>p_sderech</code>. Importante recordar que el rezago espacial es el resultado del producto entre la Matriz de Pesos Espaciales y una variable dada y que, si <span class="math inline">\(W\)</span> se encuentra estandarizada en filas, los resultados equivalen al valor promedio de una variable en la vecidad de una observación dada.</p>
+<p>En la siguiente línea, se calcula el Rezago Espacial para la variable <code>p_sderech</code> y es almacenada directamente en la tabla original:</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>agebs[<span class="st">'rez_espacial'</span>] <span class="op">=</span> lag_spatial(m_reina , agebs[<span class="st">'p_sderech'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Puede compararse entre sí la apariencia del rezago espacial calculado con respecto a su variable original:</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>agebs[[<span class="st">'p_sderech'</span> , <span class="st">'rez_espacial'</span>]].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>p_sderech</th>
+      <th>rez_espacial</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>389.0</td>
+      <td>337.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>323.0</td>
+      <td>419.5</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>448.0</td>
+      <td>484.5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>240.0</td>
+      <td>409.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1017.0</td>
+      <td>500.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>La forma en la que se interpreta <code>rez_espacial</code> para una observación dada es la siguiente: el AGEB con Clave ‘0901500010235’ (la segunda en la lista anterior) tiene una Población sin Derechohabiencia de 323 personas, y se encuentra rodeada por otras AGEB’s que, en promedio, tienen 419.5 Pesonas sin Derechohabiencia.</p>
+<p>Para ejemplificar lo anterior correctamente, pueden obtenerse primero los vecinos de la AGEB mencionada:</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m_reina.neighbors[<span class="st">'0901500010235'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>['0901500010377',
+ '0901500010381',
+ '090150001024A',
+ '0901500010362',
+ '0901500010220',
+ '0901500010076']</code></pre>
+</div>
+</div>
+<p>Y después, verificar los valores de las variables para estos vecinos:</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>vecinos <span class="op">=</span> agebs.set_index(<span class="st">'cvegeo'</span>).loc[m_reina.neighbors[<span class="st">'0901500010235'</span>] , <span class="st">'p_sderech'</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>vecinos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>cvegeo
+0901500010377     226.0
+0901500010381     267.0
+090150001024A     226.0
+0901500010362     324.0
+0901500010220     146.0
+0901500010076    1428.0
+Name: p_sderech, dtype: float64</code></pre>
+</div>
+</div>
+<p>De forma sencilla, puede calcularse el valor promedio de estos valores, en cuyo caso podemos comprobar que es muy similar al Rezago Espacial calculado para dicha observación:</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>vecinos.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>436.1666666666667</code></pre>
+</div>
+</div>
+<p>Para algunas técnicas que se estudiarán más adelante, tiene más sentido el operar con la versión estandarizada de la variable, en lugar de sus valores brutos; estandarizar significa sencillamente el restar el valor de la media de la variable y dividirlo por la desviación estándar de cada observacion de la columna. Esto se consigue rápidamente a través de los siguientes comandos:</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>agebs[<span class="st">'p_sderech_std'</span>] <span class="op">=</span> (agebs[<span class="st">'p_sderech'</span>] <span class="op">-</span> agebs[<span class="st">'p_sderech'</span>].mean()) <span class="op">/</span> agebs[<span class="st">'p_sderech'</span>].std()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>agebs.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>cvegeo</th>
+      <th>alcaldia</th>
+      <th>p_sderech</th>
+      <th>p_nescu</th>
+      <th>p_hacin</th>
+      <th>p_analf</th>
+      <th>geometry</th>
+      <th>rez_espacial</th>
+      <th>p_sderech_std</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0900700013628</td>
+      <td>09007</td>
+      <td>389.0</td>
+      <td>475.0</td>
+      <td>0.0</td>
+      <td>9.0</td>
+      <td>POLYGON ((2810132.372 824698.172, 2810169.540 ...</td>
+      <td>337.0</td>
+      <td>-0.959096</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0901500010235</td>
+      <td>09015</td>
+      <td>323.0</td>
+      <td>481.0</td>
+      <td>6.0</td>
+      <td>7.0</td>
+      <td>POLYGON ((2798881.634 831643.241, 2798843.076 ...</td>
+      <td>419.5</td>
+      <td>-1.034215</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0900200010097</td>
+      <td>09002</td>
+      <td>448.0</td>
+      <td>780.0</td>
+      <td>5.0</td>
+      <td>37.0</td>
+      <td>POLYGON ((2792415.239 836846.390, 2792356.808 ...</td>
+      <td>484.5</td>
+      <td>-0.891944</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0900200011184</td>
+      <td>09002</td>
+      <td>240.0</td>
+      <td>389.0</td>
+      <td>0.0</td>
+      <td>11.0</td>
+      <td>POLYGON ((2792260.139 836768.777, 2792333.695 ...</td>
+      <td>409.0</td>
+      <td>-1.128684</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0900300011285</td>
+      <td>09003</td>
+      <td>1017.0</td>
+      <td>1291.0</td>
+      <td>0.0</td>
+      <td>23.0</td>
+      <td>POLYGON ((2802121.600 817466.682, 2802124.157 ...</td>
+      <td>500.0</td>
+      <td>-0.244323</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Y, de forma análoga, debe de calcularse el Rezago Espacial para estos valores estandarizados:</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>agebs[<span class="st">'rez_espacial_std'</span>] <span class="op">=</span> lag_spatial(m_reina , agebs[<span class="st">'p_sderech_std'</span>])</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>agebs.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>cvegeo</th>
+      <th>alcaldia</th>
+      <th>p_sderech</th>
+      <th>p_nescu</th>
+      <th>p_hacin</th>
+      <th>p_analf</th>
+      <th>geometry</th>
+      <th>rez_espacial</th>
+      <th>p_sderech_std</th>
+      <th>rez_espacial_std</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0900700013628</td>
+      <td>09007</td>
+      <td>389.0</td>
+      <td>475.0</td>
+      <td>0.0</td>
+      <td>9.0</td>
+      <td>POLYGON ((2810132.372 824698.172, 2810169.540 ...</td>
+      <td>337.0</td>
+      <td>-0.959096</td>
+      <td>-1.018281</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0901500010235</td>
+      <td>09015</td>
+      <td>323.0</td>
+      <td>481.0</td>
+      <td>6.0</td>
+      <td>7.0</td>
+      <td>POLYGON ((2798881.634 831643.241, 2798843.076 ...</td>
+      <td>419.5</td>
+      <td>-1.034215</td>
+      <td>-0.924382</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0900200010097</td>
+      <td>09002</td>
+      <td>448.0</td>
+      <td>780.0</td>
+      <td>5.0</td>
+      <td>37.0</td>
+      <td>POLYGON ((2792415.239 836846.390, 2792356.808 ...</td>
+      <td>484.5</td>
+      <td>-0.891944</td>
+      <td>-0.850400</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0900200011184</td>
+      <td>09002</td>
+      <td>240.0</td>
+      <td>389.0</td>
+      <td>0.0</td>
+      <td>11.0</td>
+      <td>POLYGON ((2792260.139 836768.777, 2792333.695 ...</td>
+      <td>409.0</td>
+      <td>-1.128684</td>
+      <td>-0.936332</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0900300011285</td>
+      <td>09003</td>
+      <td>1017.0</td>
+      <td>1291.0</td>
+      <td>0.0</td>
+      <td>23.0</td>
+      <td>POLYGON ((2802121.600 817466.682, 2802124.157 ...</td>
+      <td>500.0</td>
+      <td>-0.244323</td>
+      <td>-0.832759</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="autocorrelación-espacial-global" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="autocorrelación-espacial-global"><span class="header-section-number">9.4</span> Autocorrelación Espacial Global</h2>
+<p>La Autocorrelación Espacial Global se relaciona con el patrón geográfico general presente en un conjunto de datos. Los estadísticos diseñados para medir ésta caracterizan a los datos espaciales en términos de su grado de agrupamiento (<em>clustering</em>) y lo resumen. Este resumen puede ser visual o numérico; en esta sección, se estudiará un ejemplo de cada uno de éstos: el Gráfico de Moran, y el Estadístico de I de Moran de Autocorrelación Espacial</p>
+<section id="gráfico-de-moran" class="level3" data-number="9.4.1">
+<h3 data-number="9.4.1" class="anchored" data-anchor-id="gráfico-de-moran"><span class="header-section-number">9.4.1</span> Gráfico de Moran</h3>
+<p>El Gráfico de Moran es una forma de visualizar un conjunto de datos espaciales para explorar la naturaleza y robustez de la Autocorrelación Espacial. En escencia se trata de un Diagrama de Dispersión tradicional en el que la variable de interés se contrasta contra su Rezago Espacial. Para poder interpretar los valores en términos de la media, y sus cantidades en términos de desviaciones estándar, la variable de interés usualmente se estandariza.</p>
+<p>Desde el punto de vista técnico, crear un Gráfico de Moran en Python sigue un proceso muy similar al de calcular cualquier otro Diagrama de Dispersión, dado que se tenga la variable estandarizada y su Rezago Espacial de antemano:</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparación de la Gráfica</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>fig, filas <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generación del Diagrama de Dispersión</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>sns.regplot(x <span class="op">=</span> <span class="st">'p_sderech_std'</span> , y <span class="op">=</span> <span class="st">'rez_espacial_std'</span>, data <span class="op">=</span> agebs)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Adición de lineas horizontal y vertical</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, c<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, c<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Muestra del resultado</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="09_autocorrelacion_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>La gráfica anterior muestra la relación entre la variable estandarizada (<code>p_sderech_std</code>) y su rezago espacial (<code>rez_espacial_std</code>) el cual, debido a la estandarización del Matriz de Pesos Espaciales, se puede interpretar como el promedio de la variable en su vecindad. Para facilitar la interpretación de la gráfica, también se incluye una Regresión Lineal, junto con sus intervalos de confianza; esta línea representa el mejor ajuste para el Diagrama de Despersión o, en otras palabras, cuál es la mejor manera de representar la relación entre las dos variables en una línea recta. Debido a que la línea proviene de una regresión, también puede incluirse una medida de la incertidumbre sobre la regresión en la forma de Intervalos de Confianza (el área sombreada alrededor de la línea).</p>
+<p>La gráfica muestra una relacíon positiva entre ambas variables. Esto se asocia directamente con la presencia de una Autocorrelación Espacial <em>Positiva</em>: los valores similares tienden a encontrarse cercanos entre sí. Lo anterior significa que el <em>Patrón General</em> es que los valores altos se encuentran cercanos a los valores altos, y viceversa. De todas formas, esto no significa que ésta sea la única situacíon en el conjunto de datos; deben de exitir casos particulares en los que valores altos se encuentren rodeados de valores bajos, y lo contrario también es cierto. Lo que sí significa es que, si se tuviera que resumir el patrón principal de los datos en términos de qué tan agregados se encuentran valores similares, la mejor forma sería decir que se encuentran correlacionados positivamente y, por ende, agrupados en el espacio.</p>
+<p>En el contexto de este ejemplo, esto puede ser interpretado como que las AGEB’s donde existe un gran número de personas sin derechohabiencia a servicios públicos de salud se encuentran rodeadas por otras AGEB’s donde ocurre el mismo fenómeno.</p>
+</section>
+<section id="i-de-moran" class="level3" data-number="9.4.2">
+<h3 data-number="9.4.2" class="anchored" data-anchor-id="i-de-moran"><span class="header-section-number">9.4.2</span> I de Moran</h3>
+<p>El Gráfico de Moran es una herramienta excelente para explorar los datos y tener una buena idea de qué tanto se encuentran agregados los valores en el espacio. Sin embargo, debido a que se trata de una herramienta gráfica, resulta en ocasiones difícil el condensar cualquier conclusión de forma más concisa. Para estos casos, resulta útil encontrar un método estadístico que resuma las conclusiones a las que se pretende llegar; esto es exactamente lo que la I de Moran pretende hacer.</p>
+<p>De la misma forma en la que la Media resume un elemeto crucial de la distribución de los valores en un contexto no espacial, la I de Moran también lo hace para un conjunto de datos con la componente espacial. Continuando con la comparación, puede pensarse en la Media como un único valor numérico que describe un Histograma o un Gráfico de Densidad de Kernel; de forma similar, la I de Moran captura mucha de la escencia del Gráfico de Moran. De hecho, inclusive existe una conección entre ambos: el valor de la I de Moran corresponde con la pendiente de la Regresíon Lineal presente en la gráfica.</p>
+<p>Para calcular la I de Moran del conjunto de datos, se puede llamar directamente a una función de <code>PySAL</code>:</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>moran <span class="op">=</span> esda.Moran(agebs[<span class="st">'p_sderech'</span>], m_reina)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>moran</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>&lt;esda.moran.Moran at 0x7f25687ca860&gt;</code></pre>
+</div>
+</div>
+<p>Cabe destacar como no es necesario utilizar la versión estandarizada de la variable en el comando anterior, pues no se producirá una representación visual.</p>
+<p>La función anterior crea un objeto que contiene mucha más información que el propio estadístico aislado. Para recupear el valor de la I de Moran, puede recurrise a la propiedad <code>I</code> del objeto generado:</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>moran.I</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>0.12761494747644506</code></pre>
+</div>
+</div>
+<p>La otra información pertinente para la interpretación de la I de Moran se realaciona con la Inferencia Estadística: ¿Qué tan probable es que el patrón que se observa en el mapa y su I de Moran sean generado por un proceso completamente aleatorio? Si se considerara exactamente la misma variable, pero se distribuyera su ubicación al azar, ¿se obtendría un mapa con características similares?</p>
+<p>Los detalles específicos del mecanismo para calcular esto rebasa el alcance de esta práctica, pero resulta importante saber que un valor lo suficientemente pequeño de <em>p-value</em> asociado a la I de Moran de un mapa permite rechazar la hipótesis de que el conjunto de datos se encuentra distribuido de forma aleatoria. En otras palabras, puede concluirse que los datos muestran un Patrón Espacial mayor al que se esperaría si los valores hubiesen sido localizados de forma aleatoria en el espacio.</p>
+<p>El valor más confiable de <em>p-value</em> para la I de Moran puede ser encontrado a través del atributo <code>p_sim</code>:</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>moran.p_sim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>0.001</code></pre>
+</div>
+</div>
+<p>Esta significancia es mucho menor que el 1% y, en términos generales, se consideraría que se trata de un estadístico significativo. Nuevamente, una explicación detallada del verdadero significado de esto y sus implicaciones rebasan el objetivo de la práctica, pero se pueden realizar algunas interpretaciones rápidas: lo que el 0.001 (0.1%) significa es que, si se generaran un enorme número de mapas con exactamente los mismos valores, pero distribuídos de formas diferentes, y se calculará la I de Moran para cada uno de estos mapas, sólo el 0.1% mostrarían un valor del estadístico mayor al que se está obteniendo de los datos reales, mientras que el resto de los mapas generados al azar tendrían un valor menor. Si se recuerda que el valor de la I de Moran puede ser interpretado como la pendiente del Gráfico de Moran, lo que se tiene es que, para este caso, el acomodo particular de los valores en el espacio para la variable de personas sin derechohabiencia se encuentra mucho más concentrado que si se intercambiaran la cantidad de personas entre todas las AGEB’s de la CDMX, razón por la cual el estadístico se vuelve significativo.</p>
+<p>Como un primer paso, el Análisis de Autocorrelación Global muestra que las observaciones guardan una correlación <em>positiva</em> entre sí en el espacio. En términos de la variable que se está analizando, puede empezarse a suponer que el espacio juega un papel importante en el valor que ésta adquirirá dentro de cada AGEB. ___ ## Autocorrelación Espacial Local La I de Moran es útil para resumir un conjunto de datos en un sólo valor que informa sobre su grado de agrupamiento (<em>Clustering</em>). Sin embargo, no es una medida apropiada para identificar las áreas dentro del mapa en las que ciertos valores se ubican; en otras palabras, la I de Moran permite determinar si los valores se encuentra agrupados en general, pero no informará sobre dónde se encuentran estos agrupamientos.</p>
+<p>Para este propósito, es necesario utilizar una medida <em>local</em> de la Autocorrelación Espacial. Las medidas locales consideran a cada una de las observaciones de un conjunto de datos y trabajan sobre ellas, al contrario de la generalidad de los datos, como hacen las medidas <em>globales</em>. Debido a esto, no son buenas para resumir la información de un mapa, pero si para obtener un mayor transfondo del mismo.</p>
+<p>En esta práctica, se considerarán <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1538-4632.1995.tb00338.x">Indicadores Locales de Asociación Espacial</a> (LISA’s, en inglés), una contraparte local de las medidas globales. En el corazón de este método se encuentra la clasificación de las observaciones de un conjunto de datos entre cuatro grupos derivados del Gráfico de Moran: valores altos rodeados por valores altos (HH), valores bajos rodeados por valores bajos (LL), valores altos rodeados de bajos (HL) y viceversa (LH). Cada uno de estos grupos son comúnmente llamados <em>Cuadrantes</em>; ilustrativamente, se pueden observar de la siguiente manera:</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparación de la Gráfica</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>fig , filas <span class="op">=</span> plt.subplots(<span class="dv">1</span>, figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generación de la Gráfica</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>sns.regplot(x <span class="op">=</span> <span class="st">'p_sderech_std'</span> , y <span class="op">=</span> <span class="st">'rez_espacial_std'</span>, data <span class="op">=</span> agebs)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Adición de Línas</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, c<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, c<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Definición de límites según número de Desviaciones Estándar</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>filas.set_xlim(<span class="op">-</span><span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>filas.set_ylim(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Adición de nombre de los cuadrantes</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="dv">3</span>, <span class="fl">1.5</span>, <span class="st">"HH"</span>, fontsize<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="dv">3</span>, <span class="op">-</span><span class="fl">1.5</span>, <span class="st">"HL"</span>, fontsize<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="op">-</span><span class="dv">1</span>, <span class="fl">1.5</span>, <span class="st">"LH"</span>, fontsize<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="fl">1.5</span>, <span class="st">"LL"</span>, fontsize<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfica Resultante</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="09_autocorrelacion_files/figure-html/cell-20-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Hasta ahora se ha clasificado cada observación del conjunto de datos en función de su valor o el de sus vecinos; esto es sólo la mitad del trabajo de identificar las áreas con concentraciones inusuales de valores. Para saber la ubicación de cada uno de las aglomeraciones (clusters) <em>estadísticamente significativos</em> de cualquier tipo, primero es necesario comparar los datos reales con lo que se esperaría obtener con datos localizados aleatoriamente. Después de todo, por definición, toda observación será de algún tipo según lo observado en el Gráfico de Moran; sin embargo, lo que resulta de interés es saber la significancia de la concentración de estos valores.</p>
+<p>Esto es exactamente para lo que los métodos LISA’s fueron diseñados. Como ha ocurrido anteriormente, una descripción mucho más detallada del procedimiento estadístico involucrado rebasa el propósito de la práctica, pero se analizará un poco la lógica detrás del proceso. La idea central es el identificar casos en los que la comparación entre el valor de una observación y el promedio de sus vecinos es muy similar (HH y LL) o diferente (HL y LH) de lo que se esperaría obtener por mera suerte; el mecanismo para hacer esto es similar al existente en la I de Moran Global, pero aplicado para cada observación, resultando en tener tantas estadísticos como observaciones.</p>
+<p>Los métodos LISA’s son utilizados en muchos campos para encontrar agrupaciones de valores en el espacio. Son una herramienta bastante útil que permite obtener rápidamente áreas en las que los valores se encuentren concentrados, y proveen de evidencia <em>sugestiva</em> sobre el proceso que puede originar lo observado; debido a esto, resultan una herramienta clave en el análisis espacial. Ejemplos en los que los métodos LISA pueden ser de utilidad incluyen la identificación de aglomeraciones (clusters) espaciales de pobreza en una región, detección de enclaves étnicos, delineación de áreas con mucha o poca presencia de un fenónemo, entre muchos otros.</p>
+<p>En Python, el cálculo de LISA’s es bastante sencillo gracias a las facilidades de <code>PySAL</code>:</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>lisa <span class="op">=</span> esda.Moran_Local(agebs[<span class="st">'p_sderech'</span>] , m_reina)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>lisa</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>&lt;esda.moran.Moran_Local at 0x7f25db79b100&gt;</code></pre>
+</div>
+</div>
+<p>Lo único que se necesita es establecer la variable de interés (Personas sin Derechohabiencia, en este caso), y la Matriz de Pesos Espaciales que describe las vecindades de cada una de las observaciones del conjunto de datos.</p>
+<p>Debido a su naturaleza intrínseca, observar los resultados numéricos de LISA no siempre resulta la manera más útil de aprovechar toda la información que pueden proporcionar. LISA implica calcular un estadístico para todas y cada una de las observaciones del conjunto de datos por lo que, si se tienen muchos de ellos, será difícil descifrar cualquier patrón. Como tal, lo que normalmente se hace es crear un mapa, llamado <em>Mapa de Clusters</em>, que extrae las observaciones significativas (aquellas que muy probablemente no derivaron de la aleatoriedad) y asignarles un color en particular según la categoría del cuadrante.</p>
+<p>Todas las piezas necesarias para armar este mapa se encuentran contenidas en el objeto <code>lisa</code> creado en el comando anterior. Pero, para que el mapa sea más fácil de comprender, es conveniente retirarlos del objeto y colocarlos en la tabla principal:</p>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determinar si una observación es significativa o no</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>agebs[<span class="st">'significativo'</span>] <span class="op">=</span> lisa.p_sim <span class="op">&lt;</span> <span class="fl">0.05</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Almacenar el cuadrante al cual pertenecen</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>agebs[<span class="st">'cuadrante'</span>] <span class="op">=</span> lisa.q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>De forma similar a como ocurre con la I de Moran Global, <code>PySAL</code> automáticamente calcula un <em>p-value</em> para cada LISA; debido a que no todas las observaciones son estadísticamente significativas, lo que se busca es identificar a éstas con un <em>p-value</em> lo suficientemente pequeño para asegurar que no fueron producto del azar. Tomando como significativos a todos los valores con un <em>p-value</em> menor al 5%, se crea la columna <code>significativo</code> que contiene <code>True</code> si el <em>p-value</em> de la observación satisface esa condición, y <code>False</code> si no es así. Esto puede ser verificado sencillamente:</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>agebs[[<span class="st">'cvegeo'</span>,<span class="st">'significativo'</span>]].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>cvegeo</th>
+      <th>significativo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0900700013628</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0901500010235</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0900200010097</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0900200011184</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0900300011285</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Y los primeros cinco <em>p-values</em> pueden ser obtenidos de la siguiente forma:</p>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>lisa.p_sim[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>array([0.011, 0.009, 0.014, 0.008, 0.017])</code></pre>
+</div>
+</div>
+<p>Debido a que todos los valores son menores a 0.05, todas son asignadas un <code>True</code> dentro de la tabla.</p>
+<p>En términos del cuadrante al que corresponde cada observación, este puede ser verificado fácilmente pues forma parte del objeto <code>lisa</code> directamente:</p>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>agebs[[<span class="st">'cvegeo'</span>,<span class="st">'cuadrante'</span>]].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>cvegeo</th>
+      <th>cuadrante</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0900700013628</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0901500010235</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0900200010097</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0900200011184</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0900300011285</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>La correspondencia entre los números de la variable y el nombre de los cuadrantes es la siguiente:</p>
+<ul>
+<li>1 - HH</li>
+<li>2 - LH</li>
+<li>3 - LL</li>
+<li>4 - HL</li>
+</ul>
+<p>Con estos dos elementos, <code>significativo</code> y <code>cuadrante</code>, es posible construir un <em>Mapa de Clusters</em> tradicional, combinando todo lo ya aprendido sobre la construcción de mapas en Python:</p>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fig , filas <span class="op">=</span> plt.subplots(<span class="dv">1</span> , figsize <span class="op">=</span> (<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>agebs.plot(color <span class="op">=</span> <span class="st">'grey'</span> , linewidth <span class="op">=</span> <span class="fl">0.5</span> , ax <span class="op">=</span> filas)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># AGEB's del tipo Alto-Alto (Rojo Oscuro)</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>hh <span class="op">=</span> agebs.loc[(agebs[<span class="st">'cuadrante'</span>] <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (agebs[<span class="st">'significativo'</span>] <span class="op">==</span> <span class="va">True</span>) , <span class="st">'geometry'</span>]</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>hh.plot(ax <span class="op">=</span> filas , color <span class="op">=</span> <span class="st">'red'</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co"># AGEB's del tipo Bajo-Alto (Azul Claro)</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>ll <span class="op">=</span> agebs.loc[(agebs[<span class="st">'cuadrante'</span>] <span class="op">==</span> <span class="dv">3</span>) <span class="op">&amp;</span> (agebs[<span class="st">'significativo'</span>] <span class="op">==</span> <span class="va">True</span>) , <span class="st">'geometry'</span>]</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>ll.plot(ax <span class="op">=</span> filas , color <span class="op">=</span> <span class="st">'blue'</span>)</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a><span class="co"># AGEB's del tipo Bajo-Bajo (Azul Oscuro)</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>lh <span class="op">=</span> agebs.loc[(agebs[<span class="st">'cuadrante'</span>] <span class="op">==</span> <span class="dv">2</span>) <span class="op">&amp;</span> (agebs[<span class="st">'significativo'</span>] <span class="op">==</span> <span class="va">True</span>) , <span class="st">'geometry'</span>]</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>lh.plot(ax <span class="op">=</span> filas , color <span class="op">=</span> <span class="st">'#83cef4'</span>)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="co"># AGEB's del tipo Alto-Bajo (Rojo Claro)</span></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>hl <span class="op">=</span> agebs.loc[(agebs[<span class="st">'cuadrante'</span>] <span class="op">==</span> <span class="dv">4</span>) <span class="op">&amp;</span> (agebs[<span class="st">'significativo'</span>] <span class="op">==</span> <span class="va">True</span>) , <span class="st">'geometry'</span>]</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>hl.plot(ax <span class="op">=</span> filas , color <span class="op">=</span> <span class="st">'#e59696'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="09_autocorrelacion_files/figure-html/cell-26-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>El mapa anterior muestra las AGEB’s de la Ciudad de México y las colorea en función cómo han sido identificadas según los métodos LISA, únicamente si son considerados estadísticamente significativos por los mismos. De color rojo muy saturado se encuentran las AGEB’s con números muy altos de Personas sin Derechohabiencia, que tienden a concentrarse en los límites de la ciudad; de color rojo pastel, aquellos que tienen una alta cantidad de esta población, pero que se encuetran en zonas donde éste no es el patrón buscado; de color azul, zonas donde hay una cantidad muy pequeña de personas sin derechohabiencia, que se concentran en el interior de la ciudad; por último, de azul pastel, las zonas donde esta población es pequeña, pero el patrón en la vecindad es que sea alta.</p>
+<p>Para que los resultados obtenidos cobren sentido, es necesario relacionar lo observado con el objetivo del proyecto con el que se esté trabajando. Comúnmente, este tipo de análisis se realiza para comprobar, a través de cierta rigidez estadística, que la componente espacial tiene una influencia importante sobre los valores observados; en otras palabras, sería posible concluir a partir de las pruebas anteriores que el Número de Personas sin Derechohabiencia que se registren en un AGEB depende, de una forma u otra, de la ubicación del AGEB.</p>
+<p>Claro está que esta conclusión no es completamente determinante, pues, dado que son datos obtenidos de situaciones reales, existen un sinnúmero de factores que pueden influir sobre la variable estudiada, y que no necesariamente se están considerando dentro del procedimiento. Sin embargo, la ventaja de los métodos anteriores es que ofrecen una base estadísticamente válida para continuar trabajando con otros métodos del Análisis Espacial, y así acercarse más al objetivo deseado.</p>
+<section id="ejercicio-opcional-1" class="level4" data-number="9.4.2.1">
+<h4 data-number="9.4.2.1" class="anchored" data-anchor-id="ejercicio-opcional-1"><span class="header-section-number">9.4.2.1</span> Ejercicio Opcional</h4>
+<p>Genera un mapa similar al anterior, pero esta vez únicamente mostrando las AGEB’s clasificadas como Alto-Alto (HH), ignorando cualquier otro Valor Atípico Espacial. ¿Qué es lo que se puede concluir? ___ ## Para Practicar… Replica todo el análisis anterior para alguna de las otras variables contenidas en el <code>ShapeFile</code> original, siendo: * <code>p_nescu</code> - Población de 15 a 24 años que no asiste a la escuela * <code>p_hacin</code> - Población que vive en Hacinamiento * <code>p_analf</code> - Población de 15 años o más analfabeta</p>
+<p>Para la variable que hayas escogido, realiza lo siguiente: * Crea un Mapa de Coropletas. * Obten la Matriz de Pesos Espaciales, utilizando el criterio (Contigüidad, Distancia, Bloques) que consideres más óptimo. Justifica la elección del criterio. * Estandariza la variable elegida, y obten su rezago espacial. * Crea la Gráfica de Moran * Realiza un Análisis LISA y genera un mapa de los resultados obtenidos. Responde a la pregunta, ¿cuál es el patrón observado?</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../parte_1/08_pesos_espaciales.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Pesos Espaciales</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../parte_2.html" class="pagination-link">
+        <span class="nav-page-text">Geoinformática en R</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
