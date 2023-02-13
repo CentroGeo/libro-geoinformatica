@@ -17,7 +17,8 @@ book:
         - parte_1/05_intro_geopandas.ipynb
         - parte_1/06_manipulacion_espacial.ipynb
         - parte_1/07_mapas_COVID.ipynb
-        - parte_1/08_autocorrelacion.ipynb
+        - parte_1/08_pesos_espaciales.ipynb
+        - parte_1/09_autocorrelacion.ipynb
     - part: parte_2.qmd
       chapters:
         - parte_2/intro_R.qmd
